@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class HelloController {
-    @GetMapping("/hello")
+    @GetMapping("/Hello")
     public ResultVO<String> sayHello() {
         return ResultVO.buildSuccess("你好世界");
     }
