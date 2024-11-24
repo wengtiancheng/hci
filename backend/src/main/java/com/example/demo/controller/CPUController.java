@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/CPU")
+@RequestMapping("/api/cpu")
 public class CPUController {
     @Autowired
     private CPUService cpuService;
