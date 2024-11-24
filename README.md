@@ -1,7 +1,3 @@
 #   deji
 
-git clone https://github.com/wengtiancheng/hci.git
-
-npm install
-
-npm run dev
+一站式装机平台
