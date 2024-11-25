@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/GPU")
+@RequestMapping("/api/gpu")
 public class GPUController {
     @Autowired
-    private GPUService GPUService;
+    private GPUService gpuService;
 
     /**
      * 获取所有GPU
@@ -29,7 +29,7 @@ public class GPUController {
      */
     @RequestMapping("/all")
     public ResultVO<List<GPUVO>> getAllGPUs() {
-        return ResultVO.buildSuccess(GPUService.getAllGPUs());
+        return ResultVO.buildSuccess(gpuService.getAllGPUs());
     }
 
     /**
@@ -40,6 +40,6 @@ public class GPUController {
      */
     @RequestMapping("/{id}")
     public ResultVO<GPUVO> getGPU(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(GPUService.getGPU(id));
+        return ResultVO.buildSuccess(gpuService.getGPU(id));
     }
 }

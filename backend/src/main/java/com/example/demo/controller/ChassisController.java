@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Chassis")
+@RequestMapping("/api/chassis")
 public class ChassisController {
     @Autowired
-    private ChassisService ChassisService;
+    private ChassisService chassisService;
 
     /**
      * 获取所有Chassis
@@ -29,7 +29,7 @@ public class ChassisController {
      */
     @RequestMapping("/all")
     public ResultVO<List<ChassisVO>> getAllChassiss() {
-        return ResultVO.buildSuccess(ChassisService.getAllChassiss());
+        return ResultVO.buildSuccess(chassisService.getAllChassiss());
     }
 
     /**
@@ -40,6 +40,6 @@ public class ChassisController {
      */
     @RequestMapping("/{id}")
     public ResultVO<ChassisVO> getChassis(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(ChassisService.getChassis(id));
+        return ResultVO.buildSuccess(chassisService.getChassis(id));
     }
 }

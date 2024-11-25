@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Display")
+@RequestMapping("/api/display")
 public class DisplayController {
     @Autowired
-    private DisplayService DisplayService;
+    private DisplayService displayService;
 
     /**
      * 获取所有Display
@@ -29,7 +29,7 @@ public class DisplayController {
      */
     @RequestMapping("/all")
     public ResultVO<List<DisplayVO>> getAllDisplays() {
-        return ResultVO.buildSuccess(DisplayService.getAllDisplays());
+        return ResultVO.buildSuccess(displayService.getAllDisplays());
     }
 
     /**
@@ -40,6 +40,6 @@ public class DisplayController {
      */
     @RequestMapping("/{id}")
     public ResultVO<DisplayVO> getDisplay(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(DisplayService.getDisplay(id));
+        return ResultVO.buildSuccess(displayService.getDisplay(id));
     }
 }

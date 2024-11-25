@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Harddisk")
+@RequestMapping("/api/harddisk")
 public class HarddiskController {
     @Autowired
-    private HarddiskService HarddiskService;
+    private HarddiskService harddiskService;
 
     /**
      * 获取所有Harddisk
@@ -29,7 +29,7 @@ public class HarddiskController {
      */
     @RequestMapping("/all")
     public ResultVO<List<HarddiskVO>> getAllHarddisks() {
-        return ResultVO.buildSuccess(HarddiskService.getAllHarddisks());
+        return ResultVO.buildSuccess(harddiskService.getAllHarddisks());
     }
 
     /**
@@ -40,6 +40,6 @@ public class HarddiskController {
      */
     @RequestMapping("/{id}")
     public ResultVO<HarddiskVO> getHarddisk(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(HarddiskService.getHarddisk(id));
+        return ResultVO.buildSuccess(harddiskService.getHarddisk(id));
     }
 }

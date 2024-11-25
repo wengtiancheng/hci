@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Motherboard")
+@RequestMapping("/api/motherboard")
 public class MotherboardController {
     @Autowired
-    private MotherboardService MotherboardService;
+    private MotherboardService motherboardService;
 
     /**
      * 获取所有Motherboard
@@ -29,7 +29,7 @@ public class MotherboardController {
      */
     @RequestMapping("/all")
     public ResultVO<List<MotherboardVO>> getAllMotherboards() {
-        return ResultVO.buildSuccess(MotherboardService.getAllMotherboards());
+        return ResultVO.buildSuccess(motherboardService.getAllMotherboards());
     }
 
     /**
@@ -40,6 +40,6 @@ public class MotherboardController {
      */
     @RequestMapping("/{id}")
     public ResultVO<MotherboardVO> getMotherboard(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(MotherboardService.getMotherboard(id));
+        return ResultVO.buildSuccess(motherboardService.getMotherboard(id));
     }
 }

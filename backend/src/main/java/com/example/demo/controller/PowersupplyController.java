@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Powersupply")
+@RequestMapping("/api/powersupply")
 public class PowersupplyController {
     @Autowired
-    private PowersupplyService PowersupplyService;
+    private PowersupplyService powersupplyService;
 
     /**
      * 获取所有Powersupply
@@ -29,7 +29,7 @@ public class PowersupplyController {
      */
     @RequestMapping("/all")
     public ResultVO<List<PowersupplyVO>> getAllPowersupplys() {
-        return ResultVO.buildSuccess(PowersupplyService.getAllPowersupplys());
+        return ResultVO.buildSuccess(powersupplyService.getAllPowersupplys());
     }
 
     /**
@@ -40,6 +40,6 @@ public class PowersupplyController {
      */
     @RequestMapping("/{id}")
     public ResultVO<PowersupplyVO> getPowersupply(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(PowersupplyService.getPowersupply(id));
+        return ResultVO.buildSuccess(powersupplyService.getPowersupply(id));
     }
 }

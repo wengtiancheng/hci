@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Cooling")
+@RequestMapping("/api/cooling")
 public class CoolingController {
     @Autowired
-    private CoolingService CoolingService;
+    private CoolingService coolingService;
 
     /**
      * 获取所有Cooling
@@ -29,7 +29,7 @@ public class CoolingController {
      */
     @RequestMapping("/all")
     public ResultVO<List<CoolingVO>> getAllCoolings() {
-        return ResultVO.buildSuccess(CoolingService.getAllCoolings());
+        return ResultVO.buildSuccess(coolingService.getAllCoolings());
     }
 
     /**
@@ -40,6 +40,6 @@ public class CoolingController {
      */
     @RequestMapping("/{id}")
     public ResultVO<CoolingVO> getCooling(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(CoolingService.getCooling(id));
+        return ResultVO.buildSuccess(coolingService.getCooling(id));
     }
 }

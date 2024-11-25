@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Memory")
+@RequestMapping("/api/memory")
 public class MemoryController {
     @Autowired
-    private MemoryService MemoryService;
+    private MemoryService memoryService;
 
     /**
      * 获取所有Memory
@@ -29,7 +29,7 @@ public class MemoryController {
      */
     @RequestMapping("/all")
     public ResultVO<List<MemoryVO>> getAllMemorys() {
-        return ResultVO.buildSuccess(MemoryService.getAllMemorys());
+        return ResultVO.buildSuccess(memoryService.getAllMemorys());
     }
 
     /**
@@ -40,6 +40,6 @@ public class MemoryController {
      */
     @RequestMapping("/{id}")
     public ResultVO<MemoryVO> getMemory(@PathVariable(value = "id") Integer id) {
-        return ResultVO.buildSuccess(MemoryService.getMemory(id));
+        return ResultVO.buildSuccess(memoryService.getMemory(id));
     }
 }
