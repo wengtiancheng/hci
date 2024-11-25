@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import axios from 'axios'
+import {router} from './router/index.ts'
+import ElementPlus from 'element-plus'
 
-createApp(App).mount('#app')
-axios.defaults.baseURL = ("http://localhost:8080")
+const app = createApp(App)
+app.use(ElementPlus)
+app.use(router).mount('#app')
