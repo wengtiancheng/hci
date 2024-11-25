@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/GPU")
+@RequestMapping("/api/gpu")
 public class GPUController {
     @Autowired
     private GPUService GPUService;

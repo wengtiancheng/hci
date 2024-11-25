@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Harddisk")
+@RequestMapping("/api/harddisk")
 public class HarddiskController {
     @Autowired
     private HarddiskService HarddiskService;

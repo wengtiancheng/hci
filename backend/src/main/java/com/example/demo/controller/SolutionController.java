@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2024/11/23 21:04
  */
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/solution")
 public class SolutionController {
 
     @Autowired

@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Powersupply")
+@RequestMapping("/api/powersupply")
 public class PowersupplyController {
     @Autowired
     private PowersupplyService PowersupplyService;

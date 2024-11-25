@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Display")
+@RequestMapping("/api/display")
 public class DisplayController {
     @Autowired
     private DisplayService DisplayService;

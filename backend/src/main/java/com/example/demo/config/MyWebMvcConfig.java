@@ -25,8 +25,8 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/users/register")
-                .excludePathPatterns("/api/users/login")
+                .excludePathPatterns("/api/user/register")
+                .excludePathPatterns("/api/user/login")
                 .excludePathPatterns("/api/stores/all")
                 .excludePathPatterns("/api/ali/*")
                 //非登录状态下获取全部 装机方案,开放相关接口的权限

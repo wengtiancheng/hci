@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Memory")
+@RequestMapping("/api/memory")
 public class MemoryController {
     @Autowired
     private MemoryService MemoryService;

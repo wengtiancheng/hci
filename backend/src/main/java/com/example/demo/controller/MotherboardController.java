@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Motherboard")
+@RequestMapping("/api/motherboard")
 public class MotherboardController {
     @Autowired
     private MotherboardService MotherboardService;

@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/Cooling")
+@RequestMapping("/api/cooling")
 public class CoolingController {
     @Autowired
     private CoolingService CoolingService;
