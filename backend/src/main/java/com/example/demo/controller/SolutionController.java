@@ -35,10 +35,34 @@ public class SolutionController {
      * 需要登录
      *
      * @param solutionVO
+     * class SolutionVO {
+     *     private String name; // 方案名称
+     *     private String description; // 方案描述
+     *     // 组件id
+     *     private Integer cpuId;
+     *     private Integer motherboardId;
+     *     private Integer gpuId;
+     *     private Integer memoryId;
+     *     private Integer harddiskId;
+     *     private Integer powersupplyId;
+     *     private Integer coolingId;
+     *     private Integer chassisId;
+     *     private Integer displayId;
+     * }
      * @return 保存是否成功
      */
     @PostMapping("/save")
     public ResultVO<Boolean> saveSolution(@RequestBody SolutionVO solutionVO){
         return ResultVO.buildSuccess(solutionService.saveSolution(solutionVO));
+    }
+
+    /**
+     * 收藏 一个 装机方案
+     * @param id
+     * @return
+     */
+    @PostMapping("/star/{id}")
+    public ResultVO<Boolean> starSolution(@PathVariable(value = "id") Integer id){
+        return ResultVO.buildSuccess(solutionService.starSolution(id));
     }
 }

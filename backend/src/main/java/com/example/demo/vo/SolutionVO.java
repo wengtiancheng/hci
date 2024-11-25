@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author simba@onlying.cn
@@ -21,6 +22,7 @@ public class SolutionVO {
     private Integer totalPrice; // 方案总价
     private String description; // 方案描述
     private Integer saveNum; // 收藏数
+    private Date createTime; // 创建时间
 
     // 组件id
     private Integer cpuId;
@@ -41,6 +43,7 @@ public class SolutionVO {
         solution.setTotalPrice(totalPrice);
         solution.setDescription(description);
         solution.setSaveNum(saveNum);
+        solution.setCreateTime(createTime);
         solution.setCpuId(cpuId);
         solution.setMotherboardId(motherboardId);
         solution.setGpuId(gpuId);

@@ -23,4 +23,6 @@ public class DemoException extends RuntimeException{
     }
 
     public static DemoException mySolutionNotExists() {return new DemoException("我的方案是空的╥﹏╥...");}
+
+    public static DemoException paramError() {return new DemoException("参数错误!");}
 }

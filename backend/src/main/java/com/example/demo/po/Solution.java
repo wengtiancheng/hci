@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author simba@onlying.cn
@@ -43,6 +44,10 @@ public class Solution {
     @Basic
     @Column(name = "save_num")
     private Integer saveNum;
+
+    @Basic
+    @Column(name = "create_time")
+    private Date createTime;
 
     @Basic
     @Column(name = "cpu_id")
@@ -89,6 +94,7 @@ public class Solution {
         solutionVO.setTotalPrice(totalPrice);
         solutionVO.setDescription(description);
         solutionVO.setSaveNum(saveNum);
+        solutionVO.setCreateTime(createTime);
         solutionVO.setCpuId(cpuId);
         solutionVO.setMotherboardId(motherboardId);
         solutionVO.setGpuId(gpuId);

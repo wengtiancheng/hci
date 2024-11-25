@@ -40,6 +40,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/display/all")
                 .excludePathPatterns("/api/powersupply/all")
                 .excludePathPatterns("/api/motherboard/all")
+                .excludePathPatterns("/api/solution/save") // 暂时
                 .order(1);
     }
 

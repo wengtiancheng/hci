@@ -11,6 +11,6 @@ import java.util.List;
 public interface SolutionService {
     // 获取所有 装机方案
     List<SolutionVO> getAllSolutions();
-
     Boolean saveSolution(SolutionVO solutionVO);
+    Boolean starSolution(Integer id);
 }
