@@ -25,7 +25,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/api/solution/star/{id}")
-//                .addPathPatterns("/api/solution/save")
+                .addPathPatterns("/api/solution/save")
                 .order(1);
     }
 
