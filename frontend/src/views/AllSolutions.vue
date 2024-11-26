@@ -90,64 +90,65 @@ onMounted(() => {
 });
 </script>
 
+
 <style scoped>
-/* 页面布局样式 */
 .all-solutions {
   display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-/* 左侧过滤器样式 */
 .filters {
-  width: 20%;
-  padding: 15px;
-  background-color: #f4f4f4;
+  flex: 1 1 300px;
+  padding: 20px;
   border-right: 1px solid #ddd;
+  max-width: 300px;
+}
+
+.filters h3 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }
 
 .filter-item {
   margin-bottom: 20px;
 }
 
-.filter-item input {
-  width: 45%;
-  margin-right: 5%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.filter-item label {
+  display: block;
+  margin-bottom: 8px;
 }
 
+.filter-item input,
 .filter-item select {
   width: 100%;
-  padding: 5px;
+  padding: 8px;
+  font-size: 1em;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
-/* 右侧装机方案卡片样式 */
 .solutions {
-  width: 80%;
+  flex: 3 1 700px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 15px;
 }
 
 .solution-card {
-  width: calc(33.33% - 20px);
-  background-color: #fff;
+  background: #fff;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  width: calc(33.33% - 20px);
   box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.solution-image {
+.solution-card img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
+  height: auto;
+  border-radius: 8px;
 }
 
 .solution-info {
@@ -155,14 +156,38 @@ onMounted(() => {
 }
 
 .solution-info h4 {
-  margin: 0 0 10px;
-  font-size: 16px;
-  color: #333;
+  font-size: 1.2em;
+  margin-bottom: 10px;
 }
 
 .solution-info p {
   margin: 5px 0;
-  font-size: 14px;
-  color: #666;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .all-solutions {
+    flex-direction: column;
+  }
+
+  .filters {
+    max-width: 100%;
+    border-right: none;
+    margin-bottom: 20px;
+  }
+
+  .solutions {
+    flex: 1;
+  }
+
+  .solution-card {
+    width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .solution-card {
+    width: 100%;
+  }
 }
 </style>
