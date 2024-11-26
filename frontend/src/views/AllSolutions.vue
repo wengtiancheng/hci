@@ -106,7 +106,7 @@ onMounted(() => {
 }
 
 .filters {
-  flex: 0 0 30%; /* Fixed width to 30% of the page width */
+  flex: 0 0 20%; /* Fixed width to 30% of the page width */
   padding: 20px;
   padding-right: 40px; /* Add padding to the right */
   border-right: 1px solid #ddd;
@@ -191,7 +191,7 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  width: calc(33.33% - 20px);
+  width: calc(20% - 20px); /* Adjust width to 25% for 4 cards per row */
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
