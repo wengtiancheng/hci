@@ -80,6 +80,7 @@ const solutions = ref<SolutionVO[]>([]);
 const fetchSolutions = async () => {
   // solutions.value = await getAllSolution(filters.value);
   solutions.value = await getAllSolutionNofilter();
+  console.log(solutions);
 };
 
 // 当组件挂载时获取装机方案

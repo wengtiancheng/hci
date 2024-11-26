@@ -24,23 +24,8 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/api/user/register")
-                .excludePathPatterns("/api/user/login")
-                .excludePathPatterns("/api/stores/all")
-                .excludePathPatterns("/api/ali/*")
-                //非登录状态下获取全部 装机方案,开放相关接口的权限
-                .excludePathPatterns("/api/solution/all")
-                .excludePathPatterns("/api/cpu/all")
-                .excludePathPatterns("/api/gpu/all")
-                .excludePathPatterns("/api/memory/all")
-                .excludePathPatterns("/api/harddisk/all")
-                .excludePathPatterns("/api/cooling/all")
-                .excludePathPatterns("/api/chassis/all")
-                .excludePathPatterns("/api/display/all")
-                .excludePathPatterns("/api/powersupply/all")
-                .excludePathPatterns("/api/motherboard/all")
-                .excludePathPatterns("/api/solution/save") // 暂时
+                .addPathPatterns("/api/solution/star/{id}")
+//                .addPathPatterns("/api/solution/save")
                 .order(1);
     }
 
