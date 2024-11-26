@@ -27,4 +27,6 @@ public class DemoException extends RuntimeException{
     public static DemoException paramError() {return new DemoException("参数错误!");}
 
     public static DemoException fileUploadFail() {return new DemoException("文件上传失败!");}
+
+    public static DemoException solutionNotExists() {return new DemoException("方案不存在!");}
 }

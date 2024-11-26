@@ -13,4 +13,6 @@ public interface SolutionService {
     List<SolutionVO> getAllSolutions();
     Boolean saveSolution(SolutionVO solutionVO);
     Boolean starSolution(Integer id);
+
+    SolutionVO getSolution(Integer id);
 }

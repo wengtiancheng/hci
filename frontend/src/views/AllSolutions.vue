@@ -1,4 +1,6 @@
 <template>
+  <!-- 导航栏 -->
+  <Header />
   <div class="all-solutions">
     <!-- 左侧过滤器 -->
     <div class="filters">
@@ -63,6 +65,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getAllSolution, getAllSolutionNofilter, SolutionVO } from '../api/Solution';
+import Header from '../components/Header.vue';
 
 // 定义过滤器的状态
 const filters = ref({
@@ -95,6 +98,7 @@ onMounted(() => {
 .all-solutions {
   display: flex;
   gap: 20px;
+  //width: 100%;
   flex-wrap: wrap;
 }
 

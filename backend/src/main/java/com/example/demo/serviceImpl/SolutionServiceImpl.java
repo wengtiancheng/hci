@@ -100,4 +100,11 @@ public class SolutionServiceImpl implements SolutionService{
         userRepository.save(user);
         return true;
     }
+
+    @Override
+    public SolutionVO getSolution(Integer id) {
+        if (id == null) throw DemoException.paramError();
+        Solution solution = solutionRepository.findById(id).orElseThrow(DemoException::solutionNotExists);
+        return solution.toVO();
+    }
 }

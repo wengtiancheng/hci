@@ -65,4 +65,16 @@ public class SolutionController {
     public ResultVO<Boolean> starSolution(@PathVariable(value = "id") Integer id){
         return ResultVO.buildSuccess(solutionService.starSolution(id));
     }
+
+    /**
+      * 获取一个 装机方案
+      * 不需要登录也可以访问
+      *
+      * @param id
+      * @return
+      */
+    @GetMapping("/{id}")
+    public ResultVO<SolutionVO> getSolution(@PathVariable(value = "id") Integer id){
+        return ResultVO.buildSuccess(solutionService.getSolution(id));
+    }
 }
