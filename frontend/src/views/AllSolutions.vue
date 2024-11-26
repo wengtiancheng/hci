@@ -1,6 +1,7 @@
 <template>
   <!-- 导航栏 -->
   <Header />
+
   <div class="all-solutions">
     <!-- 左侧过滤器 -->
     <div class="filters">
@@ -64,7 +65,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllSolution, getAllSolutionNofilter, SolutionVO } from '../api/Solution';
+import { getAllSolutionNofilter, SolutionVO } from '../api/Solution';
 import Header from '../components/Header.vue';
 
 // 定义过滤器的状态
@@ -81,7 +82,6 @@ const solutions = ref<SolutionVO[]>([]);
 
 // 获取所有装机方案的方法
 const fetchSolutions = async () => {
-  // solutions.value = await getAllSolution(filters.value);
   solutions.value = await getAllSolutionNofilter();
   console.log(solutions);
 };
@@ -93,50 +93,97 @@ onMounted(() => {
 });
 </script>
 
-
 <style scoped>
 .all-solutions {
   display: flex;
-  gap: 20px;
-  //width: 100%;
-  flex-wrap: wrap;
+  width: 100%; /* Set width to 100% */
+  margin: 0 auto; /* Center align */
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0; /* Ensure it takes the full height */
 }
 
 .filters {
-  flex: 1 1 300px;
+  flex: 0 0 30%; /* Fixed width to 30% of the page width */
   padding: 20px;
+  padding-right: 40px; /* Add padding to the right */
   border-right: 1px solid #ddd;
-  max-width: 300px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  text-align: center; /* Center the content */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align items horizontally */
+  overflow-y: auto; /* Enable vertical scrolling */
+  height: 100vh; /* Full viewport height */
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.solutions {
+  flex: 1; /* Take the remaining width */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  height: 100vh; /* Full viewport height */
 }
 
 .filters h3 {
   font-size: 1.5em;
   margin-bottom: 20px;
+  color: #333; /* Darker text color */
 }
 
 .filter-item {
   margin-bottom: 20px;
+  width: 100%; /* Full width */
+  text-align: left; /* Align text to the left */
 }
 
 .filter-item label {
   display: block;
   margin-bottom: 8px;
+  font-weight: bold; /* Bold labels */
+  color: #555; /* Slightly darker text color */
 }
 
 .filter-item input,
 .filter-item select {
   width: 100%;
-  padding: 8px;
+  padding: 10px; /* Increased padding */
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
+  transition: border-color 0.3s ease; /* Smooth transition for border color */
 }
 
-.solutions {
-  flex: 3 1 700px;
+.filter-item input:focus,
+.filter-item select:focus {
+  border-color: #007bff; /* Blue border on focus */
+  outline: none; /* Remove default outline */
+}
+
+.filter-item input::placeholder {
+  color: #aaa; /* Lighter placeholder color */
+}
+
+.filter-item select {
+  appearance: none; /* Remove default arrow */
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2Ij4KICA8cGF0aCBkPSJNIDAgMCAwIDIgNSA2IDAgMTAgMCA4IDQgNiAwIDIgMCAwIFoiIGZpbGw9IiM3Nzc3NzciLz4KPC9zdmc+Cg==') no-repeat right 10px center; /* Custom arrow */
+  background-size: 10px 6px; /* Size of the custom arrow */
+}
+
+.filter-item select::-ms-expand {
+  display: none; /* Remove default arrow in IE */
+}
+
+.filter-item div {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px; /* Add spacing between the input fields */
 }
 
 .solution-card {
