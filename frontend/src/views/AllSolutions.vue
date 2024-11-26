@@ -191,7 +191,7 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  width: calc(20% - 20px); /* Adjust width to 25% for 4 cards per row */
+  width: calc(20% - 20px);
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
