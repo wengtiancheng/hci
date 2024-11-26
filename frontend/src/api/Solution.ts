@@ -33,7 +33,7 @@ export const getAllSolutionNofilter = () => {
 export const getAllSolution = (filters: any) => {
     return axios.get(`${SOLUTION_MODULE}/all`, { params: filters })
         .then(res => {
-            return res.data;  // 假设返回的数据是数组
+            return res.data.result;  // 假设返回的数据是数组
         });
 };
 
