@@ -68,7 +68,7 @@ const routes = [
         component: SelectCooling,
         meta: { title: '选择散热器', showHeader: true }
     },{
-        path: '/select/storage',
+        path: '/select/harddisk',
         component: SelectHarddisk,
         meta: { title: '选择存储设备', showHeader: true }
     },{
