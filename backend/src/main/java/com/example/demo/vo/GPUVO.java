@@ -1,6 +1,7 @@
 package com.example.demo.vo;
 
 import com.example.demo.enums.BrandEnum;
+import com.example.demo.enums.GpuType;
 import com.example.demo.enums.TypeEnum;
 import com.example.demo.po.GPU;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class GPUVO {
     private String imageUrl; // 图片链接
     private Integer price; // 价格
     private String linkUrl; // 购买链接
-    private TypeEnum type; // GPU 类型
+    private GpuType type; // GPU 类型
     private BrandEnum brand; // 品牌
 
     public GPU toPO() {

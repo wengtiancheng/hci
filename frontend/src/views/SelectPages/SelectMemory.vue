@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllMemories } from "../../api/Memory.ts";
+import { getAllMemory } from "../../api/Memory.ts";
 import router from '../../router';
 
 interface Memory {
@@ -34,7 +34,7 @@ const getBrandLabel = (brand: string) => {
 };
 
 const fetchMemories = async () => {
-  const list = await getAllMemories();
+  const list = await getAllMemory();
   
   // 应用筛选条件
   let filteredList = list.filter(memory => {

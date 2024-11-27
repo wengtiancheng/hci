@@ -49,8 +49,13 @@
 
     <!-- 右侧装机方案卡片 -->
     <div class="solutions">
-      <div v-for="solution in solutions" :key="solution.id" class="solution-card">
-        <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
+      <router-link
+        v-for="solution in solutions"
+        :key="solution.id"
+        :to="{ name: 'SolutionDetail', params: { id: solution.id } }"
+        class="solution-card"
+      >
+        <img :src="solution.imageUrl" alt="方案图片" class="solution-image" style="object-fit: cover;" />
         <div class="solution-info">
           <h4>{{ solution.name }}</h4>
           <p>{{ solution.description }}</p>
@@ -58,7 +63,7 @@
           <p>保存次数：{{ solution.saveNum }}</p>
           <p>创建时间：{{ new Date(solution.createTime).toLocaleDateString() }}</p>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -191,15 +196,23 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
+  height: 450px;
   width: calc(20% - 20px); /* Adjust width to 25% for 4 cards per row */
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: #333; /* 默认字体颜色 */
+  text-decoration: none; /* 去掉链接下划线 */
+}
+
+.solution-card:hover {
+  color: blue; /* 鼠标悬停时字体颜色变为蓝色 */
 }
 
 .solution-card img {
   width: 100%;
-  height: auto;
+  height: 200px; /* 设置固定高度 */
   border-radius: 8px;
+  object-fit: cover; /* 添加 object-fit 属性 */
 }
 
 .solution-info {
