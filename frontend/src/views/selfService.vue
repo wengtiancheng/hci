@@ -17,6 +17,8 @@ import RightPanel from '../components/RightPanel.vue';
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  margin-top: 60px;
+
 }
 .left-panel {
   width: 80%;

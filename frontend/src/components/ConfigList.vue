@@ -9,6 +9,12 @@ import {getPowersupplyById} from "../api/PowerSupply.ts";
 import {getChassisById} from "../api/Chassis.ts";
 import {getDisplayById} from "../api/Display.ts";
 import {getCoolingById} from "../api/Cooling.ts";
+import router from "../router/index.ts";
+import Toast from "../components/Toast.vue";
+
+
+const totalPrice = ref(0);
+const toastRef = ref(null);
 
 
   // 定义硬件数据结构
@@ -24,6 +30,13 @@ const hardwareConfig = ref([
   { key: 'cooling', name: '散热器', defaultIcon:'src/assets/icons/cooling.svg', details: null}
   ]);
 
+  // 计算总价的方法
+const calculateTotalPrice = () => {
+  totalPrice.value = hardwareConfig.value.reduce((sum, item) => {
+    return sum + (item.details?.price || 0);
+  }, 0);
+};
+
   // 获取硬件详情的方法
 const fetchHardwareDetails = async () => {
   for (const item of hardwareConfig.value) {
@@ -32,6 +45,7 @@ const fetchHardwareDetails = async () => {
       item.details = await getHardwareDetailsById(item.key, id);
     }
   }
+  calculateTotalPrice(); // 获取完数据后计算总价
 };
 
   // 根据硬件类型和 ID 获取详情
@@ -52,24 +66,37 @@ const getHardwareDetailsById = async (type, id) => {
 
   // 跳转到选择页面
 const gotoSelectPage = (key) => {
-  router.push(`/select/${key}`);
+  router.push({path: `/select/${key}`});
 };
 
 onMounted(() => {
   fetchHardwareDetails();
+   // 检查是否需要显示提示
+   const messageInfo = sessionStorage.getItem('showSuccessMessage');
+  if (messageInfo) {
+    const { type, name, action } = JSON.parse(messageInfo);
+    const message = action === 'select' 
+      ? `已选择${type}：${name}`
+      : `已更换${type}：${name}`;
+    toastRef.value.show(message);
+    // 显示后清除标记
+    sessionStorage.removeItem('showSuccessMessage');
+  }
 });
 </script>
 
 <template>
   <div class="hardware-list">
+    <Toast ref="toastRef" />
     <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">
       <div class="hardware-info">
-        <h3>{{ item.name }}</h3>
+        <h3 class="hardware-title">{{ item.name }}</h3>
         <img :src="item.details?.image || item.defaultIcon" alt="Hardware Image" class="hardware-image" />
-        <div>
-
-          <p>{{ item.details ? item.details.name : '未选择' }}</p>
-          <p v-if="item.details">￥{{ item.details.price }}</p>
+        <div class="details-container">
+          <div class="product-info">
+            <span class="product-name">{{ item.details ? item.details.name : '未选择' }}</span>
+            <span v-if="item.details" class="price">￥{{ item.details.price }}</span>
+          </div>
         </div>
       </div>
       <button class="change-button" @click="gotoSelectPage(item.key)">更换</button>
@@ -125,5 +152,46 @@ onMounted(() => {
 }
 .change-button:hover {
   background-color: #0056b3;
+}
+.hardware-title {
+  min-width: 80px;
+  text-align: left;
+  margin: 0;
+}
+
+.details-container {
+  min-width: 300px;
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.product-name {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.price {
+  margin: 0;
+  color: #ff4d4f;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  width: 100%;
 }
 </style>
