@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSolution, starSolution, SolutionVO , newSolutionVO} from '../api/Solution';
+import Header from '../components/Header.vue';
 
 import { getGPUById, newGPUVO, GPUVO} from '../api/GPU';
 import {getCPUById, newCPUVO, CPUVO} from '../api/CPU';
@@ -62,6 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <Header />
   <div class="solution-detail">
     <!-- 左侧方案信息 -->
     <div class="solution-info">

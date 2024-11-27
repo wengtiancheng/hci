@@ -1,5 +1,6 @@
 package com.example.demo.po;
 
+import com.example.demo.enums.GpuType;
 import com.example.demo.vo.GPUVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +41,7 @@ public class GPU {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private TypeEnum type;
+    private GpuType type;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "brand")
