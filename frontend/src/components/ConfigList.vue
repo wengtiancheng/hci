@@ -43,6 +43,7 @@ const fetchHardwareDetails = async () => {
     const id = sessionStorage.getItem(item.key);
     if (id) {
       item.details = await getHardwareDetailsById(item.key, id);
+      console.log(item.details);
     }
   }
   calculateTotalPrice(); // 获取完数据后计算总价
@@ -69,6 +70,14 @@ const gotoSelectPage = (key) => {
   router.push({path: `/select/${key}`});
 };
 
+// 添加清空选择的方法
+const clearSelection = (item) => {
+  sessionStorage.removeItem(item.key);
+  item.details = null;
+  calculateTotalPrice();
+  toastRef.value.show(`已清空${item.name}`);
+};
+
 onMounted(() => {
   fetchHardwareDetails();
    // 检查是否需要显示提示
@@ -91,7 +100,7 @@ onMounted(() => {
     <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">
       <div class="hardware-info">
         <h3 class="hardware-title">{{ item.name }}</h3>
-        <img :src="item.details?.image || item.defaultIcon" alt="Hardware Image" class="hardware-image" />
+        <img :src="item.details?.imageUrl || item.defaultIcon" alt="Hardware Image" class="hardware-image" />
         <div class="details-container">
           <div class="product-info">
             <span class="product-name">{{ item.details ? item.details.name : '未选择' }}</span>
@@ -99,7 +108,21 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <button class="change-button" @click="gotoSelectPage(item.key)">更换</button>
+      <div class="button-group">
+        <button 
+          class="action-button" 
+          @click="gotoSelectPage(item.key)"
+        >
+          {{ item.details ? '更换' : '选择' }}
+        </button>
+        <button 
+          v-if="item.details"
+          class="clear-button" 
+          @click="clearSelection(item)"
+        >
+          清空
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -142,16 +165,34 @@ onMounted(() => {
   border-radius: 5px;
   background-color: #f8f8f8;
 }
-.change-button {
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.action-button {
   background-color: #007bff;
   color: #fff;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  min-width: 80px;
 }
-.change-button:hover {
+.action-button:hover {
   background-color: #0056b3;
+}
+.clear-button {
+  background-color: #6c757d;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 80px;
+}
+.clear-button:hover {
+  background-color: #5a6268;
 }
 .hardware-title {
   min-width: 80px;
@@ -183,6 +224,7 @@ onMounted(() => {
   color: #ff4d4f;
   font-weight: bold;
   white-space: nowrap;
+  margin-right: 30px;
 }
 
 .total-price {

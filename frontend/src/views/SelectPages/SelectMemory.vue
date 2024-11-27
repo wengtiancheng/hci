@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllMemories } from "../../api/Memory.ts";
+import { getAllMemory } from "../../api/Memory.ts";
 import router from '../../router';
 
 interface Memory {
@@ -34,7 +34,7 @@ const getBrandLabel = (brand: string) => {
 };
 
 const fetchMemories = async () => {
-  const list = await getAllMemories();
+  const list = await getAllMemory();
   
   // 应用筛选条件
   let filteredList = list.filter(memory => {
@@ -127,111 +127,23 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="memory-list">
+    <div class="component-list">
       <div v-for="memory in memoryList" 
            :key="memory.id" 
-           class="memory-item">
-        <img :src="memory.imageUrl" alt="内存图片" class="memory-image" />
-        <div class="memory-name">{{ memory.name }}</div>
-        <div class="memory-info">
+           class="component-item">
+        <img :src="memory.imageUrl" alt="内存图片" class="component-image" />
+        <div class="component-name">{{ memory.name }}</div>
+        <div class="component-info">
           <span>{{ getBrandLabel(memory.brand) }}</span>
           <span>{{ memory.type }}</span>
         </div>
-        <div class="memory-price">￥{{ memory.price }}</div>
+        <div class="component-price">￥{{ memory.price }}</div>
         <button @click="selectMemory(memory)" class="select-button">选择</button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-/* 基础样式保持不变 */
-.container {
-  display: flex;
-  margin-top: 60px;
-  height: calc(100vh - 60px);
-  overflow: hidden;
-}
-
-.filters {
-  width: 250px;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-right: 1px solid #dee2e6;
-  position: fixed;
-  left: 0;
-  top: 60px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-}
-
-/* ... 其他基础样式保持不变 ... */
-
-.memory-list {
-  margin-left: 250px;
-  padding: 20px;
-  width: calc(100% - 250px);
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.memory-item {
-  display: flex;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #eaeaea;
-  gap: 20px;
-}
-
-.memory-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.memory-name {
-  width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 0;
-  padding-left: 20px;
-}
-
-.memory-info {
-  width: 160px;
-  display: flex;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-
-.memory-info span {
-  padding: 0 10px;
-}
-
-.memory-price {
-  width: 80px;
-  color: #ff4d4f;
-  font-weight: bold;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.select-button {
-  width: 60px;
-  padding: 6px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  flex-shrink: 0;
-}
-
-.select-button:hover {
-  background-color: #0056b3;
-}
+<style lang="scss" scoped>
+@use './select-page.scss';
 </style>
