@@ -2,8 +2,7 @@
   <div class="container">
     <div class="filters">
       <h3>筛选条件</h3>
-
-      <!-- 价格区间筛选 -->
+      
       <div class="filter-item">
         <label>价格区间</label>
         <div class="price-range">
@@ -23,7 +22,6 @@
         </div>
       </div>
 
-      <!-- 品牌筛选 -->
       <div class="filter-item">
         <label>品牌</label>
         <select v-model="filters.brand" @change="fetchCooling">
@@ -33,7 +31,6 @@
         </select>
       </div>
 
-      <!-- 排序方式 -->
       <div class="filter-item">
         <label>排序方式</label>
         <select v-model="filters.sortOrder" @change="fetchCooling">
@@ -43,14 +40,16 @@
       </div>
     </div>
 
-    <div class="cooling-list">
+    <div class="component-list">
       <div v-for="cooling in coolingList" 
            :key="cooling.id" 
-           class="cooling-item">
-        <img :src="cooling.imageUrl" alt="水冷图片" class="cooling-image" />
-        <div class="cooling-name">{{ cooling.name }}</div>
-        <div class="cooling-brand">{{ cooling.brand }}</div>
-        <div class="cooling-price">￥{{ cooling.price }}</div>
+           class="component-item">
+        <img :src="cooling.imageUrl" alt="水冷图片" class="component-image" />
+        <div class="component-name">{{ cooling.name }}</div>
+        <div class="component-info">
+          <span>{{ getBrandLabel(cooling.brand) }}</span>
+        </div>
+        <div class="component-price">￥{{ cooling.price }}</div>
         <button @click="selectCooling(cooling)" class="select-button">选择</button>
       </div>
     </div>
@@ -67,7 +66,7 @@ interface Cooling {
   name: string;
   price: number;
   imageUrl: string;
-  brand: string;
+  brand: 'VALKYRIE' | 'Thermalright';
 }
 
 const coolingList = ref<Cooling[]>([]);
@@ -79,10 +78,19 @@ const filters = ref({
   sortOrder: 'asc'
 });
 
+// 品牌名称转换
+const getBrandLabel = (brand: string) => {
+  const brandMap = {
+    'VALKYRIE': '瓦尔基里',
+    'Thermalright': '利民'
+  };
+  return brandMap[brand] || brand;
+};
+
 const fetchCooling = async () => {
   const list = await getAllCooling();
   
-  // 价格筛选
+  // 应用筛选条件
   let filteredList = list.filter(cooling => {
     if (filters.value.minPrice && cooling.price < filters.value.minPrice) return false;
     if (filters.value.maxPrice && cooling.price > filters.value.maxPrice) return false;
@@ -114,115 +122,6 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  margin-top: 60px;
-  height: calc(100vh - 140px);
-  overflow: hidden;
-}
-
-.filters {
-  width: 250px;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-right: 1px solid #dee2e6;
-  position: fixed;
-  left: 0;
-  top: 60px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-}
-
-.filter-item {
-  margin-bottom: 20px;
-}
-
-.filter-item label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #495057;
-}
-
-.filter-item select,
-.filter-item input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
-
-.price-range {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.price-range input {
-  width: calc(50% - 10px);
-}
-
-.cooling-list {
-  margin-left: 250px;
-  padding: 20px;
-  width: calc(100% - 250px);
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.cooling-item {
-  display: flex;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #eaeaea;
-  gap: 20px;
-}
-
-.cooling-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.cooling-name {
-  width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 0;
-  padding-left: 20px;
-}
-
-.cooling-brand {
-  width: 80px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.cooling-price {
-  width: 80px;
-  color: #ff4d4f;
-  font-weight: bold;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.select-button {
-  width: 60px;
-  padding: 6px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  flex-shrink: 0;
-}
-
-.select-button:hover {
-  background-color: #0056b3;
-}
+<style lang="scss" scoped>
+@use './select-page.scss';
 </style>

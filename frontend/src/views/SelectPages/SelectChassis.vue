@@ -4,6 +4,7 @@ import {getAllChassis} from "../../api/Chassis.ts";
 import router from '../../router'
 
 
+
 interface Chassis {
   id: number;
   name: string;
@@ -125,15 +126,15 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="chassis-list">
+    <div class="component-list">
       <div v-for="chassis in chassisList" 
            :key="chassis.id" 
-           class="chassis-item">
-        <img :src="chassis.imageUrl" alt="机箱图片" class="chassis-image" />
-        <div class="chassis-name">{{ chassis.name }}</div>
-        <div class="chassis-brand">{{ chassis.brand }}</div>
-        <div class="chassis-type">{{ chassis.type }}</div>
-        <div class="chassis-price">￥{{ chassis.price }}</div>
+           class="component-item">
+        <img :src="chassis.imageUrl" alt="机箱图片" class="component-image" />
+        <div class="component-name">{{ chassis.name }}</div>
+        <div class="component-brand">{{ chassis.brand }}</div>
+        <div class="component-type">{{ chassis.type }}</div>
+        <div class="component-price">￥{{ chassis.price }}</div>
         <button @click="selectChassis(chassis)" class="select-button">选择</button>
       </div>
     </div>
@@ -141,124 +142,6 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-.container {
-  display: flex;
-  margin-top: 60px;
-  height: calc(100vh - 140px);
-  overflow: hidden;
-}
-
-.filters {
-  width: 250px;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-right: 1px solid #dee2e6;
-  position: fixed;
-  left: 0;
-  top: 60px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-}
-
-.filter-item {
-  margin-bottom: 20px;
-}
-
-.filter-item label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #495057;
-}
-
-.filter-item select,
-.filter-item input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: white;
-}
-
-.price-range {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.price-range input {
-  width: calc(50% - 10px);
-}
-
-.chassis-list {
-  margin-left: 250px;
-  padding: 20px;
-  width: calc(100% - 250px);
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.chassis-item {
-  display: flex;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #eaeaea;
-  gap: 30px;
-}
-
-.chassis-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.chassis-name {
-  width: 400px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 0;
-  text-align: left;
-  padding-left: 40px;
-  font-weight: bold;
-}
-
-.chassis-brand {
-  width: 80px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.chassis-type {
-  width: 80px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.chassis-price {
-  width: 80px;
-  color: #ff4d4f;
-  font-weight: bold;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.select-button {
-  width: 60px;
-  padding: 6px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  flex-shrink: 0;
-}
-
-.select-button:hover {
-  background-color: #0056b3;
-}
+<style lang="scss" scoped>
+@use './select-page.scss';
 </style>
