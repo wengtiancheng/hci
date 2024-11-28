@@ -11,40 +11,66 @@
       <div class="filter-item">
         <label>价格范围</label>
         <div>
-          <input type="number" v-model="filters.minPrice" placeholder="最低价" @input="fetchSolutions" />
-          <input type="number" v-model="filters.maxPrice" placeholder="最高价" @input="fetchSolutions" />
+          <input type="number" v-model="filters.lowPrice" placeholder="最低价" @input="fetchSolutions" />
+          <input type="number" v-model="filters.highPrice" placeholder="最高价" @input="fetchSolutions" />
         </div>
-      </div>
-
-      <!-- CPU类型筛选 -->
-      <div class="filter-item">
-        <label for="cpu">CPU 类型</label>
-        <select id="cpu" v-model="filters.cpuId" @change="fetchSolutions">
-          <option value="">所有</option>
-          <option value="1">Intel i7</option>
-          <option value="2">AMD Ryzen 7</option>
-          <!-- 更多选项 -->
-        </select>
-      </div>
-
-      <!-- 排序字段 -->
-      <div class="filter-item">
-        <label for="sort-by">排序字段</label>
-        <select id="sort-by" v-model="filters.sortBy" @change="fetchSolutions">
-          <option value="">默认</option>
-          <option value="createTime">创建时间</option>
-          <option value="saveNum">收藏数</option>
-        </select>
       </div>
 
       <!-- 排序方式 -->
       <div class="filter-item">
         <label for="sort-order">排序方式</label>
-        <select id="sort-order" v-model="filters.sortOrder" @change="fetchSolutions">
-          <option value="asc">升序</option>
-          <option value="desc">降序</option>
+        <select id="sort-order" v-model="filters.sortBy" @change="fetchSolutions">
+          <option value="">请选择</option>
+          <option :value="SortType.PRICE_DESC">按价格降序</option>
+          <option :value="SortType.SAVE_DESC">按收藏数降序</option>
+          <option :value="SortType.CREATE_TIME_DESC">按创建时间降序</option>
         </select>
       </div>
+
+      <!-- CPU类型筛选 -->
+      <div class="filter-item">
+        <label for="cpu">CPU 类型</label>
+        <select id="cpu" v-model="filters.cpuName" @change="fetchSolutions">
+          <option value="">所有</option>
+          <option value="AMD 锐龙 5 7600X">AMD 锐龙 5 7600X</option>
+          <option value="Intel Core i7-12700KF">Intel Core i7-12700KF</option>
+          <!-- 更多选项 -->
+        </select>
+      </div>
+
+      <!-- GPU类型筛选 -->
+      <div class="filter-item">
+        <label for="gpu">GPU 类型</label>
+        <select id="gpu" v-model="filters.gpuName" @change="fetchSolutions">
+          <option value="">所有</option>
+          <option value="RTX 3080">RTX 3080</option>
+          <option value="RX 6750">RX 6750</option>
+          <!-- 更多选项 -->
+        </select>
+      </div>
+
+      <!-- 主板类型筛选 -->
+      <div class="filter-item">
+        <label for="motherboard">主板类型</label>
+        <select id="motherboard" v-model="filters.motherboardName" @change="fetchSolutions">
+          <option value="">所有</option>
+          <option value="B550">B550</option>
+          <option value="B560">B560</option>
+          <!-- 更多选项 -->
+        </select>
+      </div>
+
+      <!-- 内存类型筛选 -->
+      <div class="filter-item">
+        <label for="memory">内存类型</label>
+        <select id="memory" v-model="filters.memoryName" @change="fetchSolutions">
+          <option value="">所有</option>
+          <option value="DDR4">DDR4</option>
+          <option value="DDR5">DDR5</option>
+          <!-- 更多选项 -->
+        </select>
+      </div>
+
     </div>
 
     <!-- 右侧装机方案卡片 -->
@@ -70,25 +96,21 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllSolutionNofilter, SolutionVO } from '../api/Solution';
+import { getAllSolution, SolutionVO, SortType, Filters, initFilters} from '../api/Solution';
 import Header from '../components/Header.vue';
 
+
 // 定义过滤器的状态
-const filters = ref({
-  minPrice: null, // 最低价格
-  maxPrice: null, // 最高价格
-  cpuId: null,    // CPU 类型
-  sortBy: null,   // 排序字段
-  sortOrder: 'asc', // 排序方式（asc 或 desc）
-});
+const filters = ref<Filters>(initFilters);
 
 // 装机方案列表
 const solutions = ref<SolutionVO[]>([]);
 
+
 // 获取所有装机方案的方法
 const fetchSolutions = async () => {
-  solutions.value = await getAllSolutionNofilter();
-  console.log(solutions);
+  console.log('Fetching solutions with filters:', filters.value);
+  solutions.value = await getAllSolution(filters.value);
 };
 
 // 当组件挂载时获取装机方案

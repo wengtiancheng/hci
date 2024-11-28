@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.vo.FilterVO;
 import com.example.demo.vo.SolutionVO;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface SolutionService {
     Boolean starSolution(Integer id);
 
     SolutionVO getSolution(Integer id);
+
+    List<SolutionVO> getAllSolutionsByFilter(FilterVO filterVO);
 }

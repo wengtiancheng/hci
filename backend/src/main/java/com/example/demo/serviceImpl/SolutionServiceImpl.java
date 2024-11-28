@@ -1,10 +1,12 @@
 package com.example.demo.serviceImpl;
+import com.example.demo.enums.SortType;
 import com.example.demo.exception.DemoException;
 import com.example.demo.po.CPU;
 import com.example.demo.po.User;
 import com.example.demo.repository.*;
 import com.example.demo.service.SolutionService;
 import com.example.demo.util.SecurityUtil;
+import com.example.demo.vo.FilterVO;
 import com.example.demo.vo.SolutionVO;
 
 import com.example.demo.po.Solution;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -107,4 +110,53 @@ public class SolutionServiceImpl implements SolutionService{
         Solution solution = solutionRepository.findById(id).orElseThrow(DemoException::solutionNotExists);
         return solution.toVO();
     }
+
+    @Override
+    public List<SolutionVO> getAllSolutionsByFilter(FilterVO filterVO) {
+        if (filterVO == null) throw DemoException.paramError();
+        List<Solution> solutions = solutionRepository.findAll();
+        if (filterVO.getLowPrice() != null && filterVO.getHighPrice() != null) {
+            solutions = solutions.stream()
+                .filter(solution -> solution.getTotalPrice() >= filterVO.getLowPrice() && solution.getTotalPrice() <= filterVO.getHighPrice())
+                .toList();
+        }
+        if (filterVO.getSortBy() == SortType.PRICE_DESC) {
+            solutions = solutions.stream()
+                .sorted(Comparator.comparing(Solution::getTotalPrice).reversed())
+                .toList();
+        }
+        if (filterVO.getSortBy() == SortType.SAVE_DESC) {
+            solutions = solutions.stream()
+                .sorted(Comparator.comparing(Solution::getSaveNum).reversed())
+                .toList();
+        }
+        if (filterVO.getSortBy() == SortType.CREATE_TIME_DESC) {
+            solutions = solutions.stream()
+                .sorted(Comparator.comparing(Solution::getCreateTime).reversed())
+                .toList();
+        }
+        if (filterVO.getCpuName() != null) {
+            solutions = solutions.stream()
+                .filter(solution -> Objects.requireNonNull(cpuRepository.findById(solution.getCpuId()).orElse(null)).getName().contains(filterVO.getCpuName()))
+                .toList();
+        }
+        if (filterVO.getGpuName() != null) {
+            solutions = solutions.stream()
+                .filter(solution -> Objects.requireNonNull(gpuRepository.findById(solution.getGpuId()).orElse(null)).getName().contains(filterVO.getGpuName()))
+                .toList();
+        }
+        if (filterVO.getMotherboardName() != null) {
+            solutions = solutions.stream()
+                .filter(solution -> Objects.requireNonNull(motherboardRepository.findById(solution.getMotherboardId()).orElse(null)).getName().contains(filterVO.getMotherboardName()))
+                .toList();
+        }
+        if (filterVO.getMemoryName() != null) {
+            solutions = solutions.stream()
+                .filter(solution -> Objects.requireNonNull(memoryRepository.findById(solution.getMemoryId()).orElse(null)).getName().contains(filterVO.getMemoryName()))
+                .toList();
+        }
+        return solutions.stream().map(Solution::toVO).toList();
+    }
+
+
 }

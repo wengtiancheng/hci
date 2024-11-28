@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.SolutionService;
+import com.example.demo.vo.FilterVO;
 import com.example.demo.vo.ResultVO;
 import com.example.demo.vo.SolutionVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,19 @@ public class SolutionController {
     @GetMapping("/all")
     public ResultVO<List<SolutionVO>> getAllSolutions(){
         return ResultVO.buildSuccess(solutionService.getAllSolutions());
+    }
+
+
+    /**
+     * 获取所有的 装机方案，根据过滤条件
+     *
+     * @param filterVO
+     * @return
+     */
+    @PostMapping("/allByFilter")
+    public ResultVO<List<SolutionVO>> getAllSolutionsByFilter(@RequestBody FilterVO filterVO){
+//        System.out.println(filterVO.getSortBy());
+        return ResultVO.buildSuccess(solutionService.getAllSolutionsByFilter(filterVO));
     }
 
     /**

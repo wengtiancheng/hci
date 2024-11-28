@@ -2,6 +2,13 @@ import {SOLUTION_MODULE} from "./_prefix";
 
 import { axios } from '../utils/request';
 
+
+export enum SortType {
+    NONE = 'NONE',
+    PRICE_DESC = 'PRICE_DESC',
+    SAVE_DESC = 'SAVE_DESC',
+    CREATE_TIME_DESC = 'CREATE_TIME_DESC'
+}
 export interface SolutionVO {
     id: number;
     name: string;
@@ -43,6 +50,27 @@ export function newSolutionVO(): SolutionVO {
     };
 }
 
+// 定义过滤器的状态
+export interface Filters {
+    lowPrice: number, // 最低价格
+    highPrice: number, // 最高价格
+    sortBy: SortType, // 当前选择的排序方式
+    cpuName: string, // CPU 名称
+    gpuName: string, // GPU 名称
+    motherboardName: string, // 主板名称
+    memoryName: string, // 内存名称
+};
+// 初始化过滤器的状态
+export const initFilters: Filters = {
+    lowPrice: 0,
+    highPrice: 999999999,
+    sortBy: SortType.NONE,
+    cpuName: '',
+    gpuName: '',
+    motherboardName: '',
+    memoryName: ''
+};
+
 //获取所有解决方案
 export const getAllSolutionNofilter = () => {
     return axios.get(`${SOLUTION_MODULE}/all`, )
@@ -50,16 +78,21 @@ export const getAllSolutionNofilter = () => {
             return res.data.result;
         })
 }
+
+// @GetMapping("/allByFilter")
+// public ResultVO<List<SolutionVO>> getAllSolutionsByFilter(@RequestBody FilterVO filterVO){
+//     return ResultVO.buildSuccess(solutionService.getAllSolutionsByFilter(filterVO));
+// }
 // 获取所有解决方案（可以添加筛选参数）
-export const getAllSolution = (filters: any) => {
-    return axios.get(`${SOLUTION_MODULE}/all`, { params: filters })
+export const getAllSolution = (filters: Filters) => {
+    return axios.post(`${SOLUTION_MODULE}/allByFilter`, filters)
         .then(res => {
-            return res.data.result;  // 假设返回的数据是数组
-        });
+            return res.data.result;
+        })
 };
 
 
-//上传一个装机方案
+//自定义装机：保存一个装机方案
 export const uploadSolution = (solution: SolutionVO) => {
     return axios.post(`${SOLUTION_MODULE}/save`, solution)
         .then(res => {

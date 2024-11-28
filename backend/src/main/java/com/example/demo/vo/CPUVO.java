@@ -22,6 +22,7 @@ public class CPUVO {
     private String linkUrl; // 购买链接
     private TypeEnum type; // CPU 类型，和主板的 type 对应
 
+
     public CPU toPO() {
         CPU cpu = new CPU();
         cpu.setId(id);
