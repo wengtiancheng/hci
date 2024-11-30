@@ -3,6 +3,7 @@
 import { ref } from 'vue';
 import { parseUserNeed, } from '../api/Solution';
 import { useRouter } from 'vue-router';
+import Header from '../components/Header.vue';
 
 // 定义用户输入的响应式变量
 const userInput = ref("");
@@ -26,6 +27,7 @@ const handleClick = async () => {
 </script>
 
 <template>
+  <Header />  
   <div class="container">
     <!-- 输入框 -->
     <input v-model="userInput" type="text" placeholder="请输入文本" class="input-box" />

@@ -3,9 +3,9 @@ import {onMounted, ref} from 'vue';
 import {getCPUById} from "../api/CPU.ts";
 import {getMotherboardById} from "../api/Motherboard.ts";
 import {getMemoryById} from "../api/Memory.ts";
-import {getHarddiskById} from "../api/HardDisk.ts";
+import {getHarddiskById} from "../api/Harddisk.ts";
 import {getGPUById} from "../api/GPU.ts";
-import {getPowersupplyById} from "../api/PowerSupply.ts";
+import {getPowersupplyById} from "../api/Powersupply.ts";
 import {getChassisById} from "../api/Chassis.ts";
 import {getDisplayById} from "../api/Display.ts";
 import {getCoolingById} from "../api/Cooling.ts";
@@ -19,7 +19,7 @@ const toastRef = ref(null);
 const confirmDialogRef = ref(null);
 
 
-  // 定义硬件数据结构
+// 定义硬件数据结构
 const hardwareConfig = ref([
   { key: 'cpu', name: 'CPU', defaultIcon:"/src/assets/icons/cpu.svg", details: null},
   { key: 'motherboard', name: '主板', defaultIcon:'/src/assets/icons/motherboard.svg', details: null},
@@ -32,14 +32,14 @@ const hardwareConfig = ref([
   { key: 'cooling', name: '散热器', defaultIcon:'src/assets/icons/cooling.svg', details: null}
   ]);
 
-  // 计算总价的方法
+// 计算总价的方法
 const calculateTotalPrice = () => {
   totalPrice.value = hardwareConfig.value.reduce((sum, item) => {
     return sum + (item.details?.price || 0);
   }, 0);
 };
 
-  // 获取硬件详情的方法
+// 获取硬件详情的方法
 const fetchHardwareDetails = async () => {
   for (const item of hardwareConfig.value) {
     const id = sessionStorage.getItem(item.key);
@@ -51,7 +51,7 @@ const fetchHardwareDetails = async () => {
   calculateTotalPrice(); // 获取完数据后计算总价
 };
 
-  // 根据硬件类型和 ID 获取详情
+// 根据硬件类型和 ID 获取详情
 const getHardwareDetailsById = async (type, id) => {
   switch (type) {
     case 'cpu': return await getCPUById(id);
@@ -100,14 +100,21 @@ const confirmReset = async () => {
 };
 
 onMounted(() => {
+  // 处理来自 SolutionDetail 的参数-------！！！！！
+  const query = router.currentRoute.value.query;
+  if (query.solution) {
+    const solution = JSON.parse(query.solution);
+    console.log(solution); // 在这里展示 solution 的结果
+  }
+
   fetchHardwareDetails();
-   // 检查是否需要显示提示
-   const messageInfo = sessionStorage.getItem('showSuccessMessage');
+  // 检查是否需要显示提示
+  const messageInfo = sessionStorage.getItem('showSuccessMessage');
   if (messageInfo) {
     const { type, name, action } = JSON.parse(messageInfo);
     const message = action === 'select' 
-      ? `已选择${type}：${name}`
-      : `已更换${type}：${name}`;
+      ? `已选择${type}:${name}`
+      : `已更换${type}:${name}`;
     toastRef.value.show(message);
     // 显示后清除标记
     sessionStorage.removeItem('showSuccessMessage');

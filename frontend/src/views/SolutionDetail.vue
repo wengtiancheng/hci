@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getSolution, starSolution, SolutionVO , newSolutionVO} from '../api/Solution';
 import Header from '../components/Header.vue';
 
@@ -33,6 +33,7 @@ const cooling = ref<CoolingVO>(newCoolingVO());
 const chassis = ref<ChassisVO>(newChassisVO());
 const display = ref<DisplayVO>(newDisplayVO());
 
+const router = useRouter();
 
 // 获取装机方案和配件信息
 const fetchSolutionDetails = async () => {
@@ -57,6 +58,10 @@ const handleStarSolution = async () => {
   console.log(result ? '收藏成功' : '收藏失败');
 };
 
+const editSolution = () => {
+  router.push({ path: '/custom-build', query: { solution: JSON.stringify(solution.value) } });
+};
+
 onMounted(() => {
   fetchSolutionDetails();
 });
@@ -74,7 +79,7 @@ onMounted(() => {
       <p>创建时间：{{ new Date(solution.createTime).toLocaleDateString() }}</p>
       <p>收藏次数：{{ solution.saveNum }}</p>
       <button @click="handleStarSolution">收藏</button>
-      <button>编辑</button>
+      <button @click="editSolution">编辑</button>
     </div>
 
     <!-- 右侧配件信息 -->

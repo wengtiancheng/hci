@@ -1,7 +1,7 @@
 import AllSolutions from "../views/AllSolutions.vue";
 import SolutionDetail from "../views/SolutionDetail.vue";
 import {createRouter, createWebHistory} from "vue-router";
-import selfService from "../views/selfService.vue";
+import SelfService from "../views/SelfService.vue";
 import SelectChassis from "../views/SelectPages/SelectChassis.vue";
 import SelectCPU from "../views/SelectPages/SelectCPU.vue";
 import SelectGPU from "../views/SelectPages/SelectGPU.vue";
@@ -17,16 +17,16 @@ import HandleNeed from "../views/HandleNeed.vue";
 
 const routes = [
     {
+        path: '/',
+        redirect: '/need'
+    },{
         path: '/solution',
         name: 'AllSolutions',
         component: AllSolutions
     },{
         path: '/custom-build',
-        component: selfService,
+        component: SelfService,
         meta: { title: '自助装机', showHeader: true }
-    },{
-        path: '/',
-        redirect: '/login'
     },{
         path: '/login',
         component: () => import('../views/Login.vue'),
