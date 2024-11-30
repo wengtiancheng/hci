@@ -11,6 +11,7 @@ import SelectPowersupply from "../views/SelectPages/SelectPowersupply.vue";
 import SelectCooling from "../views/SelectPages/SelectCooling.vue";
 import SelectHarddisk from "../views/SelectPages/SelectHarddisk.vue";
 import SelectDisplay from "../views/SelectPages/SelectDisplay.vue";
+import HandleNeed from "../views/HandleNeed.vue";
 
 
 
@@ -36,6 +37,10 @@ const routes = [
         meta: { title: '注册', showHeader: false }
 
     },{
+        path: '/need',
+        name: 'HandleNeed',
+        component: HandleNeed
+    }, {
         path: '/solution/:id',
         name: 'SolutionDetail',
         component: SolutionDetail

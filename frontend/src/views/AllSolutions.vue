@@ -20,7 +20,7 @@
       <div class="filter-item">
         <label for="sort-order">排序方式</label>
         <select id="sort-order" v-model="filters.sortBy" @change="fetchSolutions">
-          <option value="">请选择</option>
+          <option :value="SortType.NONE">默认排序</option>
           <option :value="SortType.PRICE_DESC">按价格降序</option>
           <option :value="SortType.SAVE_DESC">按收藏数降序</option>
           <option :value="SortType.CREATE_TIME_DESC">按创建时间降序</option>
@@ -96,9 +96,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllSolution, SolutionVO, SortType, Filters, initFilters} from '../api/Solution';
+import { getAllSolution, SolutionVO, SortType, Filters, initFilters } from '../api/Solution';
 import Header from '../components/Header.vue';
-
+import { useRoute } from 'vue-router';
 
 // 定义过滤器的状态
 const filters = ref<Filters>(initFilters);
@@ -106,6 +106,11 @@ const filters = ref<Filters>(initFilters);
 // 装机方案列表
 const solutions = ref<SolutionVO[]>([]);
 
+// 获取路由参数
+const route = useRoute();
+if (route.query.filters) {
+  filters.value = JSON.parse(route.query.filters as string); // 解析 filters
+}
 
 // 获取所有装机方案的方法
 const fetchSolutions = async () => {

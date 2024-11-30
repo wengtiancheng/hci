@@ -18,4 +18,5 @@ public interface SolutionService {
     SolutionVO getSolution(Integer id);
 
     List<SolutionVO> getAllSolutionsByFilter(FilterVO filterVO);
+
 }

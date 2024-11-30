@@ -1,7 +1,7 @@
 import {SOLUTION_MODULE} from "./_prefix";
 
 import { axios } from '../utils/request';
-
+import OpenAI from "openai";
 
 export enum SortType {
     NONE = 'NONE',
@@ -115,3 +115,63 @@ export const getSolution = (id: number) => {
             return res.data.result;
         })
 }
+
+
+// 创建 OpenAI 客户端实例，直接传入 API 密钥
+const openai = new OpenAI({ 
+    baseURL: 'https://api.deepseek.com',
+    apiKey: 'sk-3e217eaec54443fe803683ba6aea1d1d',
+    dangerouslyAllowBrowser: true
+});
+
+
+
+const systemPrompt: string = `
+The user will provide their preferred budget range for building a PC.
+The user will provide the intended use of the PC, such as gaming, video editing, or general office work.
+The user will provide their preferred brand for certain components (e.g., Intel, AMD, NVIDIA).
+Please analyze user needs 
+and parse the "lowPrice","highPrice","cpuName","gpuName","motherboardName","memoryName" 
+and output them in JSON format. 
+
+EXAMPLE INPUT: 
+"我想装一台性能好一点的电脑，来玩3A游戏，预算在20000以内."
+
+EXAMPLE JSON OUTPUT:
+{
+    "lowPrice": 10000,
+    "highPrice": 20000,
+    "cpuName": "Intel Core i7-12700KF",
+    "gpuName": "RTX 3080",
+    "motherboardName": "B560",
+    "memoryName": "DDR4"
+}
+`;
+
+// 定义一个新的 API 函数，接收 content 参数并返回 filters
+export const parseUserNeed = async (content: string): Promise<Filters | null> => {
+    // 发送请求到 OpenAI API 以解析需求
+    const completion = await openai.beta.chat.completions.parse({
+        model: "deepseek-chat",
+        messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: content }, // 使用传入的 content 参数
+        ],
+        response_format: {
+            'type': 'json_object'
+        }
+    });
+
+    // 获取解析结果
+    const parsedFilters = completion.choices[0].message.content;
+
+    // 添加 null 检查以确保 parsedFilters 不为 null
+    if (parsedFilters) {
+        const filters: Filters = JSON.parse(parsedFilters);
+        return filters
+    } else {
+        console.error("解析结果为 null");
+        return null; // 返回 null
+    }
+};
+
