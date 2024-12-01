@@ -21,8 +21,8 @@ const routes = [
         redirect: '/need'
     },{
         path: '/solution',
-        name: 'AllSolutions',
-        component: AllSolutions
+        component: AllSolutions,
+        meta: { title: '所有装机方案', showHeader: true }
     },{
         path: '/custom-build',
         component: SelfService,
@@ -38,12 +38,12 @@ const routes = [
 
     },{
         path: '/need',
-        name: 'HandleNeed',
-        component: HandleNeed
+        component: HandleNeed,
+        meta: { title: '处理需求', showHeader: true }
     }, {
         path: '/solution/:id',
-        name: 'SolutionDetail',
-        component: SolutionDetail
+        component: SolutionDetail,
+        meta: { title: '查看方案', showHeader: true }
     },{
         path: '/select/chassis',
         component: SelectChassis,

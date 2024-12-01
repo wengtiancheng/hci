@@ -1,6 +1,4 @@
 <template>
-  <!-- 导航栏 -->
-  <Header />
 
   <div class="all-solutions">
     <!-- 左侧过滤器 -->
@@ -78,7 +76,7 @@
       <router-link
         v-for="solution in solutions"
         :key="solution.id"
-        :to="{ name: 'SolutionDetail', params: { id: solution.id } }"
+        :to="{ path: `/solution/${solution.id}` }"
         class="solution-card"
       >
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" style="object-fit: cover;" />
@@ -97,7 +95,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getAllSolution, SolutionVO, SortType, Filters, initFilters } from '../api/Solution';
-import Header from '../components/Header.vue';
 import { useRoute } from 'vue-router';
 
 // 定义过滤器的状态

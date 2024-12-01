@@ -68,7 +68,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <Header />
   <div class="solution-detail">
     <!-- 左侧方案信息 -->
     <div class="solution-info">
