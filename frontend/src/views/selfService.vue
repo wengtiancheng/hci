@@ -3,15 +3,16 @@ import {onMounted, ref} from 'vue';
 import {getCPUById} from "../api/CPU.ts";
 import {getMotherboardById} from "../api/Motherboard.ts";
 import {getMemoryById} from "../api/Memory.ts";
-import {getHarddiskById} from "../api/HardDisk.ts";
+import {getHarddiskById} from "../api/Harddisk.ts";
 import {getGPUById} from "../api/GPU.ts";
-import {getPowersupplyById} from "../api/PowerSupply.ts";
+import {getPowersupplyById} from "../api/Powersupply.ts";
 import {getChassisById} from "../api/Chassis.ts";
 import {getDisplayById} from "../api/Display.ts";
 import {getCoolingById} from "../api/Cooling.ts";
 import router from "../router/index.ts";
 import Toast from "../components/Toast.vue";
 import ConfirmDialog from '../components/ConfirmDialog.vue';
+import Header from '../components/Header.vue';
 
 
 const totalPrice = ref(0);
@@ -141,8 +142,8 @@ onMounted(() => {
   if (messageInfo) {
     const { type, name, action } = JSON.parse(messageInfo);
     const message = action === 'select' 
-      ? `已选择${type}：${name}`
-      : `已更换${type}：${name}`;
+      ? `已选择${type}:${name}`
+      : `已更换${type}:${name}`;
     toastRef.value.show(message);
     // 显示后清除标记
     sessionStorage.removeItem('showSuccessMessage');
