@@ -164,7 +164,7 @@ onMounted(() => {
 
 <style scoped>
 /* Ensure the root container takes the full width and height */
-:root, body, #app {
+:root, body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -188,9 +188,8 @@ onMounted(() => {
 }
 
 .solution-image {
-  width: 300px;
-  height: auto;
-  object-fit: contain;
+
+  object-fit: cover;
 }
 
 .favorite-icon, .edit-icon {

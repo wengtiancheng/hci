@@ -5,13 +5,13 @@
       <form @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="phone">手机号</label>
-          <input type="text" id="phone" v-model="phone" required />
+          <input style="width: 320px" type="text" id="phone" v-model="phone" required />
         </div>
         <div class="form-group">
           <label for="password">密码</label>
-          <input type="password" id="password" v-model="password" required />
+          <input style="width: 320px" type="password" id="password" v-model="password" required />
         </div>
-        <button type="submit">登录</button>
+        <button class="loginButton" type="submit">登录</button>
       </form>
     </div>
   </div>
@@ -44,16 +44,20 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: url('../assets/images/Loginbg.jpg') no-repeat center center;
+  background-size: cover;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .login-form {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -64,6 +68,8 @@ const handleLogin = async () => {
 .login-form h2 {
   margin-bottom: 20px;
   color: #333;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .form-group {
@@ -74,8 +80,9 @@ const handleLogin = async () => {
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: bold;
+  font-weight: 500;
   color: #555;
+  font-size: 16px;
 }
 
 .form-group input {
@@ -83,7 +90,7 @@ const handleLogin = async () => {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1em;
+  font-size: 16px;
   transition: border-color 0.3s ease;
 }
 
@@ -92,19 +99,20 @@ const handleLogin = async () => {
   outline: none;
 }
 
-button {
-  width: 100%;
+.loginButton {
+  width: 95%;
   padding: 12px;
-  background-color: #6e8efb;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
   color: #fff;
   border: none;
   border-radius: 5px;
-  font-size: 1em;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.loginButton:hover {
   background-color: #5a7de1;
 }
 </style>
