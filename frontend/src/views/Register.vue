@@ -1,44 +1,45 @@
 <template>
-  <div class="register-form">
-    <form @submit.prevent="handleSubmit">
-      <h2>注册新账号</h2>
-      <div>
-        <label for="phone">手机号:</label>
-        <input id="phone" v-model="phoneNumber" type="text" placeholder="手机号" required />
-      </div>
-      <div>
-        <label for="username">用户名:</label>
-        <input id="username" v-model="username" type="text" placeholder="用户名" required />
-      </div>
-      <div>
-        <label for="password">密码:</label>
-        <input id="password" v-model="password" type="password" placeholder="密码" required />
-      </div>
-      <div>
-        <label for="confirmPassword">确认密码:</label>
-        <input id="confirmPassword" v-model="confirmPassword" type="password" placeholder="确认密码" required />
-      </div>
-      <button type="submit">注册</button>
-      <div class="login-link">
-        <span>已有帐号？</span>
-      </div>
-      <div class="login-button">
-        <button  @click="goToLogin">登录</button>
-      </div>
-    </form>
+  <div class="register-container">
+    <div class="register-form">
+      <form @submit.prevent="handleSubmit">
+        <h2>注册新账号</h2>
+        <div>
+          <label for="phone">手机号:</label>
+          <input style="width: 360px" id="phone" v-model="phoneNumber" type="text" placeholder="手机号" required />
+        </div>
+        <div>
+          <label for="username">用户名:</label>
+          <input style="width: 360px" id="username" v-model="username" type="text" placeholder="用户名" required />
+        </div>
+        <div>
+          <label for="password">密码:</label>
+          <input style="width: 360px" id="password" v-model="password" type="password" placeholder="密码" required />
+        </div>
+        <div>
+          <label for="confirmPassword">确认密码:</label>
+          <input style="width: 360px" id="confirmPassword" v-model="confirmPassword" type="password" placeholder="确认密码" required />
+        </div>
+        <button class="registerButton" type="submit">注册</button>
+        <div class="login-link">
+          <span>已有帐号？</span>
+          <button class="loginButton" @click="goToLogin">登录</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { register } from '../api/User.ts';
-import router from '../router/index';
 
 const phoneNumber = ref('');
 const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+const router = useRouter();
 
 const handleSubmit = () => {
   if (phoneNumber.value && username.value && password.value) {
@@ -93,64 +94,90 @@ const goToLogin = () => {
 </script>
 
 <style scoped>
-.register-form {
-  width: 400px;
-  height: auto;
-  margin: 0 auto;
-  padding: 1em;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('../assets/images/Loginbg.jpg') no-repeat center center;
+  background-size: cover;
+  font-family: 'Orbitron', sans-serif;
 }
 
-.register-form input::placeholder {
-  font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+.register-form {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: center;
 }
 
 .register-form h2 {
-  margin-bottom: 1em;
-  text-align: left;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .register-form div {
-  margin-bottom: 1em;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .register-form label {
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 16px;
 }
 
 .register-form input {
   width: 100%;
-  height: 45px;
-  margin-top: 0px;
-  padding: 0.5em;
-  box-sizing: border-box;
-}
-
-.register-form label {
-  display: block;
-  text-align: left;
-  margin-bottom: 0px;
-  color: gray;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
-.register-form button {
-  width: 100%;
-  padding: 0.7em;
-  background-color: #5e00ff;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  color: white;
+.register-form input:focus {
+  border-color: #6e8efb;
+  outline: none;
+}
+
+.registerButton {
+  width: 90%;
+  padding: 12px;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.register-form button:hover {
-  background-color: #0056b3;
+.registerButton:hover {
+  background-color: #5a7de1;
+}
+
+.loginButton {
+  margin-left: 5px;
+  font-size: 14px;
+  color: #6e8efb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.loginButton:hover {
+  color: #5a7de1;
 }
 
 .login-link {
@@ -161,27 +188,5 @@ const goToLogin = () => {
 
 .login-link span {
   color: gray;
-}
-
-.login-button {
-  display: flex;
-  justify-content: center;
-  margin-top: 0.5em;
-}
-
-.login-button button {
-  width: 100%;
-  padding: 0.7em;
-  background-color: #5e00ff;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.login-button button:hover {
-  background-color: #0056b3;
 }
 </style>

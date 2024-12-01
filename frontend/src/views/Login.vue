@@ -13,6 +13,7 @@
         </div>
         <button class="loginButton" type="submit">登录</button>
       </form>
+      <button class="registerButton" @click="goToRegister">注册</button>
     </div>
   </div>
 </template>
@@ -40,6 +41,10 @@ const handleLogin = async () => {
     console.error('登录失败:', error);
     alert('登录失败，请稍后再试');
   }
+};
+
+const goToRegister = () => {
+  router.push('/register');
 };
 </script>
 
@@ -114,5 +119,19 @@ const handleLogin = async () => {
 
 .loginButton:hover {
   background-color: #5a7de1;
+}
+
+.registerButton {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6e8efb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.registerButton:hover {
+  color: #5a7de1;
 }
 </style>
