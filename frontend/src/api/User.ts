@@ -7,7 +7,7 @@ export interface RegisterInfo {
     name: string;
     phone: string;
     password: string;
-    mySolutions: number[];
+    mySolutions?: number[];
 }
 
 
