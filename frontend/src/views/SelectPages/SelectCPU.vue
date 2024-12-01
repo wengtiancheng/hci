@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllCPU } from "../../api/CPU.ts";
+import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
 
 interface CPU {
@@ -12,6 +13,7 @@ interface CPU {
 }
 
 const cpuList = ref<CPU[]>([]);
+const searchQuery = ref('');
 
 const filters = ref({
   minPrice: null as number | null,
@@ -49,6 +51,13 @@ const selectCPU = (cpu: CPU) => {
   }));
   router.push('/custom-build');
 }
+
+const filteredCPUs = computed(() => {
+  if(!searchQuery.value) return cpuList.value;
+
+  const query = searchQuery.value.toLowerCase();
+  return cpuList.value.filter(cpu => cpu.name.toLowerCase().includes(query));
+});
 
 onMounted(() => {
   fetchCPUs();
@@ -88,7 +97,15 @@ onMounted(() => {
     </div>
 
     <div class="component-list">
-      <div v-for="cpu in cpuList" 
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
+      
+      <div v-if="filteredCPUs.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      
+      <div v-else v-for="cpu in filteredCPUs" 
            :key="cpu.id" 
            class="component-item">
         <img :src="cpu.imageUrl" alt="CPU图片" class="component-image" />

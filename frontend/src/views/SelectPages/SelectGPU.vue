@@ -52,7 +52,15 @@
     </div>
 
     <div class="component-list">
-      <div v-for="gpu in gpuList" 
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
+
+      <div v-if="filteredGPUs.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      
+      <div v-else v-for="gpu in filteredGPUs" 
            :key="gpu.id" 
            class="component-item">
         <img :src="gpu.imageUrl" alt="显卡图片" class="component-image" />
@@ -69,9 +77,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllGPU } from "../../api/GPU.ts";
 import router from '../../router';
+import SearchBox from '../../components/SearchBox.vue';
 
 interface GPU {
   id: number;
@@ -133,6 +142,15 @@ const selectGPU = (gpu: GPU) => {
   }));
   router.push('/custom-build');
 }
+
+const searchQuery = ref('');
+
+const filteredGPUs = computed(() => {
+  if(!searchQuery.value) return gpuList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return gpuList.value.filter(gpu => gpu.name.toLowerCase().includes(query));
+});
 
 onMounted(() => {
   fetchGPUs();

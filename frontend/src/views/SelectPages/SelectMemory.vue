@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllMemory } from "../../api/Memory.ts";
+import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
 
 interface Memory {
@@ -13,6 +14,14 @@ interface Memory {
 }
 
 const memoryList = ref<Memory[]>([]);
+const searchQuery = ref('');
+
+const filteredMemories = computed(() => {
+  if(!searchQuery.value) return memoryList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return memoryList.value.filter(memory => memory.name.toLowerCase().includes(query));
+});
 
 const filters = ref({
   minPrice: null as number | null,
@@ -128,7 +137,13 @@ onMounted(() => {
     </div>
 
     <div class="component-list">
-      <div v-for="memory in memoryList" 
+      <div class="search-container"> 
+        <SearchBox v-model="searchQuery" />
+      </div>
+      <div v-if="filteredMemories.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      <div v-else v-for="memory in filteredMemories" 
            :key="memory.id" 
            class="component-item">
         <img :src="memory.imageUrl" alt="内存图片" class="component-image" />

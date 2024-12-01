@@ -62,7 +62,13 @@
     </div>
 
     <div class="component-list">
-      <div v-for="motherboard in motherboardList" 
+      <div class="search-container"> 
+        <SearchBox v-model="searchQuery" />
+      </div>
+      <div v-if="filteredMotherboards.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      <div v-else v-for="motherboard in filteredMotherboards" 
            :key="motherboard.id" 
            class="component-item">
         <img :src="motherboard.imageUrl" alt="主板图片" class="component-image" />
@@ -74,16 +80,20 @@
         </div>
         <div class="component-price">￥{{ motherboard.price }}</div>
         <button @click="selectMotherboard(motherboard)" class="select-button">选择</button>
+        <div v-if="motherboard.type !== cpuType" class="warning">
+          警告：主板类型与CPU类型不匹配
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllMotherboard } from "../../api/Motherboard.ts";
+import { getCPUById } from '../../api/CPU';
 import router from '../../router';
-
+import SearchBox from '../../components/SearchBox.vue';
 interface Motherboard {
   id: number;
   name: string;
@@ -95,6 +105,28 @@ interface Motherboard {
 }
 
 const motherboardList = ref<Motherboard[]>([]);
+const cpuType = ref('');
+const searchQuery = ref('');
+
+const filteredMotherboards = computed(() => {
+  if(!searchQuery.value) return motherboardList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return motherboardList.value.filter(motherboard => motherboard.name.toLowerCase().includes(query));
+});
+
+const getSelectedCPU = () => {
+  const cpuId = sessionStorage.getItem('cpu');
+  console.log(cpuId)
+  if (cpuId) {
+      getCPUById(Number(cpuId)).then(cpu => {
+      cpuType.value = cpu.type;
+      console.log(cpuType.value)
+      
+    });
+  }
+
+}
 
 const filters = ref({
   minPrice: null as number | null,
@@ -149,6 +181,7 @@ const selectMotherboard = (motherboard: Motherboard) => {
 }
 
 onMounted(() => {
+  getSelectedCPU();
   fetchMotherboards();
 })
 </script>
@@ -157,8 +190,5 @@ onMounted(() => {
 @use './select-page.scss';
 
 // 由于主板信息较多，可能需要调整info的宽度
-.component-info {
-  width: 240px !important; // 覆盖默认宽度
-  justify-content: space-around !important;
-}
+
 </style>

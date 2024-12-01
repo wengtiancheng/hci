@@ -3,9 +3,9 @@ import {onMounted, ref} from 'vue';
 import {getCPUById} from "../api/CPU.ts";
 import {getMotherboardById} from "../api/Motherboard.ts";
 import {getMemoryById} from "../api/Memory.ts";
-import {getHarddiskById} from "../api/Harddisk.ts";
+import {getHarddiskById} from "../api/HardDisk.ts";
 import {getGPUById} from "../api/GPU.ts";
-import {getPowersupplyById} from "../api/Powersupply.ts";
+import {getPowersupplyById} from "../api/PowerSupply.ts";
 import {getChassisById} from "../api/Chassis.ts";
 import {getDisplayById} from "../api/Display.ts";
 import {getCoolingById} from "../api/Cooling.ts";
@@ -17,6 +17,8 @@ import ConfirmDialog from '../components/ConfirmDialog.vue';
 const totalPrice = ref(0);
 const toastRef = ref(null);
 const confirmDialogRef = ref(null);
+const compatibilityIssues = ref([]);
+const token = sessionStorage.getItem('token');
 
 
 // 定义硬件数据结构
@@ -32,14 +34,14 @@ const hardwareConfig = ref([
   { key: 'cooling', name: '散热器', defaultIcon:'src/assets/icons/cooling.svg', details: null}
   ]);
 
-// 计算总价的方法
+  // 计算总价的方法
 const calculateTotalPrice = () => {
   totalPrice.value = hardwareConfig.value.reduce((sum, item) => {
     return sum + (item.details?.price || 0);
   }, 0);
 };
 
-// 获取硬件详情的方法
+  // 获取硬件详情的方法
 const fetchHardwareDetails = async () => {
   for (const item of hardwareConfig.value) {
     const id = sessionStorage.getItem(item.key);
@@ -49,6 +51,7 @@ const fetchHardwareDetails = async () => {
     }
   }
   calculateTotalPrice(); // 获取完数据后计算总价
+  checkCompatibility();
 };
 
 // 根据硬件类型和 ID 获取详情
@@ -99,6 +102,31 @@ const confirmReset = async () => {
   }
 };
 
+const checkCompatibility = () => {
+  compatibilityIssues.value = [];
+
+  // 检查 CPU 和主板的类型
+  const cpu = hardwareConfig.value.find(item => item.key === 'cpu').details;
+  const motherboard = hardwareConfig.value.find(item => item.key === 'motherboard').details;
+  console.log(cpu);
+  console.log(motherboard);
+
+  if (cpu && motherboard) {
+    if (cpu.type !== motherboard.compatibleType) {
+      compatibilityIssues.value.push({ cpuName: 'CPU', cpuKey: 'cpu', motherboardName: '主板', motherboardKey: 'motherboard' });
+    }
+  }
+
+  // 检查主板和内存条的类型
+  const memory = hardwareConfig.value.find(item => item.key === 'memory').details;
+
+  if (motherboard && memory) {
+    if (motherboard.type != memory.type) {
+      compatibilityIssues.value.push({ cpuName: '主板', cpuKey: 'motherboard', motherboardName: '内存', motherboardKey: 'memory' });
+    }
+  }
+};
+
 onMounted(() => {
   // 处理来自 SolutionDetail 的参数-------！！！！！
   const query = router.currentRoute.value.query;
@@ -113,8 +141,8 @@ onMounted(() => {
   if (messageInfo) {
     const { type, name, action } = JSON.parse(messageInfo);
     const message = action === 'select' 
-      ? `已选择${type}:${name}`
-      : `已更换${type}:${name}`;
+      ? `已选择${type}：${name}`
+      : `已更换${type}：${name}`;
     toastRef.value.show(message);
     // 显示后清除标记
     sessionStorage.removeItem('showSuccessMessage');
@@ -133,11 +161,15 @@ onMounted(() => {
     <Toast ref="toastRef" />
     <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">
       <div class="hardware-info">
-        <h3 class="hardware-title">{{ item.name }}</h3>
+        <h3 class="hardware-title">
+          {{ item.name }}
+        </h3>
         <img :src="item.details?.imageUrl || item.defaultIcon" alt="Hardware Image" class="hardware-image" />
         <div class="details-container">
           <div class="product-info">
-            <span class="product-name">{{ item.details ? item.details.name : '未选择' }}</span>
+            <span class="product-name">
+              <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="purchase-link">{{ item.details ? item.details.name : '未选择' }}</a>
+            </span>
             <span v-if="item.details" class="price">￥{{ item.details.price }}</span>
           </div>
         </div>
@@ -168,8 +200,13 @@ onMounted(() => {
       <div class="compatibility-panel">
         <h3>硬件兼容性检查</h3>
         <div class="compatibility-content">
-          <!-- 这里后续添加兼容性检查的具体内容 -->
-          <p>暂无兼容性问题</p>
+          <p v-if="compatibilityIssues.length === 0">暂无兼容性问题</p>
+          <div v-else>
+            <p v-for="(issue, index) in compatibilityIssues" :key="index" class="compatibility-issue">
+              <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span> 和
+              <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span> 不匹配
+            </p>
+          </div>
         </div>
       </div>
       <div class="summary-panel">
@@ -194,12 +231,14 @@ onMounted(() => {
 <style scoped>
 .self-service {
   position: fixed;
-  top: 60px; /* 导航栏高度 */
+  top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
   display: flex;
-  
+  max-width: 1600px;
+  margin: 0 auto;
+  font-size: 0.875em;
 }
 
 .left-panel {
@@ -207,18 +246,21 @@ onMounted(() => {
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-top: 30px
+  margin-top: 2%;
+  min-width: 0;
 }
 
 .right-panel {
-  width: 300px;
+  width: 25%;
+  min-width: 280px;
+  max-width: 350px;
   background-color: white;
   border-left: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  margin-top: 30px;
-
+  margin-top: 2%;
+  height: 100%;
 }
 :host {
   display: flex;
@@ -231,14 +273,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  min-width: 800px;
-  align-items: center;
-  
-  
-  
-  
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 .hardware-item {
+  width: 100%;
+  min-width: 300px;
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -246,11 +289,7 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 700px;
   position: relative;
-  
-  
-  
 }
 .hardware-info {
   display: flex;
@@ -303,6 +342,7 @@ onMounted(() => {
   min-width: 80px;
   text-align: left;
   margin: 0;
+  font-size: 1.25em;
 }
 
 .details-container {
@@ -322,6 +362,7 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+  font-size: 1.125em;
 }
 
 .price {
@@ -330,10 +371,11 @@ onMounted(() => {
   font-weight: bold;
   white-space: nowrap;
   margin-right: 30px;
+  font-size: 1.125em;
 }
 
 .total-price {
-  font-size: 18px;
+  
   font-weight: bold;
   margin-bottom: 20px;
   padding: 15px;
@@ -358,11 +400,13 @@ onMounted(() => {
 .compatibility-panel h3 {
   margin: 0 0 15px 0;
   color: #333;
+  font-size: 1.375em;
 }
 
 .compatibility-content {
   height: calc(100% - 40px);
   overflow-y: auto;
+  font-size: 0.875em;
 }
 
 .bottom-panel {
@@ -381,7 +425,7 @@ onMounted(() => {
 
 .price-value {
   color: #ff4d4f;
-  font-size: 20px;
+  font-size: 1.625em;
   font-weight: bold;
 }
 
@@ -398,6 +442,7 @@ onMounted(() => {
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease;
+  font-size: 0.875em;
 }
 
 .reset-btn {
@@ -441,14 +486,14 @@ onMounted(() => {
 }
 
 .total-label {
-  font-size: 16px;
+  font-size: 1.25em;
   font-weight: bold;
   color: #333;
 }
 
 .price-value {
   color: #ff4d4f;
-  font-size: 22px;
+  font-size: 1.625em;
   font-weight: bold;
   margin-left: 20px;
 }
@@ -464,9 +509,62 @@ onMounted(() => {
   padding: 12px 35px; 
   border-radius: 6px;
   cursor: pointer;
-  font-size: 16px; /* 增加字体大小 */
-  min-width: 120px; /* 增加最小宽度 */
-  font-weight: bold; /* 加粗字体 */
+  font-size: 1em;
+  min-width: 120px;
+  font-weight: bold;
   transition: all 0.3s ease;
+}
+
+.clickable {
+
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.compatibility-issue {
+  color: red;
+  font-size: 1.3em;
+}
+
+.purchase-link {
+  color: black;
+  text-decoration: none;
+}
+
+.purchase-link:hover {
+  color: gray;
+}
+
+/* 添加媒体查询以处理较小屏幕 */
+@media screen and (max-width: 1024px) {
+  .self-service {
+    flex-direction: column;
+  }
+
+  .right-panel {
+    width: 100%;
+    max-width: none;
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .hardware-info {
+    flex-wrap: wrap;
+  }
+}
+
+/* 添加媒体查询以优化移动设备显示 */
+@media screen and (max-width: 768px) {
+  .self-service {
+    font-size: 0.875em;
+  }
+
+  .hardware-title {
+    font-size: 1em;
+  }
+
+  .price-value {
+    font-size: 1.25em;
+  }
 }
 </style>

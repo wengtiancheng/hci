@@ -41,7 +41,13 @@
     </div>
 
     <div class="component-list">
-      <div v-for="powersupply in powersupplyList" 
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
+      <div v-if="filteredPowersupplies.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      <div v-else v-for="powersupply in filteredPowersupplies" 
            :key="powersupply.id" 
            class="component-item">
         <img :src="powersupply.imageUrl" alt="电源图片" class="component-image" />
@@ -58,10 +64,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllPowersupply } from "../../api/Powersupply.ts";
 import router from '../../router';
-
+import SearchBox from '../../components/SearchBox.vue';
 interface Powersupply {
   id: number;
   name: string;
@@ -78,6 +84,15 @@ const filters = ref({
   maxPrice: null as number | null,
   brand: '',
   sortOrder: 'asc'
+});
+
+const searchQuery = ref('');
+
+const filteredPowersupplies = computed(() => {
+  if(!searchQuery.value) return powersupplyList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return powersupplyList.value.filter(powersupply => powersupply.name.toLowerCase().includes(query));
 });
 
 // 品牌名称转换

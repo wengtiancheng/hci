@@ -51,7 +51,13 @@
     </div>
 
     <div class="component-list">
-      <div v-for="harddisk in harddiskList" 
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
+      <div v-if="filteredHarddisks.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      <div v-else v-for="harddisk in filteredHarddisks" 
            :key="harddisk.id" 
            class="component-item">
         <img :src="harddisk.imageUrl" alt="硬盘图片" class="component-image" />
@@ -68,8 +74,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllHarddisk } from "../../api/Harddisk.ts";
+import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
 
 interface Harddisk {
@@ -82,6 +89,14 @@ interface Harddisk {
 }
 
 const harddiskList = ref<Harddisk[]>([]);
+const searchQuery = ref('');
+
+const filteredHarddisks = computed(() => {
+  if(!searchQuery.value) return harddiskList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return harddiskList.value.filter(harddisk => harddisk.name.toLowerCase().includes(query));
+});
 
 const filters = ref({
   minPrice: null as number | null,

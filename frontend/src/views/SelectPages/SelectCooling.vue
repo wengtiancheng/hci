@@ -41,7 +41,15 @@
     </div>
 
     <div class="component-list">
-      <div v-for="cooling in coolingList" 
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
+
+      <div v-if="filteredCoolings.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      
+      <div v-else v-for="cooling in filteredCoolings" 
            :key="cooling.id" 
            class="component-item">
         <img :src="cooling.imageUrl" alt="水冷图片" class="component-image" />
@@ -57,8 +65,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllCooling } from "../../api/Cooling.ts";
+import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
 
 interface Cooling {
@@ -76,6 +85,15 @@ const filters = ref({
   maxPrice: null as number | null,
   brand: '',
   sortOrder: 'asc'
+});
+
+const searchQuery = ref('');
+
+const filteredCoolings = computed(() => {
+  if(!searchQuery.value) return coolingList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return coolingList.value.filter(cooling => cooling.name.toLowerCase().includes(query));
 });
 
 // 品牌名称转换

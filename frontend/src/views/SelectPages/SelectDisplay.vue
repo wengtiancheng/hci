@@ -32,7 +32,15 @@
     </div>
 
     <div class="component-list">
-      <div v-for="display in displayList" 
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
+      
+      <div v-if="filteredDisplays.length === 0" class="empty-result">
+        未找到匹配的配件
+      </div>
+      
+      <div v-else v-for="display in filteredDisplays" 
            :key="display.id" 
            class="component-item">
         <img :src="display.imageUrl" alt="显示器图片" class="component-image" />
@@ -48,8 +56,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllDisplay } from "../../api/Display.ts";
+import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
 
 interface Display {
@@ -61,6 +70,14 @@ interface Display {
 }
 
 const displayList = ref<Display[]>([]);
+const searchQuery = ref('');
+
+const filteredDisplays = computed(() => {
+  if(!searchQuery.value) return displayList.value;
+  
+  const query = searchQuery.value.toLowerCase();
+  return displayList.value.filter(display => display.name.toLowerCase().includes(query));
+});
 
 const filters = ref({
   minPrice: null as number | null,
