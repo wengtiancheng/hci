@@ -80,11 +80,13 @@
         </div>
         <div class="component-price">￥{{ motherboard.price }}</div>
         <button @click="selectMotherboard(motherboard)" class="select-button">选择</button>
-        <div v-if="motherboard.type !== cpuType" class="warning">
+        <div v-if="motherboard.type !== cpuType && cpuType !== ''" class="warning">
+          <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
           警告：主板类型与CPU类型不匹配
         </div>
       </div>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
   </div>
 </template>
 
@@ -94,6 +96,8 @@ import { getAllMotherboard } from "../../api/Motherboard.ts";
 import { getCPUById } from '../../api/CPU';
 import router from '../../router';
 import SearchBox from '../../components/SearchBox.vue';
+import ConfirmDialog from '../../components/ConfirmDialog.vue';
+
 interface Motherboard {
   id: number;
   name: string;
@@ -170,7 +174,20 @@ const fetchMotherboards = async () => {
   motherboardList.value = filteredList;
 }
 
-const selectMotherboard = (motherboard: Motherboard) => {
+const confirmDialog = ref();
+
+const selectMotherboard = async (motherboard: Motherboard) => {
+  if (motherboard.type !== cpuType.value && cpuType.value !== '') {
+    const confirmed = await confirmDialog.value.show(
+      '类型不匹配提醒',
+      `当前选择的主板类型(${motherboard.type})与CPU类型(${cpuType.value})不匹配，是否确认选择？`
+    );
+    
+    if (!confirmed) {
+      return;
+    }
+  }
+  
   sessionStorage.setItem('motherboard', String(motherboard.id));
   sessionStorage.setItem('showSuccessMessage', JSON.stringify({
     type: '主板',
@@ -189,6 +206,15 @@ onMounted(() => {
 <style lang="scss" scoped>
 @use './select-page.scss';
 
-// 由于主板信息较多，可能需要调整info的宽度
-
+.warning {
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  .warning-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
 </style>

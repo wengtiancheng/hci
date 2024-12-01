@@ -9,6 +9,7 @@ import {getPowersupplyById} from "../api/PowerSupply.ts";
 import {getChassisById} from "../api/Chassis.ts";
 import {getDisplayById} from "../api/Display.ts";
 import {getCoolingById} from "../api/Cooling.ts";
+import {uploadSolution} from "../api/Solution.ts";
 import router from "../router/index.ts";
 import Toast from "../components/Toast.vue";
 import ConfirmDialog from '../components/ConfirmDialog.vue';
@@ -80,6 +81,7 @@ const clearSelection = (item) => {
   sessionStorage.removeItem(item.key);
   item.details = null;
   calculateTotalPrice();
+  checkCompatibility();
   toastRef.value.show(`已清空${item.name}`);
 };
 
@@ -112,7 +114,7 @@ const checkCompatibility = () => {
   console.log(motherboard);
 
   if (cpu && motherboard) {
-    if (cpu.type !== motherboard.compatibleType) {
+    if (cpu.type !== motherboard.type) {
       compatibilityIssues.value.push({ cpuName: 'CPU', cpuKey: 'cpu', motherboardName: '主板', motherboardKey: 'motherboard' });
     }
   }
@@ -127,15 +129,32 @@ const checkCompatibility = () => {
   }
 };
 
+const saveSolution = async () => {
+  const result = await uploadSolution(solution.value);
+  console.log(result ? '保存成功' : '保存失败');
+};
+
 onMounted(() => {
-  // 处理来自 SolutionDetail 的参数-------！！！！！
+  // 处理来自 SolutionDetail 的参数
   const query = router.currentRoute.value.query;
   if (query.solution) {
     const solution = JSON.parse(query.solution);
-    console.log(solution); // 在这里展示 solution 的结果
+    // 将解决方案的配件ID存储到 sessionStorage
+    sessionStorage.setItem('cpu', solution.cpuId);
+    sessionStorage.setItem('motherboard', solution.motherboardId);
+    sessionStorage.setItem('gpu', solution.gpuId);
+    sessionStorage.setItem('memory', solution.memoryId);
+    sessionStorage.setItem('harddisk', solution.harddiskId);
+    sessionStorage.setItem('powersupply', solution.powersupplyId);
+    sessionStorage.setItem('cooling', solution.coolingId);
+    sessionStorage.setItem('chassis', solution.chassisId);
+    sessionStorage.setItem('display', solution.displayId);
   }
 
+  // 获取配件详情
   fetchHardwareDetails();
+  
+
   // 检查是否需要显示提示
   const messageInfo = sessionStorage.getItem('showSuccessMessage');
   if (messageInfo) {
@@ -203,6 +222,7 @@ onMounted(() => {
           <p v-if="compatibilityIssues.length === 0">暂无兼容性问题</p>
           <div v-else>
             <p v-for="(issue, index) in compatibilityIssues" :key="index" class="compatibility-issue">
+              <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon" />
               <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span> 和
               <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span> 不匹配
             </p>
@@ -407,6 +427,11 @@ onMounted(() => {
   height: calc(100% - 40px);
   overflow-y: auto;
   font-size: 0.875em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .bottom-panel {
@@ -516,14 +541,26 @@ onMounted(() => {
 }
 
 .clickable {
-
   text-decoration: underline;
   cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .compatibility-issue {
   color: red;
   font-size: 1.3em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.warning-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .purchase-link {

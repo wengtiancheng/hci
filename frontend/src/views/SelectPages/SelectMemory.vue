@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { getAllMemory } from "../../api/Memory.ts";
+import ConfirmDialog from '../../components/ConfirmDialog.vue';
+import { getMotherboardById } from '../../api/Motherboard.ts';
 import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
 
@@ -15,6 +17,8 @@ interface Memory {
 
 const memoryList = ref<Memory[]>([]);
 const searchQuery = ref('');
+const motherboardMemoryType = ref('');
+const confirmDialog = ref();
 
 const filteredMemories = computed(() => {
   if(!searchQuery.value) return memoryList.value;
@@ -63,7 +67,27 @@ const fetchMemories = async () => {
   memoryList.value = filteredList;
 }
 
-const selectMemory = (memory: Memory) => {
+const getSelectedMotherboard = () => {
+  const motherboardId = sessionStorage.getItem('motherboard');
+  if (motherboardId) {
+    getMotherboardById(Number(motherboardId)).then(motherboard => {
+      motherboardMemoryType.value = motherboard.memoryType;
+    });
+  }
+}
+
+const selectMemory = async (memory: Memory) => {
+  if (motherboardMemoryType.value && memory.type !== motherboardMemoryType.value) {
+    const confirmed = await confirmDialog.value.show(
+      '内存类型不兼容提醒',
+      `当前选择的内存类型(${memory.type})与主板支持的内存类型(${motherboardMemoryType.value})不兼容，是否确认选择？`
+    );
+    
+    if (!confirmed) {
+      return;
+    }
+  }
+
   sessionStorage.setItem('memory', String(memory.id));
   sessionStorage.setItem('showSuccessMessage', JSON.stringify({
     type: '内存',
@@ -74,6 +98,7 @@ const selectMemory = (memory: Memory) => {
 }
 
 onMounted(() => {
+  getSelectedMotherboard();
   fetchMemories();
 })
 </script>
@@ -154,11 +179,28 @@ onMounted(() => {
         </div>
         <div class="component-price">￥{{ memory.price }}</div>
         <button @click="selectMemory(memory)" class="select-button">选择</button>
+        <div v-if="memory.type !== motherboardMemoryType && motherboardMemoryType !== ''" class="warning"> 
+          <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+          警告：内存类型和主板不兼容
+        </div>
       </div>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 @use './select-page.scss';
+
+.warning {
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  .warning-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
 </style>
