@@ -1,38 +1,42 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { getUserSolutions } from '../api/User';
-import { SolutionVO } from '../api/Solution'; // 确保导入 SolutionVO 接口
 
-// 定义用户方案的状态
-const userSolutions = ref<SolutionVO[]>([]);
+const solutions = ref([]);
+const router = useRouter();
 
-// 获取用户的装机方案
-const fetchUserSolutions = async () => {
-    try {
-        const response = await getUserSolutions();
-        userSolutions.value = response.data; // 假设返回的数据在 response.data 中
-    } catch (error) {
-        console.error('获取用户方案失败:', error);
-    }
+const fetchSolutions = async () => {
+  try {
+    const response = await getUserSolutions();
+    console.log('Fetched solutions:', response.data.result);
+    solutions.value = response.data.result;
+  } catch (error) {
+    console.error('Error fetching solutions:', error);
+  }
 };
 
-// 组件挂载时获取用户方案
+const goToSolutionDetail = (solutionId: number) => {
+  router.push({ path: `/solution/${solutionId}` });
+};
+
 onMounted(() => {
-    fetchUserSolutions();
+  fetchSolutions();
 });
 </script>
 
 <template>
   <div class="my-solutions">
-    <h1>我的装机方案</h1>
-    <div v-if="userSolutions.length === 0">没有找到任何装机方案。</div>
-    <div v-else>
-      <div v-for="solution in userSolutions" :key="solution.id" class="solution-card">
-        <img :src="solution.imageUrl" alt="方案图片" />
+    <h1>所有装机方案</h1>
+    <div class="solutions-list">
+      <div
+          v-for="solution in solutions"
+          :key="solution.id"
+          class="solution-item"
+          @click="goToSolutionDetail(solution.id)"
+      >
         <h2>{{ solution.name }}</h2>
         <p>{{ solution.description }}</p>
-        <p>总价：￥{{ solution.totalPrice }}</p>
-        <p>创建时间：{{ new Date(solution.createTime).toLocaleDateString() }}</p>
       </div>
     </div>
   </div>
@@ -40,20 +44,23 @@ onMounted(() => {
 
 <style scoped>
 .my-solutions {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
-.solution-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 20px;
+.solutions-list {
+  width: 100%;
   text-align: center;
 }
 
-.solution-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.solution-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 4px;
+  cursor: pointer; /* Add cursor pointer to indicate clickable items */
 }
 </style>

@@ -78,10 +78,10 @@
           :to="{ path: `/solution/${solution.id}` }"
           class="solution-card"
       >
-        <img :src="solution.imageUrl" alt="方案图片" class="solution-image" style="object-fit: cover;" />
+        <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
         <div class="solution-info">
           <h4>{{ solution.name }}</h4>
-          <p>{{ solution.description }}</p>
+          <p class="description">{{ solution.description }}</p>
           <p>价格：￥{{ solution.totalPrice }}</p>
           <p>保存次数：{{ solution.saveNum }}</p>
           <p>创建时间：{{ new Date(solution.createTime).toLocaleDateString() }}</p>
@@ -163,7 +163,7 @@ onMounted(() => {
   flex: 1; /* Take the remaining width */
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px; /* Further reduced gap between solution cards */
   padding: 20px;
   overflow-y: auto; /* Enable vertical scrolling */
   height: 100vh; /* Full viewport height */
@@ -179,6 +179,10 @@ onMounted(() => {
   margin-bottom: 20px;
   width: 100%; /* Full width */
   text-align: left; /* Align text to the left */
+}
+
+.description{
+  color: #6c757d;
 }
 
 .filter-item label {
@@ -233,8 +237,8 @@ onMounted(() => {
   width: calc(20% - 20px); /* Adjust width to 25% for 4 cards per row */
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: #333; /* 默认字体颜色 */
-  text-decoration: none; /* 去掉链接下划线 */
+  color: #333; /* Default text color */
+  text-decoration: none; /* Remove link underline */
 }
 
 .solution-card:hover {
@@ -243,7 +247,7 @@ onMounted(() => {
 
 .solution-card img {
   width: 100%;
-  height: 200px; /* 设置固定高度 */
+  height: 55%; /* 设置固定高度 */
   border-radius: 8px;
   object-fit: cover; /* 添加 object-fit 属性 */
 }
