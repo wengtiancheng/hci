@@ -29,7 +29,7 @@ const router = useRouter();
 const handleLogin = async () => {
   try {
     const response = await login(phone.value, password.value);
-    console.log('登录结果:', response);
+    sessionStorage.setItem('token', response.result);
     if (response.code == "000") {
       alert('登录成功');
       router.push('/solution');

@@ -8,10 +8,9 @@
       <!-- 总价区间筛选 -->
       <div class="filter-item">
         <label>价格范围</label>
-        <div>
-          <input type="number" v-model="filters.lowPrice" placeholder="最低价" @input="fetchSolutions" />
-          <input type="number" v-model="filters.highPrice" placeholder="最高价" @input="fetchSolutions" />
-        </div>
+        <vue-slider v-model="sliderValue":min="0" :max="99999"
+                    :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
+                    @change="sliderChange" ></vue-slider>
       </div>
 
       <!-- 排序方式 -->
@@ -74,10 +73,10 @@
     <!-- 右侧装机方案卡片 -->
     <div class="solutions">
       <router-link
-        v-for="solution in solutions"
-        :key="solution.id"
-        :to="{ path: `/solution/${solution.id}` }"
-        class="solution-card"
+          v-for="solution in solutions"
+          :key="solution.id"
+          :to="{ path: `/solution/${solution.id}` }"
+          class="solution-card"
       >
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" style="object-fit: cover;" />
         <div class="solution-info">
@@ -100,6 +99,8 @@ import { useRoute } from 'vue-router';
 // 定义过滤器的状态
 const filters = ref<Filters>(initFilters);
 
+const sliderValue = ref([0, 99999])
+
 // 装机方案列表
 const solutions = ref<SolutionVO[]>([]);
 
@@ -107,6 +108,14 @@ const solutions = ref<SolutionVO[]>([]);
 const route = useRoute();
 if (route.query.filters) {
   filters.value = JSON.parse(route.query.filters as string); // 解析 filters
+}
+
+// 价格区间滑动条的回调函数
+const sliderChange = async (value: number[]) => {
+  filters.value.lowPrice = value[0];
+  filters.value.highPrice = value[1];
+  console.log('Change slider:', filters.value);
+  solutions.value = await getAllSolution(filters.value);
 }
 
 // 获取所有装机方案的方法
