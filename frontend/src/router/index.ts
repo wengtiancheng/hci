@@ -12,6 +12,7 @@ import SelectCooling from "../views/SelectPages/SelectCooling.vue";
 import SelectHarddisk from "../views/SelectPages/SelectHarddisk.vue";
 import SelectDisplay from "../views/SelectPages/SelectDisplay.vue";
 import HandleNeed from "../views/HandleNeed.vue";
+import MySolutions from "../views/MySolutions.vue";
 
 
 
@@ -27,6 +28,10 @@ const routes = [
         path: '/custom-build',
         component: SelfService,
         meta: { title: '自助装机', showHeader: true }
+    },{
+        path: '/mySolutions',
+        component: MySolutions,
+        meta: { title: '我的装机', showHeader: true }
     },{
         path: '/login',
         component: () => import('../views/Login.vue'),

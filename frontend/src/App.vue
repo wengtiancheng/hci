@@ -15,8 +15,5 @@ const route = useRoute();
 </template>
 
 <style scoped>
-router-view {
-  width: 100%;
-}
 
 </style>

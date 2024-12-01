@@ -17,7 +17,7 @@ const handleClick = async () => {
 
   if (filters) {
     // 跳转到 AllSolutions，并传递 filters 作为路由参数
-    router.push({ name: 'AllSolutions', query: { filters: JSON.stringify(filters) } });
+    router.push({ path: '/solution', query: { filters: JSON.stringify(filters) } });
   }
 }
 

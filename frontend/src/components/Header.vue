@@ -10,7 +10,7 @@
     <nav class="nav-links">
       <li><a href="/custom-build">自定义装机</a></li>
       <li><a href="/solution">装机广场</a></li>
-      <li><a href="/my-builds">我的装机</a></li>
+      <li><a href="/mySolutions">我的装机</a></li>
     </nav>
   </header>
 </template>
