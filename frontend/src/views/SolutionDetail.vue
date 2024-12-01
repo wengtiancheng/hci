@@ -2,27 +2,25 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getSolution, starSolution, SolutionVO , newSolutionVO} from '../api/Solution';
-import Header from '../components/Header.vue';
 
 import { getGPUById, newGPUVO, GPUVO} from '../api/GPU';
 import {getCPUById, newCPUVO, CPUVO} from '../api/CPU';
 import { getMotherboardById, newMotherboardVO, MotherboardVO} from '../api/Motherboard';
 import { getMemoryById, newMemoryVO, MemoryVO} from '../api/Memory';
 import { getHarddiskById, newHardDiskVO, HardDiskVO } from '../api/Harddisk';
-import { getPowersupplyById, newPowersupplyVO, PowersupplyVO } from '../api/Powersupply';
-import { getCoolingById, newCoolingVO, CoolingVO } from '../api/Cooling';
-import { getChassisById, newChassisVO, ChassisVO } from '../api/Chassis';
-import { getDisplayById, newDisplayVO, DisplayVO } from '../api/Display';
+import { getPowersupplyById, newPowersupplyVO, PowersupplyVO} from '../api/Powersupply';
+import { getCoolingById, newCoolingVO, CoolingVO} from '../api/Cooling';
+import { getChassisById, newChassisVO, ChassisVO} from '../api/Chassis';
+import { getDisplayById, newDisplayVO, DisplayVO} from '../api/Display';
 
+import favoriteIcon from '../assets/icons/favorite.svg';
+import favoritedIcon from '../assets/icons/favorited.svg';
 
-// 获取路由参数
 const route = useRoute();
 const solutionId = route.params.id as string;
 
-// 方案详情
 const solution = ref<SolutionVO>(newSolutionVO());
 
-// 配件信息
 const cpu = ref<CPUVO>(newCPUVO());
 const gpu = ref<GPUVO>(newGPUVO());
 const memory = ref<MemoryVO>(newMemoryVO());
@@ -35,27 +33,30 @@ const display = ref<DisplayVO>(newDisplayVO());
 
 const router = useRouter();
 
-// 获取装机方案和配件信息
+const isFavorited = ref(false);
+
 const fetchSolutionDetails = async () => {
-  // 获取装机方案
   solution.value = await getSolution(parseInt(solutionId));
 
-  // 获取各个配件信息
   cpu.value = await getCPUById(solution.value.cpuId);
   gpu.value = await getGPUById(solution.value.gpuId);
   memory.value = await getMemoryById(solution.value.memoryId);
   motherboard.value = await getMotherboardById(solution.value.motherboardId);
-  harddisk.value = await getHarddiskById(solution.value.harddiskId); // 假设有此接口
-  powersupply.value = await getPowersupplyById(solution.value.powersupplyId); // 假设有此接口
-  cooling.value = await getCoolingById(solution.value.coolingId); // 假设有此接口
-  chassis.value = await getChassisById(solution.value.chassisId); // 假设有此接口
-  display.value = await getDisplayById(solution.value.displayId); // 假设有此接口
+  harddisk.value = await getHarddiskById(solution.value.harddiskId);
+  powersupply.value = await getPowersupplyById(solution.value.powersupplyId);
+  cooling.value = await getCoolingById(solution.value.coolingId);
+  chassis.value = await getChassisById(solution.value.chassisId);
+  display.value = await getDisplayById(solution.value.displayId);
 };
 
-// 收藏方案
 const handleStarSolution = async () => {
   const result = await starSolution(solution.value.id);
-  console.log(result ? '收藏成功' : '收藏失败');
+  if (result) {
+    isFavorited.value = !isFavorited.value;
+    console.log('收藏成功');
+  } else {
+    console.log('收藏失败');
+  }
 };
 
 const editSolution = () => {
@@ -69,7 +70,6 @@ onMounted(() => {
 
 <template>
   <div class="solution-detail">
-    <!-- 左侧方案信息 -->
     <div class="solution-info">
       <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
       <h2>{{ solution.name }}</h2>
@@ -77,106 +77,159 @@ onMounted(() => {
       <p>总价：￥{{ solution.totalPrice }}</p>
       <p>创建时间：{{ new Date(solution.createTime).toLocaleDateString() }}</p>
       <p>收藏次数：{{ solution.saveNum }}</p>
-      <button @click="handleStarSolution">收藏</button>
-      <button @click="editSolution">编辑</button>
+      <img
+          :src="isFavorited ? favoritedIcon : favoriteIcon"
+          alt="收藏"
+          class="favorite-icon"
+          @click="handleStarSolution"
+      />
+      <img
+          src="../assets/icons/edit.svg"
+          alt="编辑"
+          class="edit-icon"
+          @click="editSolution"
+      />
     </div>
 
-    <!-- 右侧配件信息 -->
     <div class="parts-info">
-      <div class="part-card">
-        <h4>CPU</h4>
-        <img :src="cpu.imageUrl" alt="CPU" />
-        <p>{{ cpu.name }}</p>
-        <p>价格：￥{{ cpu.price}}</p>
-      </div>
-      <div class="part-card">
-        <h4>显卡</h4>
-        <img :src="gpu.imageUrl" alt="GPU" />
-        <p>{{ gpu.name }}</p>
-        <p>价格：￥{{ gpu.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>内存</h4>
-        <img :src="memory.imageUrl" alt="Memory" />
-        <p>{{ memory.name }}</p>
-        <p>价格：￥{{ memory.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>主板</h4>
-        <img :src="motherboard.imageUrl" alt="Motherboard" />
-        <p>{{ motherboard.name }}</p>
-        <p>价格：￥{{ motherboard.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>硬盘</h4>
-        <img :src="harddisk.imageUrl" alt="Harddisk" />
-        <p>{{ harddisk.name }}</p>
-        <p>价格：￥{{ harddisk.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>电源</h4>
-        <img :src="powersupply.imageUrl" alt="Powersupply" />
-        <p>{{ powersupply.name }}</p>
-        <p>价格：￥{{ powersupply.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>散热</h4>
-        <img :src="cooling.imageUrl" alt="Cooling" />
-        <p>{{ cooling.name }}</p>
-        <p>价格：￥{{ cooling.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>机箱</h4>
-        <img :src="chassis.imageUrl" alt="Chassis" />
-        <p>{{ chassis.name }}</p>
-        <p>价格：￥{{ chassis.price }}</p>
-      </div>
-      <div class="part-card">
-        <h4>显示器</h4>
-        <img :src="display.imageUrl" alt="Display" />
-        <p>{{ display.name }}</p>
-        <p>价格：￥{{ display.price }}</p>
-      </div>
+      <table>
+        <thead>
+        <tr>
+          <th>配件</th>
+          <th>图片</th>
+          <th>名称</th>
+          <th>价格</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>CPU</td>
+          <td><img :src="cpu.imageUrl" alt="CPU" /></td>
+          <td>{{ cpu.name }}</td>
+          <td>￥{{ cpu.price }}</td>
+        </tr>
+        <tr>
+          <td>显卡</td>
+          <td><img :src="gpu.imageUrl" alt="GPU" /></td>
+          <td>{{ gpu.name }}</td>
+          <td>￥{{ gpu.price }}</td>
+        </tr>
+        <tr>
+          <td>内存</td>
+          <td><img :src="memory.imageUrl" alt="Memory" /></td>
+          <td>{{ memory.name }}</td>
+          <td>￥{{ memory.price }}</td>
+        </tr>
+        <tr>
+          <td>主板</td>
+          <td><img :src="motherboard.imageUrl" alt="Motherboard" /></td>
+          <td>{{ motherboard.name }}</td>
+          <td>￥{{ motherboard.price }}</td>
+        </tr>
+        <tr>
+          <td>硬盘</td>
+          <td><img :src="harddisk.imageUrl" alt="Harddisk" /></td>
+          <td>{{ harddisk.name }}</td>
+          <td>￥{{ harddisk.price }}</td>
+        </tr>
+        <tr>
+          <td>电源</td>
+          <td><img :src="powersupply.imageUrl" alt="Powersupply" /></td>
+          <td>{{ powersupply.name }}</td>
+          <td>￥{{ powersupply.price }}</td>
+        </tr>
+        <tr>
+          <td>散热</td>
+          <td><img :src="cooling.imageUrl" alt="Cooling" /></td>
+          <td>{{ cooling.name }}</td>
+          <td>￥{{ cooling.price }}</td>
+        </tr>
+        <tr>
+          <td>机箱</td>
+          <td><img :src="chassis.imageUrl" alt="Chassis" /></td>
+          <td>{{ chassis.name }}</td>
+          <td>￥{{ chassis.price }}</td>
+        </tr>
+        <tr>
+          <td>显示器</td>
+          <td><img :src="display.imageUrl" alt="Display" /></td>
+          <td>{{ display.name }}</td>
+          <td>￥{{ display.price }}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Ensure the root container takes the full width and height */
+:root, body, #app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
 .solution-detail {
   display: flex;
   gap: 30px;
+  padding-top: 80px; /* Add padding to the top to avoid being covered by the header */
+  width: 90vw; /* Ensure it takes the full viewport width */
+  margin: 0; /* Remove any default margin */
+  padding-left: 0; /* Ensure no padding on the left */
 }
 
 .solution-info {
-  flex: 1;
+  flex: 0 0 20%; /* Set a fixed width of 25% for the left container */
   padding: 20px;
   background-color: #f4f4f4;
 }
 
 .solution-image {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+}
+
+.favorite-icon, .edit-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.edit-icon {
+  margin-left: 30px; /* Add margin to the left of the edit icon */
 }
 
 .parts-info {
-  flex: 2;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.part-card {
-  width: 220px;
+  flex: 1; /* Take the remaining width */
+  padding: 20px;
   background-color: #ffffff;
-  padding: 10px;
-  text-align: center;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.part-card img {
+table {
   width: 100%;
-  height: 150px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+img {
+  width: 100px;
+  height: 100px;
   object-fit: contain;
 }
 
