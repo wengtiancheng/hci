@@ -19,12 +19,17 @@ export const register = (registerInfo: RegisterInfo) => {
         })
 }
 
-export const login = (phone: string, password: string) => {
-    return axios.post(`${USER_MODULE}/login`, { phone, password })
-        .then(res => {
-            return res
-        })
-}
+export const login = async (phone: string, password: string) => {
+    try {
+        const response = await axios.post(`${USER_MODULE}/login`, null, {
+            params: { phone, password }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Login failed:', error);
+        throw error;
+    }
+};
 
 //获取当前用户信息
 export const getUserInfo = () => {

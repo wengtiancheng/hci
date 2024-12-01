@@ -1,123 +1,110 @@
+<template>
+  <div class="login-container">
+    <div class="login-form">
+      <h2>登录</h2>
+      <form @submit.prevent="handleLogin">
+        <div class="form-group">
+          <label for="phone">手机号</label>
+          <input type="text" id="phone" v-model="phone" required />
+        </div>
+        <div class="form-group">
+          <label for="password">密码</label>
+          <input type="password" id="password" v-model="password" required />
+        </div>
+        <button type="submit">登录</button>
+      </form>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import {login} from '../api/User.ts';
-import router from '../router/index'
-import {ElMessage} from "element-plus";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { login } from '../api/User';
 
 const phone = ref('');
 const password = ref('');
+const router = useRouter();
 
-
-const hasphoneInput = computed(() => phone.value != '');
-const hasPasswordInput = computed(() => password.value != '');
-
-const loginDisabled = computed(() => {
-    return !hasphoneInput.value || !hasPasswordInput.value;
-});
-
-function handleLogin() {
-    console.log(phone.value)
-    console.log(password.value)
-    login(
-        phone.value as string,
-        password.value as string
-    ).then(res => {
-
-        if(res.data.code === "000"){
-            ElMessage.success({
-                message: "登录成功",
-                type: "success",
-                center: true,
-            });
-            console.log(res)
-
-            sessionStorage.setItem('token', res.data.result)
-            
-            console.log(sessionStorage.getItem('token'))
-
-
-            router.push
-
-        }else{
-          console.log(res)
-            ElMessage.error({
-                message: res.data.msg,
-                type: "error",
-                center: true,
-            });
-
-        }
-    })
-    
-}
+const handleLogin = async () => {
+  try {
+    const response = await login(phone.value, password.value);
+    console.log('登录结果:', response);
+    if (response.code == "000") {
+      alert('登录成功');
+      router.push('/solution');
+    } else {
+      alert('手机号或密码错误');
+    }
+  } catch (error) {
+    console.error('登录失败:', error);
+    alert('登录失败，请稍后再试');
+  }
+};
 </script>
 
-<template>
-    <el-main class="main-frame bgimage">
-        <el-card class="login-card">
-        <div>
-            <h1>登入您的账户</h1>
-            <el-form>
-            <el-form-item>
-                <label>手机号</label>
-
-                <el-input id="tel" type="text" v-model="phone"
-                        placeholder="请输入手机号"/>
-            </el-form-item>
-
-            <el-form-item>
-                <label for="password">密码</label>
-                <el-input id="password" type="password" v-model="password"
-                        required
-                        placeholder="••••••••"/>
-            </el-form-item>
-
-            <span class="button-group">
-                <el-button @click.prevent="handleLogin" :disabled="loginDisabled"
-                            type="primary">登入</el-button>
-                <router-link to="/register" v-slot="{navigate}">
-                    <el-button @click="navigate">去注册</el-button>
-                </router-link>
-            </span>
-            </el-form>
-        </div>
-        </el-card>
-    </el-main>
-</template>
-
 <style scoped>
-.main-frame {
-  width: 100vw;
-  height: 100vh;
-
+.login-container {
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.bgimage {
-  background-image: url("../assets/images/login.jpg");
-}
-
-.login-card {
-  width: 60%;
-  padding: 10px;
-}
-
-.error-warn {
-  color: red;
-}
-
-.error-warn-input {
-  --el-input-focus-border-color: red;
-}
-
-.button-group {
-  padding-top: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
   align-items: center;
-  justify-content: right;
+  height: 100vh;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+}
+
+.login-form {
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #6e8efb;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #6e8efb;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5a7de1;
 }
 </style>
