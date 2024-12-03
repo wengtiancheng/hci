@@ -31,6 +31,7 @@ const handleLogin = async () => {
   try {
     const response = await login(phone.value, password.value);
     sessionStorage.setItem('token', response.result);
+    console.log('token:', response.result);
     if (response.code == "000") {
       alert('登录成功');
       router.push('/solution');

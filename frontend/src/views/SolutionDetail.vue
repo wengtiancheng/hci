@@ -183,7 +183,6 @@ onMounted(() => {
 
 .solution-info {
   flex: 0 0 20%; /* Set a fixed width of 25% for the left container */
-  padding: 20px;
   background-color: #f4f4f4;
 }
 
