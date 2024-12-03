@@ -8,7 +8,7 @@
       <!-- 总价区间筛选 -->
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue":min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="99999"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>

@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, onBeforeUnmount} from 'vue';
 import {getCPUById} from "../api/CPU.ts";
 import {getMotherboardById} from "../api/Motherboard.ts";
 import {getMemoryById} from "../api/Memory.ts";
@@ -22,6 +22,24 @@ const confirmDialogRef = ref(null);
 const compatibilityIssues = ref([]);
 const token = sessionStorage.getItem('token');
 
+// 添加滚动位置相关的变量和方法
+const leftPanelRef = ref(null);
+
+// 保存滚动位置
+const saveScrollPosition = () => {
+  if (leftPanelRef.value) {
+    const scrollTop = leftPanelRef.value.scrollTop;
+    sessionStorage.setItem('selfServiceScrollPosition', scrollTop.toString());
+  }
+};
+
+// 恢复滚动位置
+const restoreScrollPosition = () => {
+  const savedPosition = sessionStorage.getItem('selfServiceScrollPosition');
+  if (savedPosition && leftPanelRef.value) {
+    leftPanelRef.value.scrollTop = parseInt(savedPosition);
+  }
+};
 
 // 定义硬件数据结构
 const hardwareConfig = ref([
@@ -74,6 +92,7 @@ const getHardwareDetailsById = async (type, id) => {
 
   // 跳转到选择页面
 const gotoSelectPage = (key) => {
+  saveScrollPosition();
   router.push({path: `/select/${key}`});
 };
 
@@ -168,6 +187,14 @@ onMounted(() => {
     sessionStorage.removeItem('showSuccessMessage');
     
   }
+
+  // 添加恢复滚动位置的逻辑
+  restoreScrollPosition();
+});
+
+// 在组件销毁前保存滚动位置
+onBeforeUnmount(() => {
+  saveScrollPosition();
 });
 </script>
 
@@ -176,7 +203,7 @@ onMounted(() => {
 <template>
   <div class="self-service">
     <!-- 左侧配置列表 -->
-    <div class="left-panel">
+    <div class="left-panel" ref="leftPanelRef">
       <div class="hardware-list">
     <Toast ref="toastRef" />
     <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">

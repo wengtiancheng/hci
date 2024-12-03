@@ -1,25 +1,15 @@
 <template>
   <div class="container">
+    
+    
     <div class="filters">
-      <h3>筛选条件</h3>
+      
       
       <div class="filter-item">
-        <label>价格区间</label>
-        <div class="price-range">
-          <input 
-            type="number" 
-            v-model="filters.minPrice" 
-            placeholder="最低价" 
-            @input="fetchMotherboards"
-          />
-          <span>-</span>
-          <input 
-            type="number" 
-            v-model="filters.maxPrice" 
-            placeholder="最高价" 
-            @input="fetchMotherboards"
-          />
-        </div>
+        <label>价格范围</label>
+        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+                    :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
+                    @change="sliderChange" ></vue-slider>
       </div>
 
       <div class="filter-item">
@@ -62,13 +52,27 @@
     </div>
 
     <div class="component-list">
+      <h2 class="page-title">选择主板</h2>
       <div class="search-container"> 
         <SearchBox v-model="searchQuery" />
       </div>
+      <div class="list-header">
+        <div class="header-image">图片</div>
+        <div class="header-name">名称</div>
+        <div class="header-info">
+          <span>品牌</span>
+          <span>类型</span>
+          <span>内存接口</span>
+        </div>
+        <div class="header-price">价格</div>
+        <div class="header-action">操作</div>
+      </div>
+      
       <div v-if="filteredMotherboards.length === 0" class="empty-result">
         未找到匹配的配件
       </div>
-      <div v-else v-for="motherboard in filteredMotherboards" 
+      
+      <div v-else v-for="motherboard in currentPageData" 
            :key="motherboard.id" 
            class="component-item">
         <img :src="motherboard.imageUrl" alt="主板图片" class="component-image" />
@@ -84,6 +88,28 @@
           <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
           警告：主板类型与CPU类型不匹配
         </div>
+      </div>
+
+      <div class="pagination">
+        <button 
+          :disabled="currentPage === 1"
+          @click="handlePageChange(currentPage - 1)"
+          class="page-button"
+        >
+          上一页
+        </button>
+        
+        <span class="page-info">
+          {{ currentPage }} / {{ totalPages }}
+        </span>
+        
+        <button 
+          :disabled="currentPage === totalPages"
+          @click="handlePageChange(currentPage + 1)"
+          class="page-button"
+        >
+          下一页
+        </button>
       </div>
     </div>
     <ConfirmDialog ref="confirmDialog" />
@@ -111,6 +137,11 @@ interface Motherboard {
 const motherboardList = ref<Motherboard[]>([]);
 const cpuType = ref('');
 const searchQuery = ref('');
+const sliderValue = ref([0, 99999]);
+
+const sliderChange = () => {
+  fetchMotherboards();
+}
 
 const filteredMotherboards = computed(() => {
   if(!searchQuery.value) return motherboardList.value;
@@ -157,8 +188,8 @@ const fetchMotherboards = async () => {
   
   // 应用筛选条件
   let filteredList = list.filter(motherboard => {
-    if (filters.value.minPrice && motherboard.price < filters.value.minPrice) return false;
-    if (filters.value.maxPrice && motherboard.price > filters.value.maxPrice) return false;
+    if (motherboard.price < sliderValue.value[0]) return false;
+    if (motherboard.price > sliderValue.value[1]) return false;
     if (filters.value.type && motherboard.type !== filters.value.type) return false;
     if (filters.value.brand && motherboard.brand !== filters.value.brand) return false;
     if (filters.value.memoryType && motherboard.memoryType !== filters.value.memoryType) return false;
@@ -201,6 +232,27 @@ onMounted(() => {
   getSelectedCPU();
   fetchMotherboards();
 })
+
+// 添加分页相关的状态
+const currentPage = ref(1);
+const pageSize = ref(10);  // 每页显示10条
+
+// 计算总页数
+const totalPages = computed(() => {
+  return Math.ceil(filteredMotherboards.value.length / pageSize.value);
+});
+
+// 计算当前页的数据
+const currentPageData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredMotherboards.value.slice(start, end);
+});
+
+// 页码改变的处理函数
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+};
 </script>
 
 <style lang="scss" scoped>

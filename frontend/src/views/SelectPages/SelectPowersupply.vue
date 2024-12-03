@@ -1,27 +1,16 @@
 <template>
   <div class="container">
+    
     <div class="filters">
-      <h3>筛选条件</h3>
       
-      <div class="filter-item">
-        <label>价格区间</label>
-        <div class="price-range">
-          <input 
-            type="number" 
-            v-model="filters.minPrice" 
-            placeholder="最低价" 
-            @input="fetchPowersupplies"
-          />
-          <span>-</span>
-          <input 
-            type="number" 
-            v-model="filters.maxPrice" 
-            placeholder="最高价" 
-            @input="fetchPowersupplies"
-          />
-        </div>
-      </div>
 
+      <div class="filter-item">
+        <label>价格范围</label>
+        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+                    :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
+                    @change="sliderChange" ></vue-slider>
+      </div>
+      
       <div class="filter-item">
         <label>品牌</label>
         <select v-model="filters.brand" @change="fetchPowersupplies">
@@ -41,8 +30,18 @@
     </div>
 
     <div class="component-list">
+      <h2 class="page-title">选择电源</h2>
       <div class="search-container">
         <SearchBox v-model="searchQuery" />
+      </div>
+      <div class="list-header">
+        <div class="header-image">图片</div>
+        <div class="header-name">名称</div>
+        <div class="header-info">
+          <span>品牌</span>
+        </div>
+        <div class="header-price">价格</div>
+        <div class="header-action">操作</div>
       </div>
       <div v-if="filteredPowersupplies.length === 0" class="empty-result">
         未找到匹配的配件
@@ -54,7 +53,7 @@
         <div class="component-name">{{ powersupply.name }}</div>
         <div class="component-info">
           <span>{{ getBrandLabel(powersupply.brand) }}</span>
-          <span>{{ powersupply.power }}W</span>
+          
         </div>
         <div class="component-price">￥{{ powersupply.price }}</div>
         <button @click="selectPowersupply(powersupply)" class="select-button">选择</button>
@@ -79,9 +78,9 @@ interface Powersupply {
 
 const powersupplyList = ref<Powersupply[]>([]);
 
+const sliderValue = ref([0, 99999]);
+
 const filters = ref({
-  minPrice: null as number | null,
-  maxPrice: null as number | null,
   brand: '',
   sortOrder: 'asc'
 });
@@ -104,13 +103,16 @@ const getBrandLabel = (brand: string) => {
   return brandMap[brand] || brand;
 };
 
+const sliderChange = () => {
+  fetchPowersupplies();
+}
+
 const fetchPowersupplies = async () => {
   const list = await getAllPowersupply();
   
-  // 应用筛选条件
   let filteredList = list.filter(powersupply => {
-    if (filters.value.minPrice && powersupply.price < filters.value.minPrice) return false;
-    if (filters.value.maxPrice && powersupply.price > filters.value.maxPrice) return false;
+    if (powersupply.price < sliderValue.value[0]) return false;
+    if (powersupply.price > sliderValue.value[1]) return false;
     if (filters.value.brand && powersupply.brand !== filters.value.brand) return false;
     return true;
   });
