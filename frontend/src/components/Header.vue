@@ -1,5 +1,11 @@
 <script setup lang="ts">
 // 你可以在这里添加导航栏的逻辑，如果需要的话
+const token = sessionStorage.getItem('token');
+
+const logout = () => {
+  sessionStorage.removeItem('token');
+  location.reload();
+};
 </script>
 
 <template>
@@ -11,6 +17,11 @@
       <li><a href="/custom-build">自定义装机</a></li>
       <li><a href="/solution">装机广场</a></li>
       <li><a href="/mySolutions">我的装机</a></li>
+    </nav>
+    <nav class="login">
+      <li><a v-if="token" @click="logout">登出</a>
+        <a v-else href="/login">登录</a>
+      </li>
     </nav>
   </header>
 </template>
@@ -61,10 +72,6 @@
   transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
-.nav-links li:hover {
-  background-color: #34495e; /* Change background color on hover */
-}
-
 .nav-links a {
   text-decoration: none;
   color: white;
@@ -76,6 +83,36 @@
 }
 
 .nav-links a:hover {
+  background-color: #34495e;
+}
+
+.login {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin-right: 20px;
+  padding: 0;
+}
+
+.login li {
+  background-color: black;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.login a:hover {
   background-color: #34495e;
 }
 
