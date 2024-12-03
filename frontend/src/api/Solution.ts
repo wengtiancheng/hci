@@ -55,20 +55,20 @@ export interface Filters {
     lowPrice: number, // 最低价格
     highPrice: number, // 最高价格
     sortBy: SortType, // 当前选择的排序方式
-    cpuName: string, // CPU 名称
-    gpuName: string, // GPU 名称
-    motherboardName: string, // 主板名称
-    memoryName: string, // 内存名称
+    cpuName: string[], // CPU 名称
+    gpuName: string[], // GPU 名称
+    motherboardName: string[], // 主板名称
+    memoryName: string[], // 内存名称
 };
 // 初始化过滤器的状态
 export const initFilters: Filters = {
     lowPrice: 0,
-    highPrice: 999999999,
+    highPrice: 99999,
     sortBy: SortType.NONE,
-    cpuName: '',
-    gpuName: '',
-    motherboardName: '',
-    memoryName: ''
+    cpuName: [],
+    gpuName: [],
+    motherboardName: [],
+    memoryName: []
 };
 
 //获取所有解决方案
@@ -135,14 +135,14 @@ and parse the "lowPrice","highPrice","cpuName","gpuName","motherboardName","memo
 and output them in JSON format. 
 
 EXAMPLE INPUT: 
-"我想装一台性能好一点的电脑，来玩3A游戏，预算在20000以内."
+"我想装一台性能好一点的电脑，来玩3A游戏，预算在15000以内."
 
 EXAMPLE JSON OUTPUT:
 {
     "lowPrice": 10000,
-    "highPrice": 20000,
-    "cpuName": "Intel Core i7-12700KF",
-    "gpuName": "RTX 3080",
+    "highPrice": 15000,
+    "cpuName": ["i7 13700K", "AMD Ryzen7 7800X3D"], 
+    "gpuName": ["RTX4060Ti", "RX7800XT"],
     "motherboardName": "B560",
     "memoryName": "DDR4"
 }
