@@ -27,45 +27,41 @@
       <!-- CPU类型筛选 -->
       <div class="filter-item">
         <label for="cpu">CPU 类型</label>
-        <select id="cpu" v-model="filters.cpuName" @change="fetchSolutions">
-          <option value="">所有</option>
-          <option value="AMD 锐龙 5 7600X">AMD 锐龙 5 7600X</option>
-          <option value="Intel Core i7-12700KF">Intel Core i7-12700KF</option>
+        <el-checkbox-group v-model="filters.cpuName" @change="fetchSolutions">
+          <el-checkbox label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
+          <el-checkbox label="i5 12600KF">i5 12600KF</el-checkbox>
+          <el-checkbox label="i7 13700K">i7 13700K</el-checkbox>
           <!-- 更多选项 -->
-        </select>
+        </el-checkbox-group>
       </div>
 
       <!-- GPU类型筛选 -->
       <div class="filter-item">
         <label for="gpu">GPU 类型</label>
-        <select id="gpu" v-model="filters.gpuName" @change="fetchSolutions">
-          <option value="">所有</option>
-          <option value="RTX 3080">RTX 3080</option>
-          <option value="RX 6750">RX 6750</option>
-          <!-- 更多选项 -->
-        </select>
+        <el-checkbox-group v-model="filters.gpuName" @change="fetchSolutions">
+          <el-checkbox label="RTX3080">RTX3080</el-checkbox>
+          <el-checkbox label="RX6750">RX6750</el-checkbox>
+          <el-checkbox label="RTX4060Ti">RTX4060Ti</el-checkbox>
+          <el-checkbox label="RX7800XT">RX7800XT</el-checkbox>
+        </el-checkbox-group>
       </div>
 
       <!-- 主板类型筛选 -->
       <div class="filter-item">
         <label for="motherboard">主板类型</label>
-        <select id="motherboard" v-model="filters.motherboardName" @change="fetchSolutions">
-          <option value="">所有</option>
-          <option value="B550">B550</option>
-          <option value="B560">B560</option>
-          <!-- 更多选项 -->
-        </select>
+        <el-checkbox-group v-model="filters.motherboardName" @change="fetchSolutions">
+          <el-checkbox label="B550">B550</el-checkbox>
+          <el-checkbox label="B560">B560</el-checkbox>
+        </el-checkbox-group>
       </div>
 
       <!-- 内存类型筛选 -->
       <div class="filter-item">
         <label for="memory">内存类型</label>
-        <select id="memory" v-model="filters.memoryName" @change="fetchSolutions">
-          <option value="">所有</option>
-          <option value="DDR4">DDR4</option>
-          <option value="DDR5">DDR5</option>
-          <!-- 更多选项 -->
-        </select>
+        <el-checkbox-group v-model="filters.memoryName" @change="fetchSolutions">
+          <el-checkbox label="DDR4">DDR4</el-checkbox>
+          <el-checkbox label="DDR5">DDR5</el-checkbox>
+        </el-checkbox-group>
       </div>
 
     </div>
@@ -75,7 +71,7 @@
       <router-link
           v-for="solution in solutions"
           :key="solution.id"
-          :to="{ path: `/solution/${solution.id}` }"
+          :to="{ path: '/custom-build', query: { solution: JSON.stringify(solution) } }"
           class="solution-card"
       >
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
@@ -93,8 +89,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAllSolution, SolutionVO, SortType, Filters, initFilters } from '../api/Solution';
-import { useRoute } from 'vue-router';
+import {getAllSolution, SolutionVO, SortType, Filters, initFilters, getSolution} from '../api/Solution';
+import {useRoute, useRouter} from 'vue-router';
+
+const router = useRouter();
+const editSolution = (solutionId: number) => {
+  router.push({ path: '/custom-build', query: { solution: JSON.stringify(getSolution(solutionId)) } });
+};
 
 // 定义过滤器的状态
 const filters = ref<Filters>(initFilters);
@@ -159,6 +160,15 @@ onMounted(() => {
   border-radius: 8px; /* Rounded corners */
 }
 
+.el-checkbox-group {
+  display: flex;
+  flex-direction: column; /* 使复选框竖向排列 */
+  gap: 10px; /* 设置复选框之间的间距 */
+}
+
+.el-checkbox {
+  font-size: 1rem;
+}
 .solutions {
   flex: 1; /* Take the remaining width */
   display: flex;
