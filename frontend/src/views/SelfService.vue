@@ -21,6 +21,7 @@ const toastRef = ref(null);
 const confirmDialogRef = ref(null);
 const compatibilityIssues = ref([]);
 const token = sessionStorage.getItem('token');
+const isLoading = ref(true);
 
 // 添加滚动位置相关的变量和方法
 const leftPanelRef = ref(null);
@@ -63,15 +64,18 @@ const calculateTotalPrice = () => {
 
   // 获取硬件详情的方法
 const fetchHardwareDetails = async () => {
-  for (const item of hardwareConfig.value) {
-    const id = sessionStorage.getItem(item.key);
-    if (id) {
-      item.details = await getHardwareDetailsById(item.key, id);
-      console.log(item.details);
+  try {
+    for (const item of hardwareConfig.value) {
+      const id = sessionStorage.getItem(item.key);
+      if (id) {
+        item.details = await getHardwareDetailsById(item.key, id);
+      }
     }
+    calculateTotalPrice();
+    checkCompatibility();
+  } finally {
+    isLoading.value = false;
   }
-  calculateTotalPrice(); // 获取完数据后计算总价
-  checkCompatibility();
 };
 
 // 根据硬件类型和 ID 获取详情
@@ -130,8 +134,7 @@ const checkCompatibility = () => {
   // 检查 CPU 和主板的类型
   const cpu = hardwareConfig.value.find(item => item.key === 'cpu').details;
   const motherboard = hardwareConfig.value.find(item => item.key === 'motherboard').details;
-  console.log(cpu);
-  console.log(motherboard);
+  
 
   if (cpu && motherboard) {
     if (cpu.type !== motherboard.type) {
@@ -154,7 +157,14 @@ const saveSolution = async () => {
   console.log(result ? '保存成功' : '保存失败');
 };
 
-onMounted(() => {
+// 使用 ref 来存储 sessionStorage 中的值
+const solutionName = ref('');
+const solutionDescription = ref('');
+
+// 使用 watchEffect 监听 sessionStorage 的变化
+
+
+onMounted(async () => {
   // 处理来自 SolutionDetail 的参数
   const query = router.currentRoute.value.query;
   if (query.solution) {
@@ -169,26 +179,32 @@ onMounted(() => {
     sessionStorage.setItem('cooling', solution.coolingId);
     sessionStorage.setItem('chassis', solution.chassisId);
     sessionStorage.setItem('display', solution.displayId);
+    sessionStorage.setItem('solutionName', solution.name);
+    sessionStorage.setItem('solutionDescription', solution.description);
+
+    solutionName.value = sessionStorage.getItem('solutionName') || '';
+    solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
+    
+    
   }
 
-  // 获取配件详情
-  fetchHardwareDetails();
+  // 先获取配件详情
+  await fetchHardwareDetails();
+
   
 
   // 检查是否需要显示提示
   const messageInfo = sessionStorage.getItem('showSuccessMessage');
-  if (messageInfo) {
+  if (messageInfo && toastRef.value) {  // 添加 toastRef.value 检查
     const { type, name, action } = JSON.parse(messageInfo);
     const message = action === 'select' 
       ? `已选择${type}:${name}`
       : `已更换${type}:${name}`;
     toastRef.value.show(message);
-    // 显示后清除标记
     sessionStorage.removeItem('showSuccessMessage');
-    
   }
 
-  // 添加恢复滚动位置的逻辑
+  // 恢复滚动位置
   restoreScrollPosition();
 });
 
@@ -201,8 +217,15 @@ onBeforeUnmount(() => {
 
 
 <template>
-  <div class="self-service">
+  <!-- 加载动画 --> 
+  <div v-if="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+  <div v-else class="self-service">
+
+    
     <!-- 左侧配置列表 -->
+    
     <div class="left-panel" ref="leftPanelRef">
       <div class="hardware-list">
     <Toast ref="toastRef" />
@@ -211,7 +234,13 @@ onBeforeUnmount(() => {
         <h3 class="hardware-title">
           {{ item.name }}
         </h3>
-        <img :src="item.details?.imageUrl || item.defaultIcon" alt="Hardware Image" class="hardware-image" />
+        <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="image-link">
+          <img 
+            :src="item.details?.imageUrl || item.defaultIcon" 
+            alt="Hardware Image" 
+            class="hardware-image" 
+          />
+        </a>
         <div class="details-container">
           <div class="product-info">
             <span class="product-name">
@@ -244,6 +273,11 @@ onBeforeUnmount(() => {
     </div>
     <!-- 右侧配置详情 -->
     <div class="right-panel">
+      <!-- 使用 ref 变量来显示 solution 信息 -->
+      <div v-if="solutionName" class="solution-info-panel">
+        <h3 class="solution-name">{{ solutionName }}</h3>
+        <p class="solution-description">{{ solutionDescription }}</p>
+      </div>
       <div class="compatibility-panel">
         <h3>硬件兼容性检查</h3>
         <div class="compatibility-content">
@@ -277,6 +311,31 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.3); /* 背景色 */
+  border-top: 4px solid #ffffff; /* 旋转部分的颜色 */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 .self-service {
   position: fixed;
   top: 60px;
@@ -600,36 +659,34 @@ onBeforeUnmount(() => {
   color: gray;
 }
 
-/* 添加媒体查询以处理较小屏幕 */
-@media screen and (max-width: 1024px) {
-  .self-service {
-    flex-direction: column;
-  }
-
-  .right-panel {
-    width: 100%;
-    max-width: none;
-    border-left: none;
-    border-top: 1px solid #e0e0e0;
-  }
-
-  .hardware-info {
-    flex-wrap: wrap;
-  }
+.solution-info-panel {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f8f8f8;
 }
 
-/* 添加媒体查询以优化移动设备显示 */
-@media screen and (max-width: 768px) {
-  .self-service {
-    font-size: 0.875em;
-  }
-
-  .hardware-title {
-    font-size: 1em;
-  }
-
-  .price-value {
-    font-size: 1.25em;
-  }
+.solution-name {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.2em;
+  font-weight: bold;
 }
+
+.solution-description {
+  margin: 0;
+  color: #666;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.image-link {
+  display: inline-block;
+}
+
+.hardware-image {
+  cursor: pointer;
+}
+
 </style>
