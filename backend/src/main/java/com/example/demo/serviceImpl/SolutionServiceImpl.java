@@ -81,13 +81,13 @@ public class SolutionServiceImpl implements SolutionService{
         solution.setTotalPrice(totalPrice);
         // 设置 create_time
         solution.setCreateTime(new Date());
-        solution.setSaveNum(0);
+        solution.setSaveNum(-1); // -1 表示是用户的创建的方案，而不是广场上的方案
         solutionRepository.save(solution);
 
 
-        List<Integer> solutions = user.getMySolutions();
+        List<Integer> solutions = user.getMySaveSolutions();
         solutions.add(solution.getId());
-        user.setMySolutions(solutions);
+        user.setMySaveSolutions(solutions);
         userRepository.save(user);
         return true;
     }
@@ -97,10 +97,10 @@ public class SolutionServiceImpl implements SolutionService{
         if (id == null) throw DemoException.paramError();
         User user = securityUtil.getCurrentUser();
         if (user == null) throw DemoException.notLogin();
-        List<Integer> solutions = user.getMySolutions();
+        List<Integer> solutions = user.getMyStarSolutions();
         if (solutions.contains(id)) return false;
         solutions.add(id);
-        user.setMySolutions(solutions);
+        user.setMyStarSolutions(solutions);
         userRepository.save(user);
         return true;
     }
@@ -112,10 +112,17 @@ public class SolutionServiceImpl implements SolutionService{
         return solution.toVO();
     }
 
+    private boolean isContain(String name, List<String> Names){
+        for (String name1 : Names){
+            if (name.contains(name1)) return true;
+        }
+        return false;
+    }
     @Override
     public List<SolutionVO> getAllSolutionsByFilter(FilterVO filterVO) {
         if (filterVO == null) throw DemoException.paramError();
         List<Solution> solutions = solutionRepository.findAll();
+        solutions = solutions.stream().filter(solution -> solution.getSaveNum() != -1).toList();
         if (filterVO.getLowPrice() != null && filterVO.getHighPrice() != null) {
             solutions = solutions.stream()
                 .filter(solution -> solution.getTotalPrice() >= filterVO.getLowPrice() && solution.getTotalPrice() <= filterVO.getHighPrice())
@@ -136,28 +143,45 @@ public class SolutionServiceImpl implements SolutionService{
                 .sorted(Comparator.comparing(Solution::getCreateTime).reversed())
                 .toList();
         }
-        if (filterVO.getCpuName() != null) {
+        System.out.println(solutions.size());
+        // 筛选 solution 的 cpuName 包含 cpuNames 其中一个
+        if (!filterVO.getCpuName().isEmpty()) {
+            List<String> cpuNames = filterVO.getCpuName();
             solutions = solutions.stream()
-                .filter(solution -> Objects.requireNonNull(cpuRepository.findById(solution.getCpuId()).orElse(null)).getName().contains(filterVO.getCpuName()))
+                    .filter(solution -> cpuNames.stream()
+                            .anyMatch(cpuName -> Objects.requireNonNull(cpuRepository.findById(solution.getCpuId()).orElse(null))
+                                    .getName().contains(cpuName)))
+                    .toList();
+        }
+        System.out.println(solutions.size());
+        if (!filterVO.getGpuName().isEmpty()) {
+            List<String> gpuNames = filterVO.getGpuName();
+            solutions = solutions.stream()
+                .filter(solution -> gpuNames.stream()
+                        .anyMatch(gpuName -> Objects.requireNonNull(gpuRepository.findById(solution.getGpuId()).orElse(null))
+                                .getName().contains(gpuName)))
                 .toList();
         }
-        if (filterVO.getGpuName() != null) {
+        System.out.println(solutions.size());
+        if (!filterVO.getMotherboardName().isEmpty()) {
+            List<String> motherboardNames = filterVO.getMotherboardName();
             solutions = solutions.stream()
-                .filter(solution -> Objects.requireNonNull(gpuRepository.findById(solution.getGpuId()).orElse(null)).getName().contains(filterVO.getGpuName()))
+                .filter(solution -> motherboardNames.stream()
+                        .anyMatch(motherboardName -> Objects.requireNonNull(motherboardRepository.findById(solution.getMotherboardId()).orElse(null))
+                                .getName().contains(motherboardName)))
                 .toList();
         }
-        if (filterVO.getMotherboardName() != null) {
+        System.out.println(solutions.size());
+        if (!filterVO.getMemoryName().isEmpty()) {
+            List<String> memoryNames = filterVO.getMemoryName();
             solutions = solutions.stream()
-                .filter(solution -> Objects.requireNonNull(motherboardRepository.findById(solution.getMotherboardId()).orElse(null)).getName().contains(filterVO.getMotherboardName()))
+                .filter(solution -> memoryNames.stream()
+                        .anyMatch(memoryName -> Objects.requireNonNull(memoryRepository.findById(solution.getMemoryId()).orElse(null))
+                                .getName().contains(memoryName)))
                 .toList();
         }
-        if (filterVO.getMemoryName() != null) {
-            solutions = solutions.stream()
-                .filter(solution -> Objects.requireNonNull(memoryRepository.findById(solution.getMemoryId()).orElse(null)).getName().contains(filterVO.getMemoryName()))
-                .toList();
-        }
+        System.out.println(solutions.size());
         return solutions.stream().map(Solution::toVO).toList();
     }
-
 
 }

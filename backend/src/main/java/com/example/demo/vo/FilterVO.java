@@ -26,5 +26,4 @@ public class FilterVO {
     List<String> gpuName; // RTX 3080 // RX 6750
     List<String> motherboardName; // B550 // B560
     List<String> memoryName; // DDR4 // DDR5
-
 }

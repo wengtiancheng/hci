@@ -19,4 +19,5 @@ public interface SolutionService {
 
     List<SolutionVO> getAllSolutionsByFilter(FilterVO filterVO);
 
+//    Boolean unStarSolution(Integer id);
 }

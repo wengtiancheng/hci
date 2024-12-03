@@ -71,7 +71,7 @@
       <router-link
           v-for="solution in solutions"
           :key="solution.id"
-          :to="{ path: '/custom-build', query: { solutionId: solution.id } }"
+          :to="{ path: '/custom-build', query: { solution: JSON.stringify(solution) } }"
           class="solution-card"
       >
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
