@@ -83,10 +83,12 @@
           <span>{{ motherboard.memoryType }}</span>
         </div>
         <div class="component-price">￥{{ motherboard.price }}</div>
-        <button @click="selectMotherboard(motherboard)" class="select-button">选择</button>
-        <div v-if="motherboard.type !== cpuType && cpuType !== ''" class="warning">
-          <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
-          警告：主板类型与CPU类型不匹配
+        <div class="button-container">
+          <button @click="selectMotherboard(motherboard)" class="select-button">选择</button>
+          <div v-if="motherboard.type !== cpuType && cpuType !== ''" class="warning">
+            <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+            警告：主板类型与CPU类型不匹配
+          </div>
         </div>
       </div>
 
@@ -263,7 +265,7 @@ const handlePageChange = (page: number) => {
   display: flex;
   align-items: center;
   gap: 4px;
-  
+  margin-top: 4px;
   .warning-icon {
     width: 20px;
     height: 20px;
