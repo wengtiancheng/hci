@@ -5,6 +5,7 @@ import com.example.demo.po.CPU;
 import com.example.demo.po.User;
 import com.example.demo.repository.*;
 import com.example.demo.service.SolutionService;
+import com.example.demo.service.UserService;
 import com.example.demo.util.SecurityUtil;
 import com.example.demo.vo.FilterVO;
 import com.example.demo.vo.SolutionVO;
@@ -85,23 +86,35 @@ public class SolutionServiceImpl implements SolutionService{
         solutionRepository.save(solution);
 
 
-        List<Integer> solutions = user.getMySaveSolutions();
+        List<Integer> solutions = user.getMySolutions();
         solutions.add(solution.getId());
-        user.setMySaveSolutions(solutions);
+        user.setMySolutions(solutions);
         userRepository.save(user);
         return true;
     }
 
     @Override
-    public Boolean starSolution(Integer id) {
+    public Boolean deleteSolution(Integer id) {
         if (id == null) throw DemoException.paramError();
         User user = securityUtil.getCurrentUser();
         if (user == null) throw DemoException.notLogin();
-        List<Integer> solutions = user.getMyStarSolutions();
-        if (solutions.contains(id)) return false;
-        solutions.add(id);
-        user.setMyStarSolutions(solutions);
-        userRepository.save(user);
+        List<Integer> solutions = user.getMySolutions();
+        if (solutions.contains(id)) {
+            solutionRepository.deleteById(id);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean starSolution(Integer id) {
+//        if (id == null) throw DemoException.paramError();
+//        User user = securityUtil.getCurrentUser();
+//        if (user == null) throw DemoException.notLogin();
+//        List<Integer> solutions = user.getMyStarSolutions();
+//        if (solutions.contains(id)) return false;
+//        solutions.add(id);
+//        user.setMyStarSolutions(solutions);
+//        userRepository.save(user);
         return true;
     }
 

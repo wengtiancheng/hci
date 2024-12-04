@@ -32,23 +32,13 @@ public class UserController {
     }
 
     /**
-     * 获取 我的收藏 装机方案
+     * 获取 我的所有 装机方案
      *
-     * @return 装机方案s
+     * @return 所有 装机方案
      */
-    @GetMapping("/starSolutions")
-    public ResultVO<List<SolutionVO>> getMyStarSolutions(){
-        return ResultVO.buildSuccess(userService.getMyStarSolutions());
-    }
-
-    /**
-     * 获取 我的创建装机方案
-     *
-     * @return 装机方案s
-     */
-    @GetMapping("/saveSolutions")
-    public ResultVO<List<SolutionVO>> getMySaveSolutions(){
-        return ResultVO.buildSuccess(userService.getMySaveSolutions());
+    @GetMapping("/solutions")
+    public ResultVO<List<SolutionVO>> getMySolutions(){
+        return ResultVO.buildSuccess(userService.getMySolutions());
     }
 
 }

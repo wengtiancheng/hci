@@ -72,13 +72,14 @@ public class SolutionController {
 
     /**
      * 收藏 一个 装机方案
+     * 废弃：统一用 starSolution
      * @param id
      * @return
      */
-    @PostMapping("/star/{id}")
-    public ResultVO<Boolean> starSolution(@PathVariable(value = "id") Integer id){
-        return ResultVO.buildSuccess(solutionService.starSolution(id));
-    }
+//    @PostMapping("/star/{id}")
+//    public ResultVO<Boolean> starSolution(@PathVariable(value = "id") Integer id){
+//        return ResultVO.buildSuccess(solutionService.starSolution(id));
+//    }
 
     /**
       * 获取一个 装机方案
@@ -90,5 +91,10 @@ public class SolutionController {
     @GetMapping("/{id}")
     public ResultVO<SolutionVO> getSolution(@PathVariable(value = "id") Integer id){
         return ResultVO.buildSuccess(solutionService.getSolution(id));
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResultVO<Boolean> deleteSolution(@PathVariable(value = "id") Integer id){
+        return ResultVO.buildSuccess(solutionService.deleteSolution(id));
     }
 }

@@ -63,34 +63,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SolutionVO> getMyStarSolutions() {
+    public List<SolutionVO> getMySolutions() {
         User user=securityUtil.getCurrentUser();
-        List<Integer> solutions = user.getMySaveSolutions();
-        // 如果 solutions 为 null，则返回空列表
-        if (solutions == null) return null;
+        List<Integer> solutions = user.getMySolutions();
+        if (solutions == null) throw DemoException.mySolutionNotExists();
 
         List<Solution> solutionList = solutions.stream()
-            .map(solutionId -> solutionRepository.findById(solutionId).orElse(null))
-            .toList();
+                .map(solutionId -> solutionRepository.findById(solutionId).orElse(null))
+                .toList();
 
         return solutionList.stream()
-            .filter(Objects::nonNull) // 过滤掉 null 值
-            .map(Solution :: toVO) // 转换为 SolutionVO
-            .toList();
-    }
-
-    @Override
-    public List<SolutionVO> getMySaveSolutions() {
-        User user=securityUtil.getCurrentUser();
-        List<Integer> solutions = user.getMyStarSolutions();
-        if (solutions == null) return null;
-        List<Solution> solutionList = solutions.stream()
-            .map(solutionId -> solutionRepository.findById(solutionId).orElse(null))
-            .toList();
-        return solutionList.stream()
-            .filter(Objects::nonNull) // 过滤掉 null 值
-            .map(Solution :: toVO) // 转换为 SolutionVO
-            .toList();
+                .filter(Objects::nonNull) // 过滤掉 null 值
+                .map(Solution :: toVO) // 转换为 SolutionVO
+                .toList();
     }
 
 

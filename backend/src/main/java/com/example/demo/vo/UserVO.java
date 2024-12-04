@@ -18,8 +18,7 @@ public class UserVO {
     private String phone; // 手机号
     private String password; // 密码
     private Date createTime; // 创建时间
-    private List<Integer> myStarSolutions; // 我收藏的方案
-    private List<Integer> mySaveSolutions; // 我创建的方案
+    private List<Integer> mySolutions;
 
 
     public User toPO(){
@@ -29,8 +28,7 @@ public class UserVO {
         user.setPhone(phone);
         user.setPassword(password);
         user.setCreateTime(createTime);
-        user.setMySaveSolutions(mySaveSolutions);
-        user.setMyStarSolutions(myStarSolutions);
+        user.setMySolutions(mySolutions);
 
         return user;
     }

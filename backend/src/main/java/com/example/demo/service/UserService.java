@@ -12,11 +12,7 @@ public interface UserService {
 
     UserVO getInformation();
 
-    List<SolutionVO> getMySaveSolutions();
-
-    List<SolutionVO> getMyStarSolutions();
-
-//    Boolean isMyStarSolution(Integer id);/
+    List<SolutionVO> getMySolutions();
 
     //...removeReceiveInfo
 }

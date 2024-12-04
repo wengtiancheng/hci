@@ -11,4 +11,6 @@ import java.util.List;
  * @date 2024/11/23 21:14
  */
 public interface SolutionRepository extends JpaRepository<Solution, Integer> {
+    @Override
+    void deleteById(Integer integer);
 }

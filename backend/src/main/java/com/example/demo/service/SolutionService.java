@@ -13,6 +13,7 @@ public interface SolutionService {
     // 获取所有 装机方案
     List<SolutionVO> getAllSolutions();
     Boolean saveSolution(SolutionVO solutionVO);
+    Boolean deleteSolution(Integer id);
     Boolean starSolution(Integer id);
 
     SolutionVO getSolution(Integer id);

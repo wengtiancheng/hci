@@ -37,10 +37,7 @@ public class User {
     private Date createTime;
 
     @ElementCollection
-    private List<Integer> mySaveSolutions;
-
-    @ElementCollection
-    private List<Integer> myStarSolutions;
+    private List<Integer> mySolutions;
 
     public UserVO toVO(){
         UserVO userVO=new UserVO();
@@ -49,8 +46,7 @@ public class User {
         userVO.setPhone(phone);
         userVO.setPassword(password);
         userVO.setCreateTime(createTime);
-        userVO.setMySaveSolutions(mySaveSolutions);
-        userVO.setMyStarSolutions(myStarSolutions);
+        userVO.setMySolutions(mySolutions);
         return userVO;
     }
 }
