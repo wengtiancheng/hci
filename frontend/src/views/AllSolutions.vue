@@ -1,18 +1,18 @@
 <template>
   <div class="all-solutions">
-    <!-- 左侧过滤器 -->
+    <!-- Left filters -->
     <div class="filters">
       <h3>过滤器</h3>
 
-      <!-- 总价区间筛选 -->
+      <!-- Price range filter -->
       <div class="filter-item">
         <label>价格范围</label>
         <vue-slider v-model="sliderValue" :min="0" :max="99999"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
-                    @change="sliderChange" ></vue-slider>
+                    @change="sliderChange"></vue-slider>
       </div>
 
-      <!-- 排序方式 -->
+      <!-- Sort order filter -->
       <div class="filter-item">
         <label for="sort-order">排序方式</label>
         <select id="sort-order" v-model="filters.sortBy" @change="fetchSolutions">
@@ -23,18 +23,18 @@
         </select>
       </div>
 
-      <!-- CPU类型筛选 -->
+      <!-- CPU type filter -->
       <div class="filter-item">
         <label for="cpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">CPU 类型</label>
         <el-checkbox-group v-model="filters.cpuName" @change="fetchSolutions">
           <el-checkbox label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
           <el-checkbox label="i5 12600KF">i5 12600KF</el-checkbox>
           <el-checkbox label="i7 13700K">i7 13700K</el-checkbox>
-          <!-- 更多选项 -->
+          <!-- More options -->
         </el-checkbox-group>
       </div>
 
-      <!-- GPU类型筛选 -->
+      <!-- GPU type filter -->
       <div class="filter-item">
         <label for="gpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">GPU 类型</label>
         <el-checkbox-group v-model="filters.gpuName" @change="fetchSolutions">
@@ -45,7 +45,7 @@
         </el-checkbox-group>
       </div>
 
-      <!-- 主板类型筛选 -->
+      <!-- Motherboard type filter -->
       <div class="filter-item">
         <label for="motherboard" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">主板类型</label>
         <el-checkbox-group v-model="filters.motherboardName" @change="fetchSolutions">
@@ -54,7 +54,7 @@
         </el-checkbox-group>
       </div>
 
-      <!-- 内存类型筛选 -->
+      <!-- Memory type filter -->
       <div class="filter-item">
         <label for="memory" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">内存类型</label>
         <el-checkbox-group v-model="filters.memoryName" @change="fetchSolutions">
@@ -62,10 +62,9 @@
           <el-checkbox label="DDR5">DDR5</el-checkbox>
         </el-checkbox-group>
       </div>
-
     </div>
 
-    <!-- 右侧装机方案卡片 -->
+    <!-- Right solution cards -->
     <div class="solutions">
       <router-link
           v-for="solution in solutions"
@@ -76,8 +75,8 @@
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
         <div class="solution-info">
           <h4>{{ solution.name }}</h4>
-          <p class="secondary-text">收藏次数：{{ solution.saveNum }}</p>
-          <p class="secondary-text">创建时间：{{ new Date(solution.createTime).toLocaleDateString() }}</p>
+          <p class="secondary-text">CPU 型号：{{ solution.cpuName }}</p>
+          <p class="secondary-text">GPU 型号：{{ solution.gpuName }}</p>
           <p class="price">价格：￥{{ solution.totalPrice }}</p>
         </div>
       </router-link>
@@ -87,43 +86,49 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import {getAllSolution, SolutionVO, SortType, Filters, initFilters, getSolution} from '../api/Solution';
-import {useRoute, useRouter} from 'vue-router';
+import { getAllSolution, SolutionVO, SortType, Filters, initFilters } from '../api/Solution';
+import { getCPUById } from '../api/CPU';
+import { getGPUById } from '../api/GPU';
+import { useRoute } from 'vue-router';
 
-const router = useRouter();
-const editSolution = (solutionId: number) => {
-  router.push({ path: '/custom-build', query: { solution: JSON.stringify(getSolution(solutionId)) } });
-};
-
-// 定义过滤器的状态
+// Define filter state
 const filters = ref<Filters>(initFilters);
 
-const sliderValue = ref([0, 99999])
+const sliderValue = ref([0, 99999]);
 
-// 装机方案列表
+// List of solutions
 const solutions = ref<SolutionVO[]>([]);
 
-// 获取路由参数
+// Fetch CPU and GPU names
+const fetchNames = async (solutions: SolutionVO[]) => {
+  for (const solution of solutions) {
+    solution.cpuName = (await getCPUById(solution.cpuId)).name;
+    solution.gpuName = (await getGPUById(solution.gpuId)).name;
+  }
+};
+
+// Fetch all solutions
+const fetchSolutions = async () => {
+  console.log('Fetching solutions with filters:', filters.value);
+  solutions.value = await getAllSolution(filters.value);
+  await fetchNames(solutions.value);
+};
+
+// Get route parameters
 const route = useRoute();
 if (route.query.filters) {
-  filters.value = JSON.parse(route.query.filters as string); // 解析 filters
+  filters.value = JSON.parse(route.query.filters as string); // Parse filters
 }
 
-// 价格区间滑动条的回调函数
+// Slider change callback
 const sliderChange = async (value: number[]) => {
   filters.value.lowPrice = value[0];
   filters.value.highPrice = value[1];
   console.log('Change slider:', filters.value);
-  solutions.value = await getAllSolution(filters.value);
-}
-
-// 获取所有装机方案的方法
-const fetchSolutions = async () => {
-  console.log('Fetching solutions with filters:', filters.value);
-  solutions.value = await getAllSolution(filters.value);
+  await fetchSolutions();
 };
 
-// 当组件挂载时获取装机方案
+// Fetch solutions when component is mounted
 onMounted(() => {
   console.log('AllSolutions mounted.');
   fetchSolutions();

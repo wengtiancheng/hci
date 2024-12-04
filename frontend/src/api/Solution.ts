@@ -26,6 +26,8 @@ export interface SolutionVO {
     coolingId: number;
     chassisId: number;
     displayId: number;
+    cpuName?: string;
+    gpuName?: string;
 }
 
 // 初始化 SolutionVO
