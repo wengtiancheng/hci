@@ -102,6 +102,15 @@ export const uploadSolution = (solution: SolutionVO) => {
         })
 }
 
+
+// 删除一个装机方案
+export const deleteSolution = (id: number) => {
+    return axios.delete(`${SOLUTION_MODULE}/delete/${id}`)
+        .then(res => {
+            return res.data.result;
+        })
+}
+
 // 收藏一个装机方案
 export const starSolution = (id: number) => {
     return axios.post(`${SOLUTION_MODULE}/star/${id}`)
