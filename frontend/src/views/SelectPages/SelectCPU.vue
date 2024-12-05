@@ -3,6 +3,8 @@ import { ref, onMounted, computed } from 'vue';
 import { getAllCPU } from "../../api/CPU.ts";
 import SearchBox from '../../components/SearchBox.vue';
 import router from '../../router';
+import { getMotherboardById } from '../../api/Motherboard';
+import ConfirmDialog from '../../components/ConfirmDialog.vue';
 
 interface CPU {
   id: number;
@@ -14,8 +16,9 @@ interface CPU {
 
 const cpuList = ref<CPU[]>([]);
 const searchQuery = ref('');
-
+const motherboardType = ref('');
 const sliderValue = ref([0, 99999]);
+const confirmDialog = ref();
 
 const filters = ref({
   type: '',
@@ -45,7 +48,31 @@ const fetchCPUs = async () => {
   cpuList.value = filteredList;
 }
 
-const selectCPU = (cpu: CPU) => {
+
+
+// 获取已选择的主板信息
+const getSelectedMotherboard = () => {
+  const motherboardId = sessionStorage.getItem('motherboard');
+  if (motherboardId) {
+    getMotherboardById(Number(motherboardId)).then(motherboard => {
+      motherboardType.value = motherboard.type;
+    });
+  }
+}
+
+// 修改 selectCPU 函数
+const selectCPU = async (cpu: CPU) => {
+  if (cpu.type !== motherboardType.value && motherboardType.value !== '') {
+    const confirmed = await confirmDialog.value.show(
+      '类型不匹配提醒',
+      `当前选择的CPU类型(${cpu.type})与主板类型(${motherboardType.value})不匹配，是否确认选择？`
+    );
+    
+    if (!confirmed) {
+      return;
+    }
+  }
+  
   sessionStorage.setItem('cpu', String(cpu.id));
   sessionStorage.setItem('showSuccessMessage', JSON.stringify({
     type: 'CPU',
@@ -63,6 +90,7 @@ const filteredCPUs = computed(() => {
 });
 
 onMounted(() => {
+  getSelectedMotherboard();
   fetchCPUs();
 })
 
@@ -141,16 +169,25 @@ const handlePageChange = (page: number) => {
       <div v-else v-for="cpu in currentPageData" 
            :key="cpu.id" 
            class="component-item">
-        <img :src="cpu.imageUrl" alt="CPU图片" class="component-image" />
-        <div class="component-name">{{ cpu.name }}</div>
-        <div class="component-info">
-          <span>{{ cpu.type }}</span>
+        <div class="main-info-row">
+          <img :src="cpu.imageUrl" alt="CPU图片" class="component-image" />
+          <div class="component-name">{{ cpu.name }}</div>
+          <div class="component-info">
+            <span>{{ cpu.type }}</span>
+          </div>
+          <div class="component-price">￥{{ cpu.price }}</div>
+          <button @click="selectCPU(cpu)" class="select-button">选择</button>
         </div>
-        <div class="component-price">￥{{ cpu.price }}</div>
-        <button @click="selectCPU(cpu)" class="select-button">选择</button>
+        
+        <div v-if="cpu.type !== motherboardType && motherboardType !== ''" 
+             class="warning-row">
+          <div class="warning">
+            <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+            警告：CPU类型与主板类型不匹配
+          </div>
+        </div>
       </div>
 
-      <!-- 添加分页控件 -->
       <div class="pagination">
         <button 
           :disabled="currentPage === 1"
@@ -173,13 +210,46 @@ const handlePageChange = (page: number) => {
         </button>
       </div>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 @use './select-page.scss';
 
-  
+.component-item {
+  flex-direction: column;
+  padding: 0;
+}
 
+.main-info-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5em 0.75em;
+  gap: 1em;
+  justify-content: space-between;
+}
+
+.warning-row {
+  width: 100%;
+  padding: 0 0.75em;
+  margin-top: -2em;  // 减少间距
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1em;
+}
+
+.warning {
+  color: red;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
   
+  .warning-icon {
+    width: 20px;
+    height: 20px;
+    margin-top: 3px;
+  }
+}
 </style>

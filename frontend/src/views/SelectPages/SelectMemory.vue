@@ -202,17 +202,23 @@ onMounted(() => {
       <div v-else v-for="memory in currentPageData" 
            :key="memory.id" 
            class="component-item">
-        <img :src="memory.imageUrl" alt="内存图片" class="component-image" />
-        <div class="component-name">{{ memory.name }}</div>
-        <div class="component-info">
-          <span>{{ getBrandLabel(memory.brand) }}</span>
-          <span>{{ memory.type }}</span>
+        <div class="main-info-row">
+          <img :src="memory.imageUrl" alt="内存图片" class="component-image" />
+          <div class="component-name">{{ memory.name }}</div>
+          <div class="component-info">
+            <span>{{ getBrandLabel(memory.brand) }}</span>
+            <span>{{ memory.type }}</span>
+          </div>
+          <div class="component-price">￥{{ memory.price }}</div>
+          <button @click="selectMemory(memory)" class="select-button">选择</button>
         </div>
-        <div class="component-price">￥{{ memory.price }}</div>
-        <button @click="selectMemory(memory)" class="select-button">选择</button>
-        <div v-if="memory.type !== motherboardMemoryType && motherboardMemoryType !== ''" class="warning"> 
-          <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
-          警告：内存类型和主板不兼容
+        
+        <div v-if="memory.type !== motherboardMemoryType && motherboardMemoryType !== ''" 
+             class="warning-row">
+          <div class="warning"> 
+            <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+            警告：内存类型和主板不兼容
+          </div>
         </div>
       </div>
 
@@ -246,15 +252,39 @@ onMounted(() => {
 <style lang="scss" scoped>
 @use './select-page.scss';
 
+.component-item {
+  flex-direction: column;
+  padding: 0;
+}
+
+.main-info-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5em 0.75em;
+  gap: 1em;
+  justify-content: space-between;
+}
+
+.warning-row {
+  width: 100%;
+  padding: 0 0.75em;
+  margin-top: -2em;  // 减少间距
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1em;
+}
+
 .warning {
   color: red;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
   
   .warning-icon {
     width: 20px;
     height: 20px;
+    margin-top: 3px;
   }
 }
 </style>

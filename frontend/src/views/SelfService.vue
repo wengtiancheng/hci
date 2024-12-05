@@ -55,7 +55,7 @@ const hardwareConfig = ref([
   { key: 'cooling', name: '散热器', defaultIcon:'src/assets/icons/cooling.svg', details: null}
   ]);
 
-  // 计算总价的方法
+  // 计算总价的
 const calculateTotalPrice = () => {
   totalPrice.value = hardwareConfig.value.reduce((sum, item) => {
     return sum + (item.details?.price || 0);
@@ -146,15 +146,40 @@ const checkCompatibility = () => {
   const memory = hardwareConfig.value.find(item => item.key === 'memory').details;
 
   if (motherboard && memory) {
-    if (motherboard.type != memory.type) {
+    console.log(motherboard.memoryType, memory.type);
+    if (motherboard.memoryType != memory.type) {
       compatibilityIssues.value.push({ cpuName: '主板', cpuKey: 'motherboard', motherboardName: '内存', motherboardKey: 'memory' });
     }
   }
 };
 
+// 保存配置
 const saveSolution = async () => {
-  const result = await uploadSolution(solution.value);
-  console.log(result ? '保存成功' : '保存失败');
+  const solution = {
+    id: 0,
+    name: solutionName.value,
+    imageUrl: '',
+    totalPrice: totalPrice.value,
+    description: solutionDescription.value,
+    saveNum: 0,
+    createTime: new Date(),
+    cpuId: parseInt(sessionStorage.getItem('cpu') || '0'),
+    motherboardId: parseInt(sessionStorage.getItem('motherboard') || '0'),
+    gpuId: parseInt(sessionStorage.getItem('gpu') || '0'),
+    memoryId: parseInt(sessionStorage.getItem('memory') || '0'),
+    harddiskId: parseInt(sessionStorage.getItem('harddisk') || '0'),
+    powersupplyId: parseInt(sessionStorage.getItem('powersupply') || '0'),
+    coolingId: parseInt(sessionStorage.getItem('cooling') || '0'),
+    chassisId: parseInt(sessionStorage.getItem('chassis') || '0'),
+    displayId: parseInt(sessionStorage.getItem('display') || '0')
+  };
+
+  const result = await uploadSolution(solution);
+  if (result) {
+    toastRef.value.show('保存成功');
+  } else {
+    toastRef.value.show('保存失败');
+  }
 };
 
 // 使用 ref 来存储 sessionStorage 中的值
@@ -285,10 +310,26 @@ onBeforeUnmount(() => {
     </div>
     <!-- 右侧配置详情 -->
     <div class="right-panel">
-      <!-- 使用 ref 变量来显示 solution 信息 -->
-      <div v-if="solutionName" class="solution-info-panel">
-        <h3 class="solution-name">{{ solutionName }}</h3>
-        <p class="solution-description">{{ solutionDescription }}</p>
+      <!-- 当有现成方案时显示信息，否则显示输入框 -->
+      <div class="solution-info-panel">
+        <template v-if="solutionName">
+          <h3 class="solution-name">{{ solutionName }}</h3>
+          <p class="solution-description">{{ solutionDescription }}</p>
+        </template>
+        <template v-else>
+          <div class="solution-input">
+            <input 
+              v-model="solutionName" 
+              placeholder="请输入配置方案名称"
+              class="solution-name-input"
+            />
+            <textarea
+              v-model="solutionDescription" 
+              placeholder="请输入配置方案描述"
+              class="solution-description-input"
+            ></textarea>
+          </div>
+        </template>
       </div>
       <div class="compatibility-panel">
         <h3>硬件兼容性检查</h3>
@@ -314,7 +355,7 @@ onBeforeUnmount(() => {
           <button class="reset-btn" @click="confirmReset">
             <span class="reset-text">重置配置</span>
           </button>
-          <button class="save-btn">保存配置</button>
+          <button class="save-btn" @click="saveSolution">保存配置</button>
         </div>
       </div>
     </div>
@@ -446,11 +487,11 @@ onBeforeUnmount(() => {
   width: 25%;
   min-width: 280px;
   max-width: 350px;
-  background-color: white;
+  background-color: #f8f8f8;
   border-left: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 25px;
   margin-top: 2%;
   height: 100%;
 }
@@ -553,12 +594,15 @@ onBeforeUnmount(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
+  max-width: 300px;
   font-size: 1.125em;
 }
 
 .price {
   margin: 0;
+  /*需要减去button-container的宽度*/
+  right: 180px;
+  position: absolute;
   color: #ff4d4f;
   font-weight: bold;
   white-space: nowrap;
@@ -581,24 +625,26 @@ onBeforeUnmount(() => {
 }
 
 .compatibility-panel {
-  height: 300px;
+  height: 150px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #f8f8f8;
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  margin-bottom: 50px
 }
 
 .compatibility-panel h3 {
   margin: 0 0 15px 0;
   color: #333;
   font-size: 1.375em;
+  text-align: center;
 }
 
 .compatibility-content {
   height: calc(100% - 40px);
   overflow-y: auto;
-  font-size: 0.875em;
+  font-size: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -643,7 +689,7 @@ onBeforeUnmount(() => {
 }
 
 .reset-btn {
-  background-color: #f5f5f5;
+  background-color: #d3d3d3;
   color: #333;
 }
 
@@ -661,21 +707,21 @@ onBeforeUnmount(() => {
 }
 
 .summary-panel {
-  margin-top: 80px;
-  padding: 0;
+  margin-top: 0;
+  padding: 0 0 15px 0;
+  margin-bottom: 50px
 }
 
 .total-price-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .total-price {
-  background-color: #f8f8f8;
-  padding: 15px 30px;
+  background-color: #fff;
+  padding: 20px 30px;
   border-radius: 8px;
-  width: fit-content;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -697,13 +743,13 @@ onBeforeUnmount(() => {
 
 .action-buttons {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .reset-btn, .save-btn {
-  padding: 12px 35px; 
+  padding: 15px 35px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1em;
@@ -747,9 +793,10 @@ onBeforeUnmount(() => {
 .solution-info-panel {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #f8f8f8;
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  margin-bottom: 50px
 }
 
 .solution-name {
@@ -772,6 +819,38 @@ onBeforeUnmount(() => {
 
 .hardware-image {
   cursor: pointer;
+}
+
+.solution-input {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  
+}
+
+.solution-name-input{
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  width: calc(100% - 20px);
+  margin: 0 auto;
+}
+
+.solution-description-input{
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  min-height: 100px;
+}
+
+.solution-name-input:focus,
+.solution-description-input:focus {
+  outline: none;
+  border-color: #007bff;
 }
 
 </style>

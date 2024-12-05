@@ -75,19 +75,31 @@
       <div v-else v-for="motherboard in currentPageData" 
            :key="motherboard.id" 
            class="component-item">
-        <img :src="motherboard.imageUrl" alt="主板图片" class="component-image" />
-        <div class="component-name">{{ motherboard.name }}</div>
-        <div class="component-info">
-          <span>{{ getBrandLabel(motherboard.brand) }}</span>
-          <span>{{ motherboard.type }}</span>
-          <span>{{ motherboard.memoryType }}</span>
-        </div>
-        <div class="component-price">￥{{ motherboard.price }}</div>
-        <div class="button-container">
+        <div class="main-info-row">
+          <img :src="motherboard.imageUrl" alt="主板图片" class="component-image" />
+          <div class="component-name">{{ motherboard.name }}</div>
+          <div class="component-info">
+            <span>{{ getBrandLabel(motherboard.brand) }}</span>
+            <span>{{ motherboard.type }}</span>
+            <span>{{ motherboard.memoryType }}</span>
+          </div>
+          <div class="component-price">￥{{ motherboard.price }}</div>
           <button @click="selectMotherboard(motherboard)" class="select-button">选择</button>
-          <div v-if="motherboard.type !== cpuType && cpuType !== ''" class="warning">
+        </div>
+        
+        <div v-if="(motherboard.type !== cpuType && cpuType !== '') || 
+                   (memoryType && motherboard.memoryType !== memoryType)" 
+             class="warning-row">
+          <div class="warning">
             <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
-            警告：主板类型与CPU类型不匹配
+            <div class="warning-messages">
+              <div v-if="motherboard.type !== cpuType && cpuType !== ''">
+                警告：主板类型与CPU类型不匹配
+              </div>
+              <div v-if="memoryType && motherboard.memoryType !== memoryType">
+                警告：主板内存接口与已选内存不匹配
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -122,6 +134,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { getAllMotherboard } from "../../api/Motherboard.ts";
 import { getCPUById } from '../../api/CPU';
+import { getMemoryById } from '../../api/Memory';
 import router from '../../router';
 import SearchBox from '../../components/SearchBox.vue';
 import ConfirmDialog from '../../components/ConfirmDialog.vue';
@@ -140,6 +153,7 @@ const motherboardList = ref<Motherboard[]>([]);
 const cpuType = ref('');
 const searchQuery = ref('');
 const sliderValue = ref([0, 99999]);
+const memoryType = ref('');
 
 const sliderChange = () => {
   fetchMotherboards();
@@ -210,10 +224,23 @@ const fetchMotherboards = async () => {
 const confirmDialog = ref();
 
 const selectMotherboard = async (motherboard: Motherboard) => {
+  let warningMessage = '';
+  
+  // 检查 CPU 兼容性
   if (motherboard.type !== cpuType.value && cpuType.value !== '') {
+    warningMessage += `当前选择的主板类型(${motherboard.type})与CPU类型(${cpuType.value})不匹配` + '\n';
+  }
+  
+  // 检查内存兼容性
+  if (memoryType.value && motherboard.memoryType !== memoryType.value) {
+    warningMessage += `当前选择的主板内存接口(${motherboard.memoryType})与已选内存类型(${memoryType.value})不匹配`;
+  }
+  
+  // 如果有任何不兼容情况，显示确认对话框
+  if (warningMessage) {
     const confirmed = await confirmDialog.value.show(
-      '类型不匹配提醒',
-      `当前选择的主板类型(${motherboard.type})与CPU类型(${cpuType.value})不匹配，是否确认选择？`
+      '兼容性提醒',
+      warningMessage + '\n是否确认选择？'
     );
     
     if (!confirmed) {
@@ -232,6 +259,7 @@ const selectMotherboard = async (motherboard: Motherboard) => {
 
 onMounted(() => {
   getSelectedCPU();
+  getSelectedMemory();
   fetchMotherboards();
 })
 
@@ -255,20 +283,61 @@ const currentPageData = computed(() => {
 const handlePageChange = (page: number) => {
   currentPage.value = page;
 };
+
+// 获取已选择的内存信息
+const getSelectedMemory = () => {
+  const memoryId = sessionStorage.getItem('memory');
+  if (memoryId) {
+    getMemoryById(Number(memoryId)).then(memory => {
+      memoryType.value = memory.type;
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @use './select-page.scss';
 
+.component-item {
+  flex-direction: column;
+  padding: 0;
+}
+
+.main-info-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5em 0.75em;
+  gap: 1em;
+  justify-content: space-between;
+}
+
+.warning-row {
+  width: 100%;
+  padding: 0 0.75em;
+  margin-top: -2em;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+
 .warning {
   color: red;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
-  margin-top: 4px;
+  
   .warning-icon {
     width: 20px;
     height: 20px;
+    margin-top: 3px;
+  }
+  
+  .warning-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
   }
 }
 </style>
