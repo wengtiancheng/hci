@@ -43,16 +43,30 @@ onMounted(() => {
 <template>
   <div class="my-solutions">
     <div v-if="isLoggedIn">
-      <h1>我的装机</h1>
+      <h1 class="title">我的装机方案</h1>
       <div class="solutions-list">
         <div
             v-for="solution in solutions"
             :key="solution.id"
-            class="solution-item"
-            @click="goToSolutionDetail(solution.id)"
+            class="solution-card"
         >
-          <h2>{{ solution.name }}</h2>
-          <p>{{ solution.description }}</p>
+          <div class="solution-header">
+            <h2 class="solution-name">{{ solution.name }}</h2>
+            <p class="solution-date">{{ solution.createTime }}</p>
+          </div>
+          <div class="solution-items">
+            <img
+                v-for="item in solution.items"
+                :key="item.id"
+                :src="item.image"
+                :alt="item.name"
+                class="solution-item-image"
+            />
+          </div>
+          <div class="solution-footer">
+            <span class="solution-price">总价: ￥{{ solution.totalPrice }}</span>
+            <button class="detail-button" @click="goToSolutionDetail(solution.id)">详情</button>
+          </div>
         </div>
       </div>
     </div>
@@ -64,34 +78,107 @@ onMounted(() => {
 
 <style scoped>
 .my-solutions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .solutions-list {
-  width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-.solution-item {
-  border: 1px solid #ccc;
+.solution-card {
+  width: 75%; /* 占屏幕宽度的3/4 */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin: 10px 0;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.solution-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.solution-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.solution-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.solution-date {
+  font-size: 14px;
+  color: #888;
+}
+
+.solution-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.solution-item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
   border-radius: 4px;
-  cursor: pointer; /* Add cursor pointer to indicate clickable items */
+}
+
+.solution-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.solution-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.detail-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.detail-button:hover {
+  background-color: #0056b3;
 }
 
 .login-button {
+  display: block;
+  margin: 0 auto;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  border: none;
-  border-radius: 4px;
   transition: background-color 0.3s;
 }
 
