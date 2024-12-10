@@ -318,8 +318,8 @@ onBeforeUnmount(() => {
       <!-- 当有现成方案时显示信息，否则显示输入框 -->
       <div class="solution-info-panel">
         <template v-if="hasSavedSolution">
-          <h3 class="solution-name">{{ sessionStorage.getItem('solutionName') }}</h3>
-          <p class="solution-description">{{ sessionStorage.getItem('solutionDescription') }}</p>
+          <h3 class="solution-name">{{ solutionName }}</h3>
+          <p class="solution-description">{{ solutionDescription }}</p>
         </template>
         <template v-else>
           <div class="solution-input">
