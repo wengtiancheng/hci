@@ -81,10 +81,7 @@ export const getAllSolutionNofilter = () => {
         })
 }
 
-// @GetMapping("/allByFilter")
-// public ResultVO<List<SolutionVO>> getAllSolutionsByFilter(@RequestBody FilterVO filterVO){
-//     return ResultVO.buildSuccess(solutionService.getAllSolutionsByFilter(filterVO));
-// }
+
 // 获取所有解决方案（可以添加筛选参数）
 export const getAllSolution = (filters: Filters) => {
     return axios.post(`${SOLUTION_MODULE}/allByFilter`, filters)
@@ -127,9 +124,17 @@ export const getSolution = (id: number) => {
         })
 }
 
+// 删除一个装机方案，返回 boolean
+export const deleteSolutionById = (id: number) => {
+    return axios.post(`${SOLUTION_MODULE}/delete/${id}`)
+        .then(res => {
+            return res.data.result;
+        })
+}
+
 
 // 创建 OpenAI 客户端实例，直接传入 API 密钥
-const openai = new OpenAI({ 
+const openai = new OpenAI({
     baseURL: 'https://api.deepseek.com',
     apiKey: 'sk-3e217eaec54443fe803683ba6aea1d1d',
     dangerouslyAllowBrowser: true

@@ -31,7 +31,9 @@ const redirectToRegister = () => {
 <template>
   <header class="navbar">
     <div class="logo">
-      <img src="../assets/logo.png" alt="Logo" />
+      <router-link to="/">
+        <img src="../assets/logo.png" alt="Logo" />
+      </router-link>
     </div>
     <nav class="nav-links">
       <li><a href="/custom-build">自定义装机</a></li>
