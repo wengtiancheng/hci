@@ -1,10 +1,30 @@
 <script setup lang="ts">
-// 你可以在这里添加导航栏的逻辑，如果需要的话
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 const token = sessionStorage.getItem('token');
+const isModalVisible = ref(false);
+const router = useRouter();
 
 const logout = () => {
   sessionStorage.removeItem('token');
   location.reload();
+};
+
+const checkLoginStatus = (path: string) => {
+  if (token) {
+    router.push(path);
+  } else {
+    isModalVisible.value = true;
+  }
+};
+
+const redirectToLogin = () => {
+  router.push('/login');
+};
+
+const redirectToRegister = () => {
+  router.push('/register');
 };
 </script>
 
@@ -16,7 +36,7 @@ const logout = () => {
     <nav class="nav-links">
       <li><a href="/custom-build">自定义装机</a></li>
       <li><a href="/solution">装机广场</a></li>
-      <li><a href="/mySolutions">我的装机</a></li>
+      <li><a @click.prevent="checkLoginStatus('/mySolutions')">我的装机</a></li>
     </nav>
     <nav class="login">
       <li><a v-if="token" @click="logout">登出</a>
@@ -24,6 +44,15 @@ const logout = () => {
       </li>
     </nav>
   </header>
+
+  <div v-if="isModalVisible" class="modal">
+    <div class="modal-content">
+      <button class="close-button" @click="isModalVisible = false">&times;</button>
+      <p style="margin-top: 20px">请先登录后查看我的装机方案</p>
+      <button class="modal-button" @click="redirectToLogin">登录</button>
+      <button class="modal-button" @click="redirectToRegister">注册</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -114,6 +143,60 @@ const logout = () => {
 
 .login a:hover {
   background-color: #34495e;
+}
+
+/* Modal 样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  position: relative;
+  background: white;
+  padding: 40px; /* Increased padding */
+  font-size: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 400px; /* Increased width */
+  height: 200px; /* Increased height */
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  transition: background-color 0.3s ease;
+  margin-top: 20px
+}
+
+.modal-button:hover {
+  background-color: #5a7de1;
 }
 
 /* 响应式设计 */
