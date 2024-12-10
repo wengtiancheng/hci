@@ -46,7 +46,7 @@
       <div v-if="filteredPowersupplies.length === 0" class="empty-result">
         未找到匹配的配件
       </div>
-      <div v-else v-for="powersupply in filteredPowersupplies"
+      <div v-else v-for="powersupply in currentPageData"
            :key="powersupply.id"
            class="component-item">
         <img :src="powersupply.imageUrl" alt="电源图片" class="component-image" />
@@ -58,7 +58,30 @@
         <div class="component-price">￥{{ powersupply.price }}</div>
         <button @click="selectPowersupply(powersupply)" class="select-button">选择</button>
       </div>
+
+      <div class="pagination">
+        <button
+            :disabled="currentPage === 1"
+            @click="handlePageChange(currentPage - 1)"
+            class="page-button"
+        >
+          上一页
+        </button>
+
+        <span class="page-info">
+          {{ currentPage }} / {{ totalPages }}
+        </span>
+
+        <button
+            :disabled="currentPage === totalPages"
+            @click="handlePageChange(currentPage + 1)"
+            class="page-button"
+        >
+          下一页
+        </button>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -67,6 +90,23 @@ import { ref, onMounted, computed } from 'vue';
 import { getAllPowersupply } from "../../api/Powersupply.ts";
 import router from '../../router';
 import SearchBox from '../../components/SearchBox.vue';
+const currentPage = ref(1);
+const pageSize = ref(13);
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredPowersupplies.value.length / pageSize.value);
+});
+
+const currentPageData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredPowersupplies.value.slice(start, end);
+});
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+};
+
 interface Powersupply {
   id: number;
   name: string;
