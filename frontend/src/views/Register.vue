@@ -51,16 +51,12 @@ const handleSubmit = () => {
     ElMessage.error({
       message: '请填写完整信息',
       type: 'error',
-      center: true,
-      offset: 50, // 设置消息显示在屏幕上方中间
     });
   }
   if (password.value !== confirmPassword.value) {
     ElMessage.error({
       message: '两次输入的密码不一致',
       type: 'error',
-      center: true,
-      offset: 50, // 设置消息显示在屏幕上方中间
     });
   }
 
@@ -73,16 +69,14 @@ const handleSubmit = () => {
       ElMessage.success({
         message: '注册成功',
         type: 'success',
-        center: true,
-        offset: 50, // 设置消息显示在屏幕上方中间
+        duration: 800,
       });
       router.push('/login');
     } else {
       ElMessage.error({
         message: res.data.msg,
         type: 'error',
-        center: true,
-        offset: 50, // 设置消息显示在屏幕上方中间
+        duration: 1000,
       });
     }
   });

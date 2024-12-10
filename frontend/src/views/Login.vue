@@ -22,6 +22,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { login } from '../api/User';
+import { ElMessage } from 'element-plus';
+import 'element-plus/dist/index.css';
 
 const phone = ref('');
 const password = ref('');
@@ -33,14 +35,26 @@ const handleLogin = async () => {
     sessionStorage.setItem('token', response.result);
     console.log('token:', response.result);
     if (response.code == "000") {
-      alert('登录成功');
+      ElMessage({
+        message: '登录成功',
+        type: 'success',
+        duration: 800,
+      });
       router.push('/solution');
     } else {
-      alert('手机号或密码错误');
+      ElMessage({
+        message: '手机号或密码错误',
+        type: 'error',
+        duration: 1000,
+      });
     }
   } catch (error) {
     console.error('登录失败:', error);
-    alert('登录失败，请稍后再试');
+    ElMessage({
+      message: '登录失败',
+      type: 'error',
+      duration: 1000,
+    });
   }
 };
 
