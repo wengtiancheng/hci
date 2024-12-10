@@ -253,7 +253,6 @@ onMounted(() => {
   right: 0;
   bottom: 0;
   font-family: 'PingFang SC', sans-serif;
-  background: url('../assets/images/allSolutionsbg.png') no-repeat center center fixed;
   background-size: cover;
   z-index: -1;
 }
