@@ -26,7 +26,8 @@
       <!-- CPU type filter -->
       <div class="filter-item">
         <label for="cpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">CPU 类型</label>
-        <el-checkbox-group v-model="filters.cpuName" @change="fetchSolutions">
+        <el-checkbox v-model="selectAllCPUs" @change="toggleSelectAllCPUs">全选</el-checkbox>
+        <el-checkbox-group v-model="filters.cpuName" @change="handleCPUChange">
           <el-checkbox label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
           <el-checkbox label="i5 12600KF">i5 12600KF</el-checkbox>
           <el-checkbox label="i7 13700K">i7 13700K</el-checkbox>
@@ -37,7 +38,8 @@
       <!-- GPU type filter -->
       <div class="filter-item">
         <label for="gpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">GPU 类型</label>
-        <el-checkbox-group v-model="filters.gpuName" @change="fetchSolutions">
+        <el-checkbox v-model="selectAllGPUs" @change="toggleSelectAllGPUs">全选</el-checkbox>
+        <el-checkbox-group v-model="filters.gpuName" @change="handleGPUChange">
           <el-checkbox label="RTX3080">RTX3080</el-checkbox>
           <el-checkbox label="RX6750">RX6750</el-checkbox>
           <el-checkbox label="RTX4060Ti">RTX4060Ti</el-checkbox>
@@ -48,7 +50,8 @@
       <!-- Motherboard type filter -->
       <div class="filter-item">
         <label for="motherboard" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">主板类型</label>
-        <el-checkbox-group v-model="filters.motherboardName" @change="fetchSolutions">
+        <el-checkbox v-model="selectAllMotherboards" @change="toggleSelectAllMotherboards">全选</el-checkbox>
+        <el-checkbox-group v-model="filters.motherboardName" @change="handleMotherboardChange">
           <el-checkbox label="B550">B550</el-checkbox>
           <el-checkbox label="B560">B560</el-checkbox>
         </el-checkbox-group>
@@ -57,7 +60,8 @@
       <!-- Memory type filter -->
       <div class="filter-item">
         <label for="memory" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">内存类型</label>
-        <el-checkbox-group v-model="filters.memoryName" @change="fetchSolutions">
+        <el-checkbox v-model="selectAllMemory" @change="toggleSelectAllMemory">全选</el-checkbox>
+        <el-checkbox-group v-model="filters.memoryName" @change="handleMemoryChange">
           <el-checkbox label="DDR4">DDR4</el-checkbox>
           <el-checkbox label="DDR5">DDR5</el-checkbox>
         </el-checkbox-group>
@@ -99,6 +103,18 @@ const sliderValue = ref([0, 99999]);
 // List of solutions
 const solutions = ref<SolutionVO[]>([]);
 
+// CPU options
+const cpuOptions = ['AMD Ryzen7 7800X3D', 'i5 12600KF', 'i7 13700K'];
+const gpuOptions = ['RTX3080', 'RX6750', 'RTX4060Ti', 'RX7800XT'];
+const motherboardOptions = ['B550', 'B560'];
+const memoryOptions = ['DDR4', 'DDR5'];
+
+// Select all states
+const selectAllCPUs = ref(true);
+const selectAllGPUs = ref(true);
+const selectAllMotherboards = ref(true);
+const selectAllMemory = ref(true);
+
 // Fetch CPU and GPU names
 const fetchNames = async (solutions: SolutionVO[]) => {
   for (const solution of solutions) {
@@ -126,6 +142,95 @@ const sliderChange = async (value: number[]) => {
   filters.value.highPrice = value[1];
   console.log('Change slider:', filters.value);
   await fetchSolutions();
+};
+
+// Toggle select all CPUs
+const toggleSelectAllCPUs = () => {
+  if (selectAllCPUs.value) {
+    filters.value.cpuName = [...cpuOptions];
+  } else {
+    filters.value.cpuName = [];
+  }
+  fetchSolutions();
+};
+
+// Handle individual CPU checkbox change
+const handleCPUChange = () => {
+  if (filters.value.cpuName.length === 0) {
+    selectAllCPUs.value = true;
+    filters.value.cpuName = [...cpuOptions];
+  } else if (filters.value.cpuName.length === cpuOptions.length) {
+    selectAllCPUs.value = true;
+  } else {
+    selectAllCPUs.value = false;
+  }
+  fetchSolutions();
+};
+
+// Toggle select all GPUs
+const toggleSelectAllGPUs = () => {
+  if (selectAllGPUs.value) {
+    filters.value.gpuName = [...gpuOptions];
+  } else {
+    filters.value.gpuName = [];
+  }
+  fetchSolutions();
+};
+
+// Handle individual GPU checkbox change
+const handleGPUChange = () => {
+  if (filters.value.gpuName.length === 0) {
+    selectAllGPUs.value = true;
+  } else if (filters.value.gpuName.length === gpuOptions.length) {
+    selectAllGPUs.value = true;
+  } else {
+    selectAllGPUs.value = false;
+  }
+  fetchSolutions();
+};
+
+// Toggle select all Motherboards
+const toggleSelectAllMotherboards = () => {
+  if (selectAllMotherboards.value) {
+    filters.value.motherboardName = [...motherboardOptions];
+  } else {
+    filters.value.motherboardName = [];
+  }
+  fetchSolutions();
+};
+
+// Handle individual Motherboard checkbox change
+const handleMotherboardChange = () => {
+  if (filters.value.motherboardName.length === 0) {
+    selectAllMotherboards.value = true;
+  } else if (filters.value.motherboardName.length === motherboardOptions.length) {
+    selectAllMotherboards.value = true;
+  } else {
+    selectAllMotherboards.value = false;
+  }
+  fetchSolutions();
+};
+
+// Toggle select all Memory
+const toggleSelectAllMemory = () => {
+  if (selectAllMemory.value) {
+    filters.value.memoryName = [...memoryOptions];
+  } else {
+    filters.value.memoryName = [];
+  }
+  fetchSolutions();
+};
+
+// Handle individual Memory checkbox change
+const handleMemoryChange = () => {
+  if (filters.value.memoryName.length === 0) {
+    selectAllMemory.value = true;
+  } else if (filters.value.memoryName.length === memoryOptions.length) {
+    selectAllMemory.value = true;
+  } else {
+    selectAllMemory.value = false;
+  }
+  fetchSolutions();
 };
 
 // Fetch solutions when component is mounted

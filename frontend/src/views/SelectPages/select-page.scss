@@ -16,14 +16,11 @@
 .page-title {
   font-size: 1.25em;
   font-weight: bold;
-  color: #fff;
+  color: black;
   padding: 0.75em 1.25em;
-  background-color: #555;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid #444;
   width: 100%;
   margin: 0;
 }
@@ -32,7 +29,7 @@
   .filters {
     flex: 0 0 20%;
     padding: 1.25em;
-    padding-top: 4.5em;
+    padding-top: 0.5em;
     padding-right: 2.5em;
     background-color: #f9f9f9;
     border-right: 1px solid #ddd;
@@ -44,6 +41,7 @@
     overflow-y: auto;
     height: calc(100vh - 80px);
     border-radius: 0.5em;
+    overflow-x: hidden;
 
   h3 {
     font-size: 1.5em;
@@ -109,27 +107,11 @@
   
   /* 搜索框容器样式 */
   .search-container {
-    width: 100%;
-    padding: 0.2em 1.25em 0.5em;
-    border-bottom: 1px solid #ddd;
+    width: 90%;
     margin-bottom: 0;
     position: relative;
     background-color: #f9f9f9;
-    
-    .search-box {
-      max-width: 20em;
-    }
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background-color: #ccc;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
-    }
+
   }
   
   /* 搜索框样式优化 */
@@ -331,50 +313,48 @@
       
     }
   }
-  
-  /* 分页控件样式 */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1em;
+
+/* 分页控件样式 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  width: 100%;
+
+  .page-button {
+    padding: 0.5em 1em;
+    border: 1px solid #ddd;
     background-color: #fff;
-    border-top: 1px solid #eee;
-    width: 100%;
-    position: sticky;
-    bottom: 0;
-    
-    .page-button {
-      padding: 0.5em 1em;
-      border: 1px solid #ddd;
-      background-color: #fff;
-      color: #333;
-      cursor: pointer;
-      border-radius: 0.25em;
-      transition: all 0.2s;
-      
-      &:hover:not(:disabled) {
-        background-color: #f8f9fa;
-        border-color: #007bff;
-        color: #007bff;
-      }
-      
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
+    color: #333;
+    cursor: pointer;
+    border-radius: 0.25em;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: #f8f9fa;
+      border-color: #007bff;
+      color: #007bff;
     }
-    
-    .page-info {
-      margin: 0 1em;
-      color: #666;
-      font-size: 0.9em;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
-  
-  /* 为了防止内容被分页栏遮挡，给列表添加底部padding */
-  .component-list > div:not(.pagination):last-child {
-    margin-bottom: 4em;
+
+  .page-info {
+    margin: 0 1em;
+    color: #666;
+    font-size: 0.9em;
   }
+}
+
+/* 为了防止内容被分页栏遮挡，给列表添加底部padding */
+.component-list > div:not(.pagination):last-child {
+  margin-bottom: 4em;
+}
   
   

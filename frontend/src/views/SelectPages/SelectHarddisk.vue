@@ -2,7 +2,10 @@
   <div class="container">
     
     <div class="filters">
-      
+      <h2 class="page-title">选择硬盘</h2>
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
       
       <div class="filter-item">
         <label>价格范围</label>
@@ -40,10 +43,7 @@
     </div>
 
     <div class="component-list">
-      <h2 class="page-title">选择硬盘</h2>
-      <div class="search-container">
-        <SearchBox v-model="searchQuery" />
-      </div>
+
       <div class="list-header">
         <div class="header-image">图片</div>
         <div class="header-name">名称</div>
@@ -186,7 +186,7 @@ onMounted(() => {
 
 // 添加分页相关的状态
 const currentPage = ref(1);
-const pageSize = ref(10);  // 每页显示10条
+const pageSize = ref(13);  // 每页显示10条
 
 // 计算总页数
 const totalPages = computed(() => {

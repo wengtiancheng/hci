@@ -64,7 +64,7 @@ const filteredChassis = computed(() => {
 
 // 添加分页相关的状态
 const currentPage = ref(1);
-const pageSize = ref(10);  // 每页显示10条
+const pageSize = ref(13);  // 每页显示10条
 
 // 计算总页数
 const totalPages = computed(() => {
@@ -92,18 +92,21 @@ onMounted(() => {
   <div class="container">
     
     <div class="filters">
-      
+      <h2 class="page-title">选择机箱</h2>
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
       
       <!-- 总价区间筛选 -->
       <div class="filter-item">
-        <label>价格范围</label>
+        <label style="padding-top: 30px">价格范围</label>
         <vue-slider v-model="sliderValue" :min="0" :max="99999"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
 
       <div class="filter-item">
-        <label>排序方式</label>
+        <label style="padding-top: 30px">排序方式</label>
         <select v-model="filters.sortOrder" @change="fetchChassis">
           <option value="asc">价格从低到高</option>
           <option value="desc">价格从高到低</option>
@@ -112,10 +115,7 @@ onMounted(() => {
     </div>
 
     <div class="component-list">
-      <h2 class="page-title">选择机箱</h2>
-      <div class="search-container">
-        <SearchBox v-model="searchQuery" />
-      </div>
+
       <div class="list-header">
         <div class="header-image">图片</div>
         <div class="header-name">名称</div>

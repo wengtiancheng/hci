@@ -1,18 +1,21 @@
 <template>
   <div class="container">
-    
+
     <div class="filters">
-      
+      <h2 class="page-title">选择电源</h2>
+      <div class="search-container">
+        <SearchBox v-model="searchQuery" />
+      </div>
 
       <div class="filter-item">
-        <label>价格范围</label>
+        <label style="padding-top: 30px">价格范围</label>
         <vue-slider v-model="sliderValue" :min="0" :max="99999"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
-      
+
       <div class="filter-item">
-        <label>品牌</label>
+        <label style="padding-top: 30px">品牌</label>
         <select v-model="filters.brand" @change="fetchPowersupplies">
           <option value="">全部</option>
           <option value="Huntkey">航嘉</option>
@@ -21,7 +24,7 @@
       </div>
 
       <div class="filter-item">
-        <label>排序方式</label>
+        <label style="padding-top: 30px">排序方式</label>
         <select v-model="filters.sortOrder" @change="fetchPowersupplies">
           <option value="asc">价格从低到高</option>
           <option value="desc">价格从高到低</option>
@@ -30,10 +33,7 @@
     </div>
 
     <div class="component-list">
-      <h2 class="page-title">选择电源</h2>
-      <div class="search-container">
-        <SearchBox v-model="searchQuery" />
-      </div>
+
       <div class="list-header">
         <div class="header-image">图片</div>
         <div class="header-name">名称</div>
@@ -46,14 +46,14 @@
       <div v-if="filteredPowersupplies.length === 0" class="empty-result">
         未找到匹配的配件
       </div>
-      <div v-else v-for="powersupply in filteredPowersupplies" 
-           :key="powersupply.id" 
+      <div v-else v-for="powersupply in filteredPowersupplies"
+           :key="powersupply.id"
            class="component-item">
         <img :src="powersupply.imageUrl" alt="电源图片" class="component-image" />
         <div class="component-name">{{ powersupply.name }}</div>
         <div class="component-info">
           <span>{{ getBrandLabel(powersupply.brand) }}</span>
-          
+
         </div>
         <div class="component-price">￥{{ powersupply.price }}</div>
         <button @click="selectPowersupply(powersupply)" class="select-button">选择</button>
@@ -89,7 +89,7 @@ const searchQuery = ref('');
 
 const filteredPowersupplies = computed(() => {
   if(!searchQuery.value) return powersupplyList.value;
-  
+
   const query = searchQuery.value.toLowerCase();
   return powersupplyList.value.filter(powersupply => powersupply.name.toLowerCase().includes(query));
 });
@@ -109,7 +109,7 @@ const sliderChange = () => {
 
 const fetchPowersupplies = async () => {
   const list = await getAllPowersupply();
-  
+
   let filteredList = list.filter(powersupply => {
     if (powersupply.price < sliderValue.value[0]) return false;
     if (powersupply.price > sliderValue.value[1]) return false;
