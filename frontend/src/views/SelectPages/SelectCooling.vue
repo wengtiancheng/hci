@@ -9,7 +9,7 @@
       
       <div class="filter-item">
         <label style="padding-top: 30px">价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="1000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
@@ -100,7 +100,7 @@ interface Cooling {
 }
 
 const coolingList = ref<Cooling[]>([]);
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 1000]);
 const filters = ref({
   minPrice: null as number | null,
   maxPrice: null as number | null,

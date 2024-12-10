@@ -9,7 +9,7 @@
       
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="3000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
@@ -119,7 +119,7 @@ const filteredHarddisks = computed(() => {
   return harddiskList.value.filter(harddisk => harddisk.name.toLowerCase().includes(query));
 });
 
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 3000]);
 
 const filters = ref({
   type: '',

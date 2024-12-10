@@ -17,7 +17,7 @@ interface CPU {
 const cpuList = ref<CPU[]>([]);
 const searchQuery = ref('');
 const motherboardType = ref('');
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 5000]);
 const confirmDialog = ref();
 
 const filters = ref({
@@ -129,7 +129,7 @@ const handlePageChange = (page: number) => {
 
       <div class="filter-item">
         <label style="margin-top: 30px">价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="5000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>

@@ -10,7 +10,7 @@
       
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="4000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
@@ -151,7 +151,7 @@ interface Motherboard {
 const motherboardList = ref<Motherboard[]>([]);
 const cpuType = ref('');
 const searchQuery = ref('');
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 4000]);
 const memoryType = ref('');
 
 const sliderChange = () => {

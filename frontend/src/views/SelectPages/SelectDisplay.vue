@@ -9,7 +9,7 @@
 
       <div class="filter-item">
         <label style="padding-top: 30px">价格范围</label>
-        <vue-slider v-model="sliderValue":min="0" :max="99999"
+        <vue-slider v-model="sliderValue":min="0" :max="7000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
@@ -110,7 +110,7 @@ const filteredDisplays = computed(() => {
   return displayList.value.filter(display => display.name.toLowerCase().includes(query));
 });
 
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 7000]);
 
 const filters = ref({
   brand: '',

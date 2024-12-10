@@ -15,7 +15,7 @@ interface Chassis {
 const chassisList = ref<Chassis[]>([]);
 const searchQuery = ref('');
 
-const sliderValue = ref([0, 99999])
+const sliderValue = ref([0, 4000])
 
 
 const filters = ref({
@@ -100,7 +100,7 @@ onMounted(() => {
       <!-- 总价区间筛选 -->
       <div class="filter-item">
         <label style="padding-top: 30px">价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="4000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>

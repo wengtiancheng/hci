@@ -9,7 +9,7 @@
       
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue":min="0" :max="99999"
+        <vue-slider v-model="sliderValue":min="0" :max="10000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
@@ -114,7 +114,7 @@ interface GPU {
 
 const gpuList = ref<GPU[]>([]);
 
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 10000]);
 
 const filters = ref({
   type: '',

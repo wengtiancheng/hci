@@ -19,7 +19,7 @@ const memoryList = ref<Memory[]>([]);
 const searchQuery = ref('');
 const motherboardMemoryType = ref('');
 const confirmDialog = ref();
-const sliderValue = ref([0, 99999]);
+const sliderValue = ref([0, 2000]);
 
 // 添加分页相关的状态
 const currentPage = ref(1);
@@ -141,7 +141,7 @@ onMounted(() => {
 
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min="0" :max="2000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>

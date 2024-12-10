@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, onBeforeUnmount} from 'vue';
+import {onMounted, ref, onBeforeUnmount, computed} from 'vue';
 import {getCPUById} from "../api/CPU.ts";
 import {getMotherboardById} from "../api/Motherboard.ts";
 import {getMemoryById} from "../api/Memory.ts";
@@ -156,7 +156,7 @@ const checkCompatibility = () => {
 // 保存配置
 const saveSolution = async () => {
   const solution = {
-    id: 0,
+    id: '',
     name: solutionName.value,
     imageUrl: '',
     totalPrice: totalPrice.value,
@@ -188,6 +188,11 @@ const solutionDescription = ref('');
 
 // 使用 watchEffect 监听 sessionStorage 的变化
 
+
+// 添加一个计算属性来判断是否有现成方案
+const hasSavedSolution = computed(() => {
+  return !!sessionStorage.getItem('solutionName');
+});
 
 onMounted(async () => {
   // 处理来自 SolutionDetail 的参数
@@ -312,9 +317,9 @@ onBeforeUnmount(() => {
     <div class="right-panel">
       <!-- 当有现成方案时显示信息，否则显示输入框 -->
       <div class="solution-info-panel">
-        <template v-if="solutionName">
-          <h3 class="solution-name">{{ solutionName }}</h3>
-          <p class="solution-description">{{ solutionDescription }}</p>
+        <template v-if="hasSavedSolution">
+          <h3 class="solution-name">{{ sessionStorage.getItem('solutionName') }}</h3>
+          <p class="solution-description">{{ sessionStorage.getItem('solutionDescription') }}</p>
         </template>
         <template v-else>
           <div class="solution-input">
