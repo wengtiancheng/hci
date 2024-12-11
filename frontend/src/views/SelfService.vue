@@ -483,7 +483,6 @@ onBeforeUnmount(() => {
 
 .left-panel {
   flex: 1;
-  //padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 2%;
@@ -512,6 +511,7 @@ onBeforeUnmount(() => {
 }
 
 .hardware-list {
+ 
   display: flex;
   flex-direction: column;
   gap: 20px;

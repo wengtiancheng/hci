@@ -146,19 +146,26 @@ const sliderChange = async (value: number[]) => {
 
 // Toggle select all CPUs
 const toggleSelectAllCPUs = () => {
-  if (selectAllCPUs.value) {
+  if (filters.value.cpuName.length === 0) {
+    selectAllCPUs.value = true;
+    fetchSolutions();
+  } else if (filters.value.cpuName.length === cpuOptions.length) {
+    selectAllCPUs.value = true;
+    filters.value.cpuName = [];
+    fetchSolutions();
+  } else if (selectAllCPUs.value) {
     filters.value.cpuName = [...cpuOptions];
+    fetchSolutions();
   } else {
     filters.value.cpuName = [];
+    fetchSolutions();
   }
-  fetchSolutions();
 };
 
 // Handle individual CPU checkbox change
 const handleCPUChange = () => {
   if (filters.value.cpuName.length === 0) {
     selectAllCPUs.value = true;
-    filters.value.cpuName = [...cpuOptions];
   } else if (filters.value.cpuName.length === cpuOptions.length) {
     selectAllCPUs.value = true;
   } else {
@@ -169,16 +176,26 @@ const handleCPUChange = () => {
 
 // Toggle select all GPUs
 const toggleSelectAllGPUs = () => {
-  if (selectAllGPUs.value) {
+  if (filters.value.gpuName.length === 0) {
+    selectAllGPUs.value = true;
+    fetchSolutions();
+  } else if (filters.value.gpuName.length === gpuOptions.length) {
+    selectAllGPUs.value = true;
+    filters.value.gpuName = [];
+    fetchSolutions();
+  }
+  else if (selectAllGPUs.value) {
     filters.value.gpuName = [...gpuOptions];
+    fetchSolutions();
   } else {
     filters.value.gpuName = [];
+    fetchSolutions();
   }
-  fetchSolutions();
 };
 
 // Handle individual GPU checkbox change
 const handleGPUChange = () => {
+  console.log('GPU change:', filters.value.gpuName.length);
   if (filters.value.gpuName.length === 0) {
     selectAllGPUs.value = true;
   } else if (filters.value.gpuName.length === gpuOptions.length) {
@@ -193,10 +210,15 @@ const handleGPUChange = () => {
 const toggleSelectAllMotherboards = () => {
   if (selectAllMotherboards.value) {
     filters.value.motherboardName = [...motherboardOptions];
+    fetchSolutions();
+  } else if (filters.value.motherboardName.length === motherboardOptions.length) {
+    selectAllMotherboards.value = true;
+    filters.value.motherboardName = [];
+    fetchSolutions();
   } else {
     filters.value.motherboardName = [];
+    fetchSolutions();
   }
-  fetchSolutions();
 };
 
 // Handle individual Motherboard checkbox change
@@ -215,10 +237,15 @@ const handleMotherboardChange = () => {
 const toggleSelectAllMemory = () => {
   if (selectAllMemory.value) {
     filters.value.memoryName = [...memoryOptions];
+    fetchSolutions();
+  } else if (filters.value.memoryName.length === memoryOptions.length) {
+    selectAllMemory.value = true;
+    filters.value.memoryName = [];
+    fetchSolutions();
   } else {
     filters.value.memoryName = [];
+    fetchSolutions();
   }
-  fetchSolutions();
 };
 
 // Handle individual Memory checkbox change
