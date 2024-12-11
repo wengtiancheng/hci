@@ -270,47 +270,47 @@ onBeforeUnmount(() => {
     
     <div class="left-panel" ref="leftPanelRef">
       <div class="hardware-list">
-    <Toast ref="toastRef" />
-    <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">
-      <div class="hardware-info">
-        <h3 class="hardware-title">
-          {{ item.name }}
-        </h3>
-        <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="image-link">
-          <img 
-            :src="item.details?.imageUrl || item.defaultIcon" 
-            alt="Hardware Image" 
-            class="hardware-image" 
-          />
-        </a>
-        <div class="details-container">
-          <div class="product-info">
-            <span class="product-name">
-              <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="purchase-link">{{ item.details ? item.details.name : '未选择' }}</a>
-            </span>
-            <span v-if="item.details" class="price">￥{{ item.details.price }}</span>
+        <Toast ref="toastRef" />
+        <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">
+          <div class="hardware-info">
+            <h3 class="hardware-title">
+              {{ item.name }}
+            </h3>
+            <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="image-link">
+              <img
+                :src="item.details?.imageUrl || item.defaultIcon"
+                alt="Hardware Image"
+                class="hardware-image"
+              />
+            </a>
+            <div class="details-container">
+              <div class="product-info">
+                <span class="product-name">
+                  <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="purchase-link">{{ item.details ? item.details.name : '未选择' }}</a>
+                </span>
+                <span v-if="item.details" class="price">￥{{ item.details.price }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="button-container">
+            <div class="button-group" :class="{ 'has-clear': item.details }">
+              <button
+                v-if="item.details"
+                class="clear-button"
+                @click="clearSelection(item)"
+              >
+                清空
+              </button>
+              <button
+                class="action-button"
+                @click="gotoSelectPage(item.key)"
+              >
+                {{ item.details ? '更换' : '选择' }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="button-container">
-        <div class="button-group" :class="{ 'has-clear': item.details }">
-          <button 
-            v-if="item.details"
-            class="clear-button" 
-            @click="clearSelection(item)"
-          >
-            清空
-          </button>
-          <button 
-            class="action-button" 
-            @click="gotoSelectPage(item.key)"
-          >
-            {{ item.details ? '更换' : '选择' }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
     </div>
     <!-- 右侧配置详情 -->
@@ -474,31 +474,36 @@ onBeforeUnmount(() => {
   right: 0;
   bottom: 0;
   display: flex;
-  max-width: 1600px;
-  margin: 0 auto;
+  max-width: 1500px; /* 最大宽度限制 */
+  margin: 0 auto; /* 居中对齐 */
   font-size: 0.875em;
+  justify-content: space-between; /* 左右面板之间平均分配空间 */
+  background-color: #ffffff;
 }
 
 .left-panel {
   flex: 1;
-  padding: 20px;
+  //padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 2%;
-  min-width: 0;
+  min-width: 800px;
+  padding-left: 0px; /* 右侧间距 */
+  background-color: #ffffff;
 }
 
 .right-panel {
   width: 25%;
-  min-width: 280px;
-  max-width: 350px;
-  background-color: #f8f8f8;
-  border-left: 1px solid #e0e0e0;
+  min-width: 250px;
+  max-width: 270px;
+  background-color: #ffffff;
+  border-left: 1px solid #ffffff;
   display: flex;
   flex-direction: column;
   padding: 25px;
   margin-top: 2%;
   height: 100%;
+  padding-right: 100px; /* 左侧间距 */
 }
 :host {
   display: flex;
@@ -507,23 +512,22 @@ onBeforeUnmount(() => {
 }
 
 .hardware-list {
- 
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
-  max-width: 900px;
+  width: 90%;
+  //max-width: 900px;
   margin: 0 auto;
 }
 .hardware-item {
-  width: 100%;
-  min-width: 300px;
-  max-width: 800px;
+  width: 90%;
+  //min-width: 300px;
+  //max-width: 800px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 15px 15px 15px 30px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -662,6 +666,7 @@ onBeforeUnmount(() => {
 }
 
 .total-price {
+  border: 1px solid #e0e0e0;
   background-color: #f8f8f8;
   padding: 15px;
   border-radius: 8px;

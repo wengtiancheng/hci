@@ -89,7 +89,7 @@ const redirectToRegister = () => {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 80px;
   margin: 0 auto; /* Center align the list */
   padding: 0;
   justify-content: center; /* Center align items */
