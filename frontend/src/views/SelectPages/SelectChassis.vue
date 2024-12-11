@@ -28,7 +28,7 @@ const sliderChange = () => {
 
 const fetchChassis = async () => {
   const list = await getAllChassis();
-  
+
   let filteredList = list.filter(chassis => {
     if (chassis.price < sliderValue.value[0]) return false;
     if (chassis.price > sliderValue.value[1]) return false;
@@ -55,16 +55,16 @@ const selectChassis = (chassis: Chassis) => {
 
 const filteredChassis = computed(() => {
   if(!searchQuery.value) return chassisList.value;
-  
+
   const query = searchQuery.value.toLowerCase();
-  return chassisList.value.filter(chassis => 
+  return chassisList.value.filter(chassis =>
     chassis.name.toLowerCase().includes(query)
   );
 });
 
 // 添加分页相关的状态
 const currentPage = ref(1);
-const pageSize = ref(13);  // 每页显示10条
+const pageSize = ref(10);  // 每页显示10条
 
 // 计算总页数
 const totalPages = computed(() => {
@@ -90,23 +90,23 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    
+
     <div class="filters">
       <h2 class="page-title">选择机箱</h2>
       <div class="search-container">
         <SearchBox v-model="searchQuery" />
       </div>
-      
+
       <!-- 总价区间筛选 -->
       <div class="filter-item">
-        <label style="padding-top: 30px">价格范围</label>
+        <label>价格范围</label>
         <vue-slider v-model="sliderValue" :min="0" :max="4000"
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange" ></vue-slider>
       </div>
 
       <div class="filter-item">
-        <label style="padding-top: 30px">排序方式</label>
+        <label>排序方式</label>
         <select v-model="filters.sortOrder" @change="fetchChassis">
           <option value="asc">价格从低到高</option>
           <option value="desc">价格从高到低</option>
@@ -130,8 +130,8 @@ onMounted(() => {
         未找到匹配的配件
       </div>
 
-      <div v-else v-for="chassis in currentPageData" 
-           :key="chassis.id" 
+      <div v-else v-for="chassis in currentPageData"
+           :key="chassis.id"
            class="component-item">
         <img :src="chassis.imageUrl" alt="机箱图片" class="component-image" />
         <div class="component-name">{{ chassis.name }}</div>
@@ -144,19 +144,19 @@ onMounted(() => {
 
       <!-- 添加分页控件 -->
       <div class="pagination">
-        <button 
+        <button
           :disabled="currentPage === 1"
           @click="handlePageChange(currentPage - 1)"
           class="page-button"
         >
           上一页
         </button>
-        
+
         <span class="page-info">
           {{ currentPage }} / {{ totalPages }}
         </span>
-        
-        <button 
+
+        <button
           :disabled="currentPage === totalPages"
           @click="handlePageChange(currentPage + 1)"
           class="page-button"

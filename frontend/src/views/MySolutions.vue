@@ -2,16 +2,57 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserSolutions } from '../api/User';
+import {CPUVO, newCPUVO} from "../api/CPU.ts";
+import {GPUVO, newGPUVO} from "../api/GPU.ts";
+import {MemoryVO, newMemoryVO} from "../api/Memory.ts";
+import {MotherboardVO, newMotherboardVO} from "../api/Motherboard.ts";
+import {HardDiskVO, newHardDiskVO} from "../api/Harddisk.ts";
+import {newPowersupplyVO, PowersupplyVO} from "../api/Powersupply.ts";
+import {CoolingVO, newCoolingVO} from "../api/Cooling.ts";
+import {ChassisVO, newChassisVO} from "../api/Chassis.ts";
+import {DisplayVO, newDisplayVO} from "../api/Display.ts";
+import { getCPUById } from '../api/CPU';
+import { getGPUById } from '../api/GPU';
+import { getMemoryById } from '../api/Memory';
+import { getMotherboardById } from '../api/Motherboard';
+import { getHarddiskById } from '../api/Harddisk';
+import { getPowersupplyById } from '../api/Powersupply';
+import { getCoolingById } from '../api/Cooling';
+import { getChassisById } from '../api/Chassis';
+import { getDisplayById } from '../api/Display';
+
 
 const solutions = ref([]);
 const isLoggedIn = ref(false);
 const router = useRouter();
+let cpu = ref<CPUVO>(newCPUVO());
+let gpu = ref<GPUVO>(newGPUVO());
+let memory = ref<MemoryVO>(newMemoryVO());
+let motherboard = ref<MotherboardVO>(newMotherboardVO());
+let harddisk = ref<HardDiskVO>(newHardDiskVO());
+let powersupply = ref<PowersupplyVO>(newPowersupplyVO());
+let cooling = ref<CoolingVO>(newCoolingVO());
+let chassis = ref<ChassisVO>(newChassisVO());
+let display = ref<DisplayVO>(newDisplayVO());
 
 const fetchSolutions = async () => {
   try {
     const response = await getUserSolutions();
     console.log('Fetched solutions:', response.data.result);
     solutions.value = response.data.result;
+    for (let i = 0; i < solutions.value.length; i++) {
+      cpu = await getCPUById(solutions.value[i].cpuId);
+      gpu = await getGPUById(solutions.value[i].gpuId);
+      memory = await getMemoryById(solutions.value[i].memoryId);
+      motherboard = await getMotherboardById(solutions.value[i].motherboardId);
+      harddisk = await getHarddiskById(solutions.value[i].harddiskId);
+      powersupply = await getPowersupplyById(solutions.value[i].powersupplyId);
+      cooling = await getCoolingById(solutions.value[i].coolingId);
+      chassis = await getChassisById(solutions.value[i].chassisId);
+      display = await getDisplayById(solutions.value[i].displayId);
+      solutions.value[i].items = [cpu.imageUrl, gpu.imageUrl, memory.imageUrl, motherboard.imageUrl, harddisk.imageUrl, powersupply.imageUrl, cooling.imageUrl, chassis.imageUrl, display.imageUrl];
+      console.log(solutions.value[i].items);
+    }
   } catch (error) {
     console.error('Error fetching solutions:', error);
   }
@@ -58,7 +99,7 @@ onMounted(() => {
             <img
                 v-for="item in solution.items"
                 :key="item.id"
-                :src="item.image"
+                :src="item"
                 :alt="item.name"
                 class="solution-item-image"
             />
