@@ -79,8 +79,8 @@
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
         <div class="solution-info">
           <h4>{{ solution.name }}</h4>
-          <p class="secondary-text">CPU 型号：{{ solution.cpuName }}</p>
-          <p class="secondary-text">GPU 型号：{{ solution.gpuName }}</p>
+          <p class="secondary-text">CPU：{{ solution.cpuName }}</p>
+          <p class="secondary-text">GPU：{{ solution.gpuName }}</p>
           <p class="price">价格：￥{{ solution.totalPrice }}</p>
         </div>
       </router-link>
@@ -275,13 +275,14 @@ onMounted(() => {
   width: 100%;
   margin: 0 auto;
   position: absolute;
-  top: 78px;
+  top: 61px;
   left: 0;
   right: 0;
   bottom: 0;
   font-family: 'PingFang SC', sans-serif;
   background-size: cover;
   z-index: -1;
+  background-color: rgb(243, 245, 248); /* Add background color */
 }
 
 .filters {
@@ -302,9 +303,9 @@ onMounted(() => {
 }
 
 .price {
-  font-size: 1.4em;
+  font-size: 1.0em;
   font-weight: bold;
-  color: #006dba; /* A red color to highlight the price */
+  color: #000000; /* A red color to highlight the price */
   padding-top: 15px;
 }
 

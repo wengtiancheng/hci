@@ -36,8 +36,8 @@ const redirectToRegister = () => {
       </router-link>
     </div>
     <nav class="nav-links">
-      <li><a href="/custom-build">自定义装机</a></li>
-      <li><a href="/solution">装机广场</a></li>
+      <li><router-link to="/custom-build" active-class="selected">自定义装机</router-link></li>
+      <li><router-link to="/solution" active-class="selected">装机广场</router-link></li>
       <li><a @click.prevent="checkLoginStatus('/mySolutions')">我的装机</a></li>
     </nav>
     <nav class="login">
@@ -68,21 +68,17 @@ const redirectToRegister = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0; /* 移除左右的padding */
+  padding: 6px 0; /* 移除左右的padding */
   background-color: black;
   color: white;
   z-index: 1000; /* 确保导航栏在最上层 */
-  border-bottom-left-radius: 0; /* 左下圆角 */
-  border-bottom-right-radius: 0; /* 右下圆角 */
-  border-top-left-radius: 0; /* 保持左上角方形 */
-  border-top-right-radius: 0; /* 保持右上角方形 */
 }
 
 /* Logo 样式 */
 .logo img {
   margin-left: 20px;
-  height: 40px;
-  width: 40px;
+  height: 43px;
+  width: 43px;
 }
 
 /* 导航链接容器 */
@@ -114,7 +110,13 @@ const redirectToRegister = () => {
 }
 
 .nav-links a:hover {
-  background-color: #34495e;
+  background-color: #404040;
+}
+
+.nav-links a:active, .nav-links a.selected {
+  background-color: #404040; /* Change background color when active or selected */
+  color: #ecf0f1; /* Change text color when active or selected */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
 }
 
 .login {
