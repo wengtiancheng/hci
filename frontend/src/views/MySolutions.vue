@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getUserSolutions } from '../api/User';
+import {getSolutionImages, getUserSolutions} from '../api/User';
 import {CPUVO, newCPUVO} from "../api/CPU.ts";
 import {GPUVO, newGPUVO} from "../api/GPU.ts";
 import {MemoryVO, newMemoryVO} from "../api/Memory.ts";
@@ -41,17 +41,9 @@ const fetchSolutions = async () => {
     console.log('Fetched solutions:', response.data.result);
     solutions.value = response.data.result;
     for (let i = 0; i < solutions.value.length; i++) {
-      cpu = await getCPUById(solutions.value[i].cpuId);
-      gpu = await getGPUById(solutions.value[i].gpuId);
-      memory = await getMemoryById(solutions.value[i].memoryId);
-      motherboard = await getMotherboardById(solutions.value[i].motherboardId);
-      harddisk = await getHarddiskById(solutions.value[i].harddiskId);
-      powersupply = await getPowersupplyById(solutions.value[i].powersupplyId);
-      cooling = await getCoolingById(solutions.value[i].coolingId);
-      chassis = await getChassisById(solutions.value[i].chassisId);
-      display = await getDisplayById(solutions.value[i].displayId);
-      solutions.value[i].items = [cpu.imageUrl, gpu.imageUrl, memory.imageUrl, motherboard.imageUrl, harddisk.imageUrl, powersupply.imageUrl, cooling.imageUrl, chassis.imageUrl, display.imageUrl];
-      console.log(solutions.value[i].items);
+      const response = await getSolutionImages(solutions.value[i].id);
+      console.log('Fetched images:', response);
+      solutions.value[i].items = response;
     }
   } catch (error) {
     console.error('Error fetching solutions:', error);

@@ -41,4 +41,9 @@ public class UserController {
         return ResultVO.buildSuccess(userService.getMySolutions());
     }
 
+    @GetMapping("/getSolutionImages")
+    public ResultVO<List<String>> getSolutionImages(@RequestParam("solutionId") Integer solutionId) {
+        return ResultVO.buildSuccess(userService.getSolutionImages(solutionId));
+    }
+
 }

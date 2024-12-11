@@ -14,5 +14,7 @@ public interface UserService {
 
     List<SolutionVO> getMySolutions();
 
+    List<String> getSolutionImages(Integer solutionId);
+
     //...removeReceiveInfo
 }

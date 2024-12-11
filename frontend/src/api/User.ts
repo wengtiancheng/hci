@@ -47,5 +47,13 @@ export const getUserSolutions = () => {
         })
 }
 
+export const getSolutionImages = (solutionId: number) => {
+    return axios.get(`${USER_MODULE}/getSolutionImages`, {
+        params: {solutionId}
+    })
+        .then(res => {
+            return res.data.result;
+        })
+}
 
 
