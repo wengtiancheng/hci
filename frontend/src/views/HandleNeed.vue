@@ -174,20 +174,20 @@ const handleClick = async () => {
   border: 2px solid transparent;
   border-radius: 8px;
   outline: none;
-  background-color: #181717;
-  color: #d4e1e0;
+  background-color: #dcdcdc;
   transition: .3s ease;
 }
 
 .input::placeholder {
-  color: #9e9ea7;
+  color: #60626c;
 }
 
 .input:focus, input:hover {
   outline: none;
-  border-color: rgba(119, 69, 215, 0.4);
-  background-color: #262323;
-  box-shadow: 0 0 0 4px rgba(114, 18, 94, 0.1);
+  border-color: rgba(103, 161, 227, 0.4);
+  background-color: #0a0a0a;
+  box-shadow: 0 0 0 4px rgba(184, 161, 196, 0.1);
+  color: #d1dae3;
 }
 
 .icon {
