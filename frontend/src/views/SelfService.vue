@@ -482,14 +482,51 @@ onBeforeUnmount(() => {
 
 .left-panel {
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   margin-top: 2%;
-  max-width: 65%;
-  min-width: 800px;
+  width: 800px;
   background-color: rgb(243, 245, 248);
   margin-left: 200px;
   padding-right: 10px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  position: relative; /* 添加相对定位 */
+  display: flex;
+  justify-content: center;
+  
+}
+
+/* 隐藏 Webkit 浏览器的滚动条 */
+.left-panel::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+/* 鼠标悬停时显示滚动条 */
+.left-panel:hover {
+  scrollbar-width: thin; /* Firefox */
+  -ms-overflow-style: auto; /* IE and Edge */
+}
+
+.left-panel:hover::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+}
+
+.left-panel:hover::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.left-panel:hover::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.left-panel:hover::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .right-panel {
@@ -517,8 +554,11 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 90%;
+  width: 800px; /* 减去滚动条宽度 */
   margin: 0 auto;
+  padding-right: 8px;
+  flex-shrink: 0;
+  
 }
 .hardware-item {
   width: 98%;
