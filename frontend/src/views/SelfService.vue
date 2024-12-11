@@ -469,7 +469,7 @@ onBeforeUnmount(() => {
 
 .self-service {
   position: fixed;
-  top: 60px;
+  top: 50px;
   left: 0;
   right: 0;
   bottom: 0;
