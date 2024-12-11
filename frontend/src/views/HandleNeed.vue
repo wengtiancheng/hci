@@ -37,7 +37,7 @@ const handleClick = async () => {
   <!--  </div>-->
   <section class="input_container">
     <div class="slogan">
-      快速搜索，让一切触手可及
+      得机，让一切触手可及
     </div>
     <!-- 顶部搜索框 -->
 <!--    <div class="search-box">-->
@@ -133,17 +133,34 @@ const handleClick = async () => {
   align-items: center;
   height: 80vh;
   flex-direction: column;
-
   text-align: center; /* 文字居中 */
   margin-top: 2rem; /* 顶部留白 */
+  position: relative; /* 使子元素的绝对定位相对于父元素 */
+
   /* 添加背景图片 */
   background-image: url('../assets/images/triangle.png');
   background-size: cover; /* 图片铺满容器 */
   background-repeat: no-repeat;
   background-position: center; /* 居中显示背景图片 */
   /* 背景虚化效果 */
-  backdrop-filter: blur(10px); /* 背景模糊程度 */
-  -webkit-backdrop-filter: blur(10px); /* Safari 浏览器兼容性 */
+  backdrop-filter: blur(20px); /* 背景模糊程度 */
+  -webkit-backdrop-filter: blur(20px); /* Safari 浏览器兼容性 */
+}
+
+.input_container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); /* 40% 黑色透明度覆盖 */
+  z-index: 1; /* 确保覆盖层在背景图片之上 */
+}
+
+.input_container > * {
+  position: relative;
+  z-index: 2; /* 确保内容在覆盖层之上 */
 }
 
 /* 标语样式 */
