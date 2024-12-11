@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <Toast ref="toastRef" />
     <div class="login-form">
       <h2>登录</h2>
       <form @submit.prevent="handleLogin">
@@ -22,12 +23,14 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { login } from '../api/User';
-import { ElMessage } from 'element-plus';
+import Toast from '../components/Toast.vue';
+
 import 'element-plus/dist/index.css';
 
 const phone = ref('');
 const password = ref('');
 const router = useRouter();
+const toastRef = ref();
 
 const handleLogin = async () => {
   try {
@@ -35,26 +38,19 @@ const handleLogin = async () => {
     sessionStorage.setItem('token', response.result);
     console.log('token:', response.result);
     if (response.code == "000") {
-      ElMessage({
-        message: '登录成功',
-        type: 'success',
-        duration: 800,
-      });
-      router.push('/solution');
+      
+      
+      toastRef.value.show('登录成功');
+      setTimeout(() => {
+        router.push('/solution');
+      }, 1000);
     } else {
-      ElMessage({
-        message: '手机号或密码错误',
-        type: 'error',
-        duration: 1000,
-      });
+      toastRef.value.show('手机号或密码错误', 'error');
     }
   } catch (error) {
     console.error('登录失败:', error);
-    ElMessage({
-      message: '登录失败',
-      type: 'error',
-      duration: 1000,
-    });
+    toastRef.value.show('登录失败', 'error');
+    
   }
 };
 

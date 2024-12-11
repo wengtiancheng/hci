@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Toast from '../components/Toast.vue';
 
+const toastRef = ref();
 const token = sessionStorage.getItem('token');
 const isModalVisible = ref(false);
 const router = useRouter();
 
 const logout = () => {
   sessionStorage.removeItem('token');
-  location.reload();
+  toastRef.value.show('登出成功', 'success');
+  setTimeout(() => {
+    location.reload();
+  }, 1000);
 };
 
 const checkLoginStatus = (path: string) => {
@@ -30,6 +35,7 @@ const redirectToRegister = () => {
 
 <template>
   <header class="navbar">
+    <Toast ref="toastRef" />
     <div class="logo">
       <router-link to="/">
         <img src="../assets/logo.png" alt="Logo" />
