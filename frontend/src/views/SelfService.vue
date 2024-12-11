@@ -358,9 +358,9 @@ onBeforeUnmount(() => {
         </div>
         <div class="action-buttons">
           <button class="reset-btn" @click="confirmReset">
-            <span class="reset-text">重置配置</span>
+            <span class="reset-text">重置</span>
           </button>
-          <button class="save-btn" @click="saveSolution">保存配置</button>
+          <button class="save-btn" @click="saveSolution">保存</button>
         </div>
       </div>
     </div>

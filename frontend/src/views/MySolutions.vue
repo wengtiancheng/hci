@@ -20,6 +20,7 @@ import { getPowersupplyById } from '../api/Powersupply';
 import { getCoolingById } from '../api/Cooling';
 import { getChassisById } from '../api/Chassis';
 import { getDisplayById } from '../api/Display';
+import {SolutionVO} from "../api/Solution.ts";
 
 
 const solutions = ref([]);
@@ -60,8 +61,8 @@ const checkLoginStatus = () => {
   }
 };
 
-const goToSolutionDetail = (solutionId: number) => {
-  router.push({ path: `/solution/${solutionId}` });
+const goToSolutionDetail = (solution: SolutionVO) => {
+  router.push({ path: `/custom-build`, query: { solution: JSON.stringify(solution) }});
 };
 
 const redirectToLogin = () => {
@@ -98,7 +99,7 @@ onMounted(() => {
           </div>
           <div class="solution-footer">
             <span class="solution-price">总价: ￥{{ solution.totalPrice }}</span>
-            <button class="detail-button" @click="goToSolutionDetail(solution.id)">详情</button>
+            <button class="detail-button" @click="goToSolutionDetail(solution)">详情</button>
           </div>
         </div>
       </div>

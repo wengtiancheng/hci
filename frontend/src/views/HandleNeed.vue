@@ -52,74 +52,12 @@ const handleClick = async () => {
 <!--          @keydown.enter="handleClick"-->
 <!--      />-->
 <!--    </div>-->
-    /* From Uiverse.io by Lakshay-art */
-    <div class="grid"></div>
-    <div id="poda">
-      <div class="glow"></div>
-      <div class="darkBorderBg"></div>
-      <div class="darkBorderBg"></div>
-      <div class="darkBorderBg"></div>
-
-      <div class="white"></div>
-
-      <div class="border"></div>
-
-      <div id="main">
-        <input placeholder="Search..." type="text" name="text" class="input" />
-        <div id="input-mask"></div>
-        <div id="pink-mask"></div>
-        <div class="filterBorder"></div>
-        <div id="filter-icon">
-          <svg
-              preserveAspectRatio="none"
-              height="27"
-              width="27"
-              viewBox="4.8 4.56 14.832 15.408"
-              fill="none"
-          >
-            <path
-                d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
-                stroke="#d6d6e6"
-                stroke-width="1"
-                stroke-miterlimit="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            ></path>
-          </svg>
-        </div>
-        <div id="search-icon">
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke-linejoin="round"
-              stroke-linecap="round"
-              height="24"
-              fill="none"
-              class="feather feather-search"
-          >
-            <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
-            <line
-                stroke="url(#searchl)"
-                y2="16.65"
-                y1="22"
-                x2="16.65"
-                x1="22"
-            ></line>
-            <defs>
-              <linearGradient gradientTransform="rotate(50)" id="search">
-                <stop stop-color="#f8e7f8" offset="0%"></stop>
-                <stop stop-color="#b6a9b7" offset="50%"></stop>
-              </linearGradient>
-              <linearGradient id="searchl">
-                <stop stop-color="#b6a9b7" offset="0%"></stop>
-                <stop stop-color="#837484" offset="50%"></stop>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-      </div>
+    <div class="group">
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
+      <input placeholder="例：我想要配置一台10000以内的电脑，用来玩 3A 游戏"
+             type="search" class="input"
+             @keydown.enter="handleClick"
+      >
     </div>
 
   </section>
@@ -217,390 +155,49 @@ const handleClick = async () => {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 增加文字阴影，让文字更加清晰 */
 }
 /* 搜索框样式 */
-/* From Uiverse.io by Lakshay-art */
-.grid {
-  height: 800px;
-  width: 800px;
-  background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px),
-  linear-gradient(to bottom, #0f0f10 1px, transparent 1px);
-  background-size: 1rem 1rem;
-  background-position: center center;
-  position: absolute;
-  z-index: -1;
-  filter: blur(1px);
-}
-.white,
-.border,
-.darkBorderBg,
-.glow {
-  max-height: 70px;
-  max-width: 314px;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  overflow: hidden;
-  z-index: -1;
-  /* Border Radius */
-  border-radius: 12px;
-  filter: blur(3px);
-}
-.input {
-  background-color: #010201;
-  border: none;
-  /* padding:7px; */
-  width: 602px;  /* 将宽度改为原来的两倍 */
-  height: 56px;
-  border-radius: 10px;
-  color: white;
-  padding-inline: 118px;  /* 调整 padding 使内容保持居中 */
-  font-size: 18px;
-}
-#poda {
+
+.group {
   display: flex;
+  line-height: 40px;
   align-items: center;
-  justify-content: center;
-}
-.input::placeholder {
-  color: #c0b9c0;
-}
-
-.input:focus {
-  outline: none;
-}
-
-#main:focus-within > #input-mask {
-  display: none;
-}
-
-#input-mask {
-  pointer-events: none;
-  width: 100px;
-  height: 20px;
-  position: absolute;
-  background: linear-gradient(90deg, transparent, black);
-  top: 18px;
-  left: 70px;
-}
-#pink-mask {
-  pointer-events: none;
-  width: 30px;
-  height: 20px;
-  position: absolute;
-  background: #cf30aa;
-  top: 10px;
-  left: 5px;
-  filter: blur(20px);
-  opacity: 0.8;
-  /*animation:leftright 4s ease-in infinite;*/
-  transition: all 2s;
-}
-#main:hover > #pink-mask {
-  /*animation: rotate 4s linear infinite;*/
-  opacity: 0;
-}
-
-.white {
-  max-height: 63px;
-  max-width: 307px;
-  border-radius: 10px;
-  filter: blur(2px);
-}
-
-.white::before {
-  content: "";
-  z-index: -2;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(83deg);
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  filter: brightness(1.4);
-  background-image: conic-gradient(
-      rgba(0, 0, 0, 0) 0%,
-      #a099d8,
-      rgba(0, 0, 0, 0) 8%,
-      rgba(0, 0, 0, 0) 50%,
-      #dfa2da,
-      rgba(0, 0, 0, 0) 58%
-  );
-  /*  animation: rotate 4s linear infinite;*/
-  transition: all 2s;
-}
-.border {
-  max-height: 59px;
-  max-width: 303px;
-  border-radius: 11px;
-  filter: blur(0.5px);
-}
-.border::before {
-  content: "";
-  z-index: -2;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(70deg);
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  filter: brightness(1.3);
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-image: conic-gradient(
-      #1c191c,
-      #402fb5 5%,
-      #1c191c 14%,
-      #1c191c 50%,
-      #cf30aa 60%,
-      #1c191c 64%
-  );
-  /* animation: rotate 4s 0.1s linear infinite;*/
-  transition: all 2s;
-}
-.darkBorderBg {
-  max-height: 65px;
-  max-width: 312px;
-}
-.darkBorderBg::before {
-  content: "";
-  z-index: -2;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(82deg);
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-image: conic-gradient(
-      rgba(0, 0, 0, 0),
-      #18116a,
-      rgba(0, 0, 0, 0) 10%,
-      rgba(0, 0, 0, 0) 50%,
-      #6e1b60,
-      rgba(0, 0, 0, 0) 60%
-  );
-  transition: all 2s;
-}
-#poda:hover > .darkBorderBg::before {
-  transform: translate(-50%, -50%) rotate(262deg);
-}
-#poda:hover > .glow::before {
-  transform: translate(-50%, -50%) rotate(240deg);
-}
-#poda:hover > .white::before {
-  transform: translate(-50%, -50%) rotate(263deg);
-}
-#poda:hover > .border::before {
-  transform: translate(-50%, -50%) rotate(250deg);
-}
-
-#poda:hover > .darkBorderBg::before {
-  transform: translate(-50%, -50%) rotate(-98deg);
-}
-#poda:hover > .glow::before {
-  transform: translate(-50%, -50%) rotate(-120deg);
-}
-#poda:hover > .white::before {
-  transform: translate(-50%, -50%) rotate(-97deg);
-}
-#poda:hover > .border::before {
-  transform: translate(-50%, -50%) rotate(-110deg);
-}
-
-#poda:focus-within > .darkBorderBg::before {
-  transform: translate(-50%, -50%) rotate(442deg);
-  transition: all 4s;
-}
-#poda:focus-within > .glow::before {
-  transform: translate(-50%, -50%) rotate(420deg);
-  transition: all 4s;
-}
-#poda:focus-within > .white::before {
-  transform: translate(-50%, -50%) rotate(443deg);
-  transition: all 4s;
-}
-#poda:focus-within > .border::before {
-  transform: translate(-50%, -50%) rotate(430deg);
-  transition: all 4s;
-}
-
-.glow {
-  overflow: hidden;
-  filter: blur(30px);
-  opacity: 0.4;
-  max-height: 130px;
-  max-width: 354px;
-}
-.glow:before {
-  content: "";
-  z-index: -2;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(60deg);
-  position: absolute;
-  width: 999px;
-  height: 999px;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  /*border color, change middle color*/
-  background-image: conic-gradient(
-      #000,
-      #402fb5 5%,
-      #000 38%,
-      #000 50%,
-      #cf30aa 60%,
-      #000 87%
-  );
-  /* change speed here */
-  //animation: rotate 4s 0.3s linear infinite;
-  transition: all 2s;
-}
-
-@keyframes rotate {
-  100% {
-    transform: translate(-50%, -50%) rotate(450deg);
-  }
-}
-@keyframes leftright {
-  0% {
-    transform: translate(0px, 0px);
-    opacity: 1;
-  }
-
-  49% {
-    transform: translate(250px, 0px);
-    opacity: 0;
-  }
-  80% {
-    transform: translate(-40px, 0px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translate(0px, 0px);
-    opacity: 1;
-  }
-}
-
-#filter-icon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  max-height: 40px;
-  max-width: 38px;
-  height: 100%;
-  width: 100%;
-
-  isolation: isolate;
-  overflow: hidden;
-  /* Border Radius */
-  border-radius: 10px;
-  background: linear-gradient(180deg, #161329, black, #1d1b4b);
-  border: 1px solid transparent;
-}
-.filterBorder {
-  height: 42px;
-  width: 40px;
-  position: absolute;
-  overflow: hidden;
-  top: 7px;
-  right: 7px;
-  border-radius: 10px;
-}
-
-.filterBorder::before {
-  content: "";
-
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(90deg);
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  filter: brightness(1.35);
-  background-image: conic-gradient(
-      rgba(0, 0, 0, 0),
-      #3d3a4f,
-      rgba(0, 0, 0, 0) 50%,
-      rgba(0, 0, 0, 0) 50%,
-      #3d3a4f,
-      rgba(0, 0, 0, 0) 100%
-  );
-  animation: rotate 4s linear infinite;
-}
-#main {
   position: relative;
-}
-#search-icon {
-  position: absolute;
-  left: 20px;
-  top: 15px;
+  width: 700px;
 }
 
-.search-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem auto;
-  width: 47%; /* 搜索框宽度为屏幕的一半 */
-  border-radius: 25px; /* 圆角 */
-  border: 1px solid #ddd;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem 1rem;
-}
-
-.search-icon {
-  font-size: 1.5rem; /* 图标大小 */
-  margin-right: 0.5rem;
-  color: #888; /* 图标颜色 */
-}
-
-.search-input {
+.input {
   width: 100%;
-  border: none;
+  height: 50px;
+  left: 2rem;
+  line-height: 40px;
+  padding: 0 1rem;
+  padding-left: 2.5rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
   outline: none;
-  font-size: 1rem;
-  color: #333;
-  //background-color: transparent; /* 确保背景透明，显示容器的背景图片 */
+  background-color: #181717;
+  color: #d4e1e0;
+  transition: .3s ease;
 }
 
-/* 样式输入框 */
-.input-box {
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  width: 200px;
-  text-align: center;
+.input::placeholder {
+  color: #9e9ea7;
 }
 
-/* 样式按钮 */
-.submit-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
+.input:focus, input:hover {
+  outline: none;
+  border-color: rgba(119, 69, 215, 0.4);
+  background-color: #262323;
+  box-shadow: 0 0 0 4px rgba(114, 18, 94, 0.1);
 }
 
-.submit-btn:hover {
-  background-color: #0056b3;
+.icon {
+  position: absolute;
+  left: 1rem;
+  fill: #9e9ea7;
+  width: 1.4rem;
+  height: 1.4rem;
 }
+
 
 /* 样式介绍部分 */
 .intro-section {
