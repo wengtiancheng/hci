@@ -11,6 +11,7 @@ import com.example.demo.vo.FilterVO;
 import com.example.demo.vo.SolutionVO;
 
 import com.example.demo.po.Solution;
+import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,13 +62,7 @@ public class SolutionServiceImpl implements SolutionService{
         return solutionRepository.findAll().stream().map(Solution::toVO).toList();
     }
 
-    @Override
-    public Boolean saveSolution(SolutionVO solutionVO) {
-        if (solutionVO == null) throw DemoException.paramError();
-        User user = securityUtil.getCurrentUser();
-        if (user == null) throw DemoException.notLogin();
-
-        Solution solution = solutionVO.toPO();
+    private Solution SetTotalPrice(Solution solution){
         // 计算总价
         Integer totalPrice = 0;
         totalPrice += Objects.requireNonNull(cpuRepository.findById(solution.getCpuId()).orElse(null)).getPrice();
@@ -80,16 +75,54 @@ public class SolutionServiceImpl implements SolutionService{
         totalPrice += Objects.requireNonNull(displayRepository.findById(solution.getDisplayId()).orElse(null)).getPrice();
         totalPrice += Objects.requireNonNull(motherboardRepository.findById(solution.getMotherboardId()).orElse(null)).getPrice();
         solution.setTotalPrice(totalPrice);
-        // 设置 create_time
-        solution.setCreateTime(new Date());
-        solution.setSaveNum(-1); // -1 表示是用户的创建的方案，而不是广场上的方案
-        solutionRepository.save(solution);
+        return solution;
+    }
 
+    @Override
+    public Boolean saveSolution(SolutionVO solutionVO) {
+        User user = securityUtil.getCurrentUser();
+        if (user == null) throw DemoException.notLogin();
+        if (solutionVO == null) throw DemoException.paramError();
+
+        Solution solutionPre = solutionRepository.findById(solutionVO.getId()).orElse(null);
+        Solution solution = solutionVO.toPO();
+        solution = SetTotalPrice(solution);
 
         List<Integer> solutions = user.getMySolutions();
-        solutions.add(solution.getId());
-        user.setMySolutions(solutions);
-        userRepository.save(user);
+
+        if (solutionPre == null) // 全新方案
+        {
+            solutionRepository.save(solution);
+
+            solutions.add(solution.getId());
+            user.setMySolutions(solutions);
+            userRepository.save(user);
+        }
+        else if (solutionPre.getSaveNum() >= 0) // 原方案 是 广场方案
+        {
+            solution.setId(null);
+            solution.setSaveNum(-1);
+            solutionRepository.save(solution);
+
+            solutions.add(solution.getId());
+            user.setMySolutions(solutions);
+            userRepository.save(user);
+        }
+        else {
+            solutionPre.setSaveNum(-1);
+            solutionPre.setCpuId(solution.getCpuId());
+            solutionPre.setGpuId(solution.getGpuId());
+            solutionPre.setMemoryId(solution.getMemoryId());
+            solutionPre.setHarddiskId(solution.getHarddiskId());
+            solutionPre.setPowersupplyId(solution.getPowersupplyId());
+            solutionPre.setCoolingId(solution.getCoolingId());
+            solutionPre.setChassisId(solution.getChassisId());
+            solutionPre.setDisplayId(solution.getDisplayId());
+            solutionPre.setMotherboardId(solution.getMotherboardId());
+
+            solutionRepository.save(solution);
+        }
+
         return true;
     }
 
