@@ -474,35 +474,37 @@ onBeforeUnmount(() => {
   right: 0;
   bottom: 0;
   display: flex;
-  max-width: 1500px; /* 最大宽度限制 */
   margin: 0 auto; /* 居中对齐 */
   font-size: 0.875em;
   justify-content: space-between; /* 左右面板之间平均分配空间 */
-  background-color: #ffffff;
+  background-color: rgb(243, 245, 248);
 }
 
 .left-panel {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   margin-top: 2%;
+  max-width: 65%;
   min-width: 800px;
-  padding-left: 0px; /* 右侧间距 */
-  background-color: #ffffff;
+  background-color: rgb(243, 245, 248);
+  margin-left: 200px;
+  padding-right: 10px;
 }
 
 .right-panel {
-  width: 25%;
+  width: 15%;
   min-width: 250px;
   max-width: 270px;
-  background-color: #ffffff;
-  border-left: 1px solid #ffffff;
+  background-color: rgb(243, 245, 248);
   display: flex;
   flex-direction: column;
-  padding: 25px;
+  margin-right: 200px;
+  margin-left: 50px;
+  max-width: 20%;
   margin-top: 2%;
   height: 100%;
-  padding-right: 100px; /* 左侧间距 */
+  padding-right: 75px; /* 左侧间距 */
 }
 :host {
   display: flex;
@@ -516,13 +518,10 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 20px;
   width: 90%;
-  //max-width: 900px;
   margin: 0 auto;
 }
 .hardware-item {
-  width: 90%;
-  //min-width: 300px;
-  //max-width: 800px;
+  width: 98%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -532,6 +531,13 @@ onBeforeUnmount(() => {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
+  background-color: #fff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
+}
+
+.hardware-item:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
 }
 .hardware-info {
   display: flex;
