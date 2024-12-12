@@ -129,13 +129,16 @@ public class SolutionServiceImpl implements SolutionService{
 
     @Override
     public Boolean deleteSolution(Integer id) {
+
         if (id == null) throw DemoException.paramError();
         User user = securityUtil.getCurrentUser();
         if (user == null) throw DemoException.notLogin();
         List<Integer> solutions = user.getMySolutions();
         if (solutions.contains(id)) {
-            solutionRepository.deleteById(id);
+            solutions.remove(id);
         }
+        user.setMySolutions(solutions);
+        userRepository.save(user);
         return true;
     }
 

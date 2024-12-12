@@ -311,8 +311,11 @@ onMounted(() => {
 
 .secondary-text {
   font-size: 0.8em;
-  color: #888; /* A lighter color to make the text less prominent */
-  margin-bottom: 10px; /* Add margin to the bottom of secondary text */
+  color: #888;
+  margin-bottom: 10px;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
 }
 
 .styled-checkbox-group {
