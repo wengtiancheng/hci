@@ -26,6 +26,7 @@ const confirmDelete = async () => {
   if (solutionIdToDelete.value !== null) {
     await deleteSolution(solutionIdToDelete.value);
     isDeleteDialogVisible.value = false;
+    window.location.reload();
   }
 };
 
@@ -87,13 +88,14 @@ onMounted(() => {
             />
           </div>
           <div class="solution-items">
-            <img
-                v-for="item in solution.items"
-                :key="item.id"
-                :src="item"
-                :alt="item.name"
-                class="solution-item-image"
-            />
+            <div v-for="item in solution.items" :key="item.id" class="solution-item">
+              <img
+                  :src="item"
+                  :alt="item.name"
+                  class="solution-item-image"
+              />
+              <p class="solution-item-name">名字</p>
+            </div>
           </div>
           <div class="solution-footer">
             <span class="solution-price">总价: ￥{{ solution.totalPrice }}</span>
@@ -105,13 +107,29 @@ onMounted(() => {
     <div v-else>
       <button class="login-button" @click="redirectToLogin">请先登录</button>
     </div>
+
+    <!-- Confirmation Modal -->
+    <div v-if="isDeleteDialogVisible" class="modal-overlay">
+      <div class="modal">
+        <h3>Warning</h3>
+        <p>您确定要删除此方案吗？</p>
+        <div class="modal-actions">
+          <button @click="isDeleteDialogVisible = false" class="cancel-button">取消</button>
+          <button @click="confirmDelete" class="confirm-button">确认</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
 .my-solutions {
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: rgb(243, 245, 248);
+  height: 100vh; /* Fill the entire viewport height */
+  width: 100%; /* Fill the entire width */
+  box-sizing: border-box;
 }
 
 .title {
@@ -169,9 +187,21 @@ onMounted(() => {
   margin-bottom: 15px;
 }
 
+.solution-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.solution-item-name {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
 .solution-item-image {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
   border-radius: 4px;
 }
@@ -217,5 +247,91 @@ onMounted(() => {
 
 .login-button:hover {
   background-color: #0056b3;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6); /* Darker background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it is above other elements */
+}
+
+.modal {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Softer shadow */
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  animation: fadeIn 0.3s ease; /* Add fade-in animation */
+}
+
+.modal h3 {
+  text-align: left;
+  margin-left: 10px;
+  font-size: 1.5em;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 5px; /* Reduce the bottom margin */
+}
+
+.modal p {
+  font-size: 1em;
+  color: #666;
+  text-align: left;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-top: 5px; /* Reduce the top margin */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.confirm-button, .cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
+}
+
+.confirm-button {
+  background-color: #ff4d4f;
+  width: 100px;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #e04344;
+}
+
+.cancel-button {
+  background-color: #d3d3d3;
+  width: 100px;
+  color: black;
+}
+
+.cancel-button:hover {
+  background-color: #bcbcbc;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

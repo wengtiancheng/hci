@@ -485,7 +485,8 @@ onBeforeUnmount(() => {
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 2%;
-  width: 800px;
+  max-width: 65%;
+  min-width: 800px;
   background-color: rgb(243, 245, 248);
   margin-left: 200px;
   padding-right: 10px;

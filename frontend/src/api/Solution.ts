@@ -103,7 +103,7 @@ export const uploadSolution = (solution: SolutionVO) => {
 
 // 删除一个装机方案
 export const deleteSolution = (id: number) => {
-    return axios.delete(`${SOLUTION_MODULE}/delete/${id}`)
+    return axios.post(`${SOLUTION_MODULE}/delete/${id}`)
         .then(res => {
             return res.data.result;
         })
