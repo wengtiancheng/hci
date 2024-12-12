@@ -118,6 +118,7 @@ const resetConfig = () => {
     sessionStorage.removeItem('solutionDescription');
     solutionDescription.value = '';
     solutionName.value = '';
+    compatibilityIssues.value = [];
     item.details = null;
   });
   calculateTotalPrice();
@@ -358,30 +359,42 @@ onBeforeUnmount(() => {
 <!--      </div>-->
       <div class="solution-info-panel">
         <div class="solution-input">
-          <textarea
+          <v-text-field
+              label="装机方案名称"
               v-model="solutionName"
-              placeholder="请输入装机方案名字"
-              class="solution-name-input"
-              @change="checkCompatibility"
-          ></textarea>
-          <textarea
+              variant="outlined"
+          ></v-text-field>
+          <v-textarea
+              label="装机方案描述"
               v-model="solutionDescription"
-              placeholder="请输入装机方案描述"
-              class="solution-description-input"
-          ></textarea>
+              row-height="25"
+              rows="5"
+              variant="outlined"
+              auto-grow
+              shaped
+          ></v-textarea>
+
         </div>
       </div>
       <div class="compatibility-panel">
         <h3>硬件兼容性检查</h3>
         <div class="compatibility-content">
-          <p v-if="compatibilityIssues.length === 0">暂无兼容性问题</p>
+          <p v-if="compatibilityIssues.length === 0">
+            <v-chip color="green">
+              暂无兼容性问题
+            </v-chip>
+          </p>
           <div v-else>
             <p v-for="(issue, index) in compatibilityIssues" :key="index" class="compatibility-issue">
-              <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon"/>
-              <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span> 和
-              <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span>
-              不匹配
+              <v-chip color="red">
+                <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon"/>&nbsp
+                <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span>&nbsp和&nbsp
+                <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span>
+                不匹配
+              </v-chip>
+
             </p>
+
           </div>
         </div>
       </div>
@@ -529,9 +542,9 @@ onBeforeUnmount(() => {
 }
 
 .right-panel {
-  width: 15%;
+  width: 17%;
   min-width: 250px;
-  max-width: 270px;
+
   background-color: rgb(243, 245, 248);
   display: flex;
   flex-direction: column;
@@ -570,12 +583,13 @@ onBeforeUnmount(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   background-color: #fff;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Add transition for smooth effect */
 }
 
 .hardware-item:hover {
   background-color: #f0f0f0; /* Change background color on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
+  transform: translateY(-5px);
 }
 
 .hardware-info {
@@ -687,7 +701,7 @@ onBeforeUnmount(() => {
 }
 
 .compatibility-panel {
-  height: 150px;
+  min-height: 150px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;

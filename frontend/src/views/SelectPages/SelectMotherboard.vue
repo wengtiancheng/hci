@@ -90,14 +90,16 @@
                    (memoryType && motherboard.memoryType !== memoryType)" 
              class="warning-row">
           <div class="warning">
-            <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+
             <div class="warning-messages">
-              <div v-if="motherboard.type !== cpuType && cpuType !== ''">
+              <v-chip v-if="motherboard.type !== cpuType && cpuType !== ''" color="red" outlined>
+                <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
                 警告：主板类型与CPU类型不匹配
-              </div>
-              <div v-if="memoryType && motherboard.memoryType !== memoryType">
+              </v-chip>
+              <v-chip v-if="memoryType && motherboard.memoryType !== memoryType" color="red" outlined>
+                <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
                 警告：主板内存接口与已选内存不匹配
-              </div>
+              </v-chip>
             </div>
           </div>
         </div>
@@ -223,17 +225,19 @@ const fetchMotherboards = async () => {
 const confirmDialog = ref();
 
 const selectMotherboard = async (motherboard: Motherboard) => {
-  let warningMessage = '';
-  
-  // 检查 CPU 兼容性
+  let warningMessages = [];
+
+// 检查 CPU 兼容性
   if (motherboard.type !== cpuType.value && cpuType.value !== '') {
-    warningMessage += `当前选择的主板类型(${motherboard.type})与CPU类型(${cpuType.value})不匹配` + '\n';
+    warningMessages.push(`当前选择的主板类型(${motherboard.type})与CPU类型(${cpuType.value})不匹配`);
   }
-  
-  // 检查内存兼容性
+
+// 检查内存兼容性
   if (memoryType.value && motherboard.memoryType !== memoryType.value) {
-    warningMessage += `当前选择的主板内存接口(${motherboard.memoryType})与已选内存类型(${memoryType.value})不匹配`;
+    warningMessages.push(`当前选择的主板内存接口(${motherboard.memoryType})与已选内存类型(${memoryType.value})不匹配`);
   }
+
+  let warningMessage = warningMessages.join('\n');
   
   // 如果有任何不兼容情况，显示确认对话框
   if (warningMessage) {

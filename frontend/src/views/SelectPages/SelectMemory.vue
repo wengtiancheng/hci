@@ -213,11 +213,14 @@ onMounted(() => {
           <button @click="selectMemory(memory)" class="select-button">选择</button>
         </div>
         
-        <div v-if="memory.type !== motherboardMemoryType && motherboardMemoryType !== ''" 
-             class="warning-row">
-          <div class="warning"> 
-            <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
-            警告：内存类型和主板不兼容
+        <div v-if="memory.type !== motherboardMemoryType && motherboardMemoryType !== ''" class="warning-row">
+          <div class="warning">
+            <div class="warning-messages">
+              <v-chip color="red" outlined>
+                <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+                警告：内存类型与主板类型不匹配
+              </v-chip>
+            </div>
           </div>
         </div>
       </div>

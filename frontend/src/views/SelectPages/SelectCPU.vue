@@ -180,14 +180,17 @@ const handlePageChange = (page: number) => {
           <div class="component-price">￥{{ cpu.price }}</div>
           <button @click="selectCPU(cpu)" class="select-button">选择</button>
         </div>
-        
-        <div v-if="cpu.type !== motherboardType && motherboardType !== ''" 
-             class="warning-row">
+        <div v-if="cpu.type !== motherboardType && motherboardType !== ''"class="warning-row">
           <div class="warning">
-            <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
-            警告：CPU类型与主板类型不匹配
+            <div class="warning-messages">
+              <v-chip color="red" outlined>
+                <img src="../../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+                警告：CPU类型与主板类型不匹配
+              </v-chip>
+            </div>
           </div>
         </div>
+        
       </div>
 
       <div class="pagination">
@@ -236,10 +239,10 @@ const handlePageChange = (page: number) => {
 .warning-row {
   width: 100%;
   padding: 0 0.75em;
-  margin-top: -2em;  // 减少间距
+  margin-top: -2em;
   display: flex;
   justify-content: center;
-  padding-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 .warning {
@@ -252,6 +255,13 @@ const handlePageChange = (page: number) => {
     width: 20px;
     height: 20px;
     margin-top: 3px;
+  }
+  
+  .warning-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
   }
 }
 </style>
