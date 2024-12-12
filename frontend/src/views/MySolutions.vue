@@ -3,38 +3,31 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {getSolutionImages, getUserSolutions} from '../api/User';
 import {CPUVO, newCPUVO} from "../api/CPU.ts";
-import {GPUVO, newGPUVO} from "../api/GPU.ts";
-import {MemoryVO, newMemoryVO} from "../api/Memory.ts";
-import {MotherboardVO, newMotherboardVO} from "../api/Motherboard.ts";
-import {HardDiskVO, newHardDiskVO} from "../api/Harddisk.ts";
-import {newPowersupplyVO, PowersupplyVO} from "../api/Powersupply.ts";
-import {CoolingVO, newCoolingVO} from "../api/Cooling.ts";
-import {ChassisVO, newChassisVO} from "../api/Chassis.ts";
 import {DisplayVO, newDisplayVO} from "../api/Display.ts";
-import { getCPUById } from '../api/CPU';
-import { getGPUById } from '../api/GPU';
-import { getMemoryById } from '../api/Memory';
-import { getMotherboardById } from '../api/Motherboard';
-import { getHarddiskById } from '../api/Harddisk';
-import { getPowersupplyById } from '../api/Powersupply';
-import { getCoolingById } from '../api/Cooling';
-import { getChassisById } from '../api/Chassis';
-import { getDisplayById } from '../api/Display';
 import {SolutionVO} from "../api/Solution.ts";
+import {deleteSolution} from "../api/Solution.ts";
 
 
 const solutions = ref([]);
 const isLoggedIn = ref(false);
 const router = useRouter();
 let cpu = ref<CPUVO>(newCPUVO());
-let gpu = ref<GPUVO>(newGPUVO());
-let memory = ref<MemoryVO>(newMemoryVO());
-let motherboard = ref<MotherboardVO>(newMotherboardVO());
-let harddisk = ref<HardDiskVO>(newHardDiskVO());
-let powersupply = ref<PowersupplyVO>(newPowersupplyVO());
-let cooling = ref<CoolingVO>(newCoolingVO());
-let chassis = ref<ChassisVO>(newChassisVO());
 let display = ref<DisplayVO>(newDisplayVO());
+
+const isDeleteDialogVisible = ref(false);
+const solutionIdToDelete = ref<number | null>(null);
+
+const showDeleteDialog = (id: number) => {
+  solutionIdToDelete.value = id;
+  isDeleteDialogVisible.value = true;
+};
+
+const confirmDelete = async () => {
+  if (solutionIdToDelete.value !== null) {
+    await deleteSolution(solutionIdToDelete.value);
+    isDeleteDialogVisible.value = false;
+  }
+};
 
 const fetchSolutions = async () => {
   try {
@@ -86,7 +79,12 @@ onMounted(() => {
         >
           <div class="solution-header">
             <h2 class="solution-name">{{ solution.name }}</h2>
-            <p class="solution-date">{{ solution.createTime }}</p>
+            <img
+                src="../assets/images/delete.png"
+                alt="Delete"
+                class="delete-icon"
+                @click="showDeleteDialog(solution.id)"
+            />
           </div>
           <div class="solution-items">
             <img
@@ -157,9 +155,10 @@ onMounted(() => {
   font-weight: bold;
 }
 
-.solution-date {
-  font-size: 14px;
-  color: #888;
+.delete-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
 .solution-items {

@@ -28,6 +28,7 @@ export interface SolutionVO {
     displayId: number;
     cpuName?: string;
     gpuName?: string;
+    imageLists?: string[];
 }
 
 // 初始化 SolutionVO
