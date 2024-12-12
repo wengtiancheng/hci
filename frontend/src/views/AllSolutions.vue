@@ -212,6 +212,10 @@ const fetchSolutions = async () => {
 const route = useRoute();
 if (route.query.filters) {
   filters.value = JSON.parse(route.query.filters as string); // Parse filters
+  sliderValue.value = [filters.value.lowPrice, filters.value.highPrice];
+  // 清空路由
+  route.query.filters = null;
+  console.log('Route filters:', filters.value);
 }
 
 // Slider change callback

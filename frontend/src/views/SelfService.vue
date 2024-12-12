@@ -281,10 +281,9 @@ onBeforeUnmount(() => {
       <div></div>
       <div></div>
     </div>
-
+    <p class="spinner-text">正在加载...</p>
   </div>
   <div v-else class="self-service">
-
 
     <!-- 左侧配置列表 -->
 
@@ -435,6 +434,12 @@ onBeforeUnmount(() => {
   position: absolute;
   width: 9px;
   height: 9px;
+}
+
+.spinner-text {
+  margin-top: 100px;  /* 控制文字与旋转器之间的距离 */
+  font-size: 16px;
+  color: #333;
 }
 
 .spinner div {
