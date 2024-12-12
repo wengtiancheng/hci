@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import {getSolutionImages, getUserSolutions} from '../api/User';
-import {CPUVO, newCPUVO} from "../api/CPU.ts";
-import {DisplayVO, newDisplayVO} from "../api/Display.ts";
-import {SolutionVO} from "../api/Solution.ts";
-import {deleteSolution} from "../api/Solution.ts";
-
+import { getUserSolutions } from '../api/User';
+import { SolutionVO } from "../api/Solution.ts";
+import { deleteSolution } from "../api/Solution.ts";
 
 const solutions = ref<SolutionVO[]>([]);
 const isLoggedIn = ref(false);
 const router = useRouter();
-let cpu = ref<CPUVO>(newCPUVO());
-let display = ref<DisplayVO>(newDisplayVO());
 
 const isDeleteDialogVisible = ref(false);
 const solutionIdToDelete = ref<number | null>(null);
@@ -34,7 +29,15 @@ const fetchSolutions = async () => {
   try {
     const response = await getUserSolutions();
     console.log('Fetched solutions:', response.data.result);
-    solutions.value = response.data.result;
+    solutions.value = response.data.result.map(solution => {
+      return {
+        ...solution,
+        items: solution.images.map((image, index) => ({
+          image,
+          name: solution.componentNames[index]
+        }))
+      };
+    });
     console.log('Solutions:', solutions.value);
   } catch (error) {
     console.error('Error fetching solutions:', error);
@@ -83,16 +86,18 @@ onMounted(() => {
                 @click="showDeleteDialog(solution.id)"
             />
           </div>
+
           <div class="solution-items">
-            <div v-for="image in solution.images" :key="solution.id" class="solution-item">
+            <div v-for="item in solution.items" :key="item.image" class="solution-item">
               <img
-                  :src="image"
-                  :alt="image"
+                  :src="item.image"
+                  :alt="item.name"
                   class="solution-item-image"
               />
-              <p class="solution-item-name">名字</p>
+              <span class="solution-item-name">{{ item.name }}</span>
             </div>
           </div>
+
           <div class="solution-footer">
             <span class="solution-price">总价: ￥{{ solution.totalPrice }}</span>
             <button class="detail-button" @click="goToSolutionDetail(solution)">详情</button>
@@ -120,6 +125,17 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.text-solution-name {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  max-width: 90px; /* Set a maximum width for the text */
+  text-align: center; /* Center align the text */
+}
+
 .my-solutions {
   padding: 20px;
   background-color: rgb(243, 245, 248);
@@ -177,7 +193,7 @@ onMounted(() => {
 
 .solution-items {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* 允许换行 */
   gap: 10px;
   margin-top: 15px;
   margin-bottom: 15px;
@@ -193,6 +209,13 @@ onMounted(() => {
   margin-top: 5px;
   font-size: 14px;
   color: #333;
+  display: -webkit-box; /* Use a flexbox-based layout */
+  -webkit-box-orient: vertical; /* Set the box orientation to vertical */
+  -webkit-line-clamp: 2; /* Limit the text to 2 lines */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  max-width: 100px; /* Set a maximum width for the text */
+  text-align: center; /* Center align the text */
 }
 
 .solution-item-image {
