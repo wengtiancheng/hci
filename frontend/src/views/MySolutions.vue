@@ -253,7 +253,7 @@ onMounted(() => {
 
 .login-button {
   display: block;
-  margin: 0 auto;
+  margin-top: 100px;
   background-color: #007bff;
   color: #fff;
   border: none;

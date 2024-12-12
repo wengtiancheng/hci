@@ -39,19 +39,6 @@ const handleClick = async () => {
     <div class="slogan">
       得机，让一切触手可及
     </div>
-    <!-- 顶部搜索框 -->
-<!--    <div class="search-box">-->
-<!--      <div class="search-icon">-->
-<!--        🔍-->
-<!--      </div>-->
-<!--      <input-->
-<!--          v-model="userInput"-->
-<!--          type="text"-->
-<!--          class="search-input"-->
-<!--          placeholder="例：我想要配置一台10000以内的电脑，用来玩 3A 游戏"-->
-<!--          @keydown.enter="handleClick"-->
-<!--      />-->
-<!--    </div>-->
     <div class="group">
       <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
       <input placeholder="例：我想要配置一台10000以内的电脑，用来玩 3A 游戏"
@@ -61,22 +48,21 @@ const handleClick = async () => {
     </div>
 
   </section>
-  <section class="intro-section">
+  <section class="intro-section-1">
     <div class="container">
       <!-- 左侧文字区域 -->
       <div class="text-content">
-        <h2 class="title">Complex Documentation</h2>
+        <h1 class="title">自定义装机</h1>
         <p class="description">
-          This extension comes with a lot of fully coded examples that help you get started faster.
-          You can adjust the colors and also the programming language.
-          You can change the text and images and you're good to go.
+          在“自定义装机”功能中，您可以自由选择各类硬件配件，按照自己的想法、需求构建专属的PC配置。支持一键保存您的装机方案，轻松进行多次修改和查看。系统还将实时进行兼容性检测，确保每一项配件都能完美匹配，避免不必要的冲突。
         </p>
         <ul class="features">
-          <li><span>🚀</span> Built by Developers for Developers</li>
-          <li><span>🛠️</span> Carefully crafted code for Components</li>
-          <li><span>⚡</span> Dynamic Javascript Components</li>
+          <li><span>💡</span> 自由选择各类配件，打造专属配置</li>
+          <li><span>🔧</span> 一键保存装机方案，随时查看和修改</li>
+          <li><span>⚙️</span> 兼容性检测，确保硬件完美匹配</li>
         </ul>
       </div>
+
 
       <!-- 右侧图片区域 -->
       <div class="image-content">
@@ -84,7 +70,7 @@ const handleClick = async () => {
       </div>
     </div>
   </section>
-  <section class="intro-section">
+  <section class="intro-section-2">
     <div class="container">
       <!-- 左侧图片区域 -->
       <div class="image-content">
@@ -92,16 +78,14 @@ const handleClick = async () => {
       </div>
       <!-- 右侧文字区域 -->
       <div class="text-content">
-        <h2 class="title">Complex Documentation</h2>
+        <h1 class="title">装机方案</h1>
         <p class="description">
-          This extension comes with a lot of fully coded examples that help you get started faster.
-          You can adjust the colors and also the programming language.
-          You can change the text and images and you're good to go.
+          在装机方案广场，您可以浏览其他用户分享的优质装机方案，获取灵感，参考他人的选择。通过丰富的过滤条件，轻松查找符合您预算、用途和品牌偏好的方案。同时，您还可以根据个人需求对参考方案进行自定义修改，进一步优化配置。
         </p>
         <ul class="features">
-          <li><span>🚀</span> Built by Developers for Developers</li>
-          <li><span>🛠️</span> Carefully crafted code for Components</li>
-          <li><span>⚡</span> Dynamic Javascript Components</li>
+          <li><span>🌟</span> 查看他人推荐的装机方案，轻松参考</li>
+          <li><span>💬</span> 丰富的过滤条件，精确匹配您的需求</li>
+          <li><span>📈</span> 自定义修改方案，打造更符合您的配置</li>
         </ul>
       </div>
     </div>
@@ -112,7 +96,7 @@ const handleClick = async () => {
       <p class="footer-text">You've reached the bottom of the page.</p>
       <p class="footer-contact">
         For inquiries, reach us at:
-        <a href="mailto:contact@yourdomain.com" class="contact-link">contact@yourdomain.com</a>
+        <a href="mailto:contact@yourdomain.com" class="contact-link">https://github.com/1193600423</a>
       </p>
       <div class="social-icons">
         <a href="https://twitter.com/yourhandle" target="_blank" class="social-link">🐦 Twitter</a>
@@ -217,12 +201,25 @@ const handleClick = async () => {
 
 
 /* 样式介绍部分 */
-.intro-section {
+.intro-section-1 {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8rem 4rem;
-  background-color: #0b0b0b;
+  background: linear-gradient(to bottom, #000000, #1f1f1f);
+}
+.intro-section-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rem 4rem;
+  background: linear-gradient(to bottom, #1f1f1f, #1e1e28);
+}
+.footer-section {
+  background-color: #000000;
+  color: #fff;
+  text-align: center;
+  padding: 6rem 3rem;
 }
 
 .container {
@@ -281,12 +278,7 @@ const handleClick = async () => {
 }
 
 /* Footer 样式 */
-.footer-section {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 2rem 1rem;
-}
+
 
 .footer-container {
   max-width: 1200px;
