@@ -84,43 +84,44 @@ public class SolutionServiceImpl implements SolutionService{
         if (user == null) throw DemoException.notLogin();
         if (solutionVO == null) throw DemoException.paramError();
 
-        Solution solutionPre = solutionRepository.findById(solutionVO.getId()).orElse(null);
         Solution solution = solutionVO.toPO();
         solution = SetTotalPrice(solution);
 
         List<Integer> solutions = user.getMySolutions();
 
-        if (solutionPre == null) // 全新方案
+        if (solutionVO.getId() == null) // 新建方案
         {
             solutionRepository.save(solution);
 
             solutions.add(solution.getId());
             user.setMySolutions(solutions);
             userRepository.save(user);
-        }
-        else if (solutionPre.getSaveNum() >= 0) // 原方案 是 广场方案
-        {
-            solution.setId(null);
-            solution.setSaveNum(-1);
-            solutionRepository.save(solution);
+        } else {
+            Solution solutionPre = solutionRepository.findById(solutionVO.getId()).orElse(null);
+            if (solutionPre.getSaveNum() >= 0) // 原方案 是 广场方案
+            {
+                solution.setId(null);
+                solution.setSaveNum(-1);
+                solutionRepository.save(solution);
 
-            solutions.add(solution.getId());
-            user.setMySolutions(solutions);
-            userRepository.save(user);
-        }
-        else {
-            solutionPre.setSaveNum(-1);
-            solutionPre.setCpuId(solution.getCpuId());
-            solutionPre.setGpuId(solution.getGpuId());
-            solutionPre.setMemoryId(solution.getMemoryId());
-            solutionPre.setHarddiskId(solution.getHarddiskId());
-            solutionPre.setPowersupplyId(solution.getPowersupplyId());
-            solutionPre.setCoolingId(solution.getCoolingId());
-            solutionPre.setChassisId(solution.getChassisId());
-            solutionPre.setDisplayId(solution.getDisplayId());
-            solutionPre.setMotherboardId(solution.getMotherboardId());
+                solutions.add(solution.getId());
+                user.setMySolutions(solutions);
+                userRepository.save(user);
+            }
+            else {
+                solutionPre.setSaveNum(-1);
+                solutionPre.setCpuId(solution.getCpuId());
+                solutionPre.setGpuId(solution.getGpuId());
+                solutionPre.setMemoryId(solution.getMemoryId());
+                solutionPre.setHarddiskId(solution.getHarddiskId());
+                solutionPre.setPowersupplyId(solution.getPowersupplyId());
+                solutionPre.setCoolingId(solution.getCoolingId());
+                solutionPre.setChassisId(solution.getChassisId());
+                solutionPre.setDisplayId(solution.getDisplayId());
+                solutionPre.setMotherboardId(solution.getMotherboardId());
 
-            solutionRepository.save(solution);
+                solutionRepository.save(solution);
+            }
         }
 
         return true;

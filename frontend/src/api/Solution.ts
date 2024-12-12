@@ -28,7 +28,8 @@ export interface SolutionVO {
     displayId: number;
     cpuName?: string;
     gpuName?: string;
-    imageLists?: string[];
+    images?: string[];
+    componentNames?: string[];
 }
 
 // 初始化 SolutionVO
@@ -94,6 +95,7 @@ export const getAllSolution = (filters: Filters) => {
 
 //自定义装机：保存一个装机方案
 export const uploadSolution = (solution: SolutionVO) => {
+    console.log(solution)
     return axios.post(`${SOLUTION_MODULE}/save`, solution)
         .then(res => {
             return res

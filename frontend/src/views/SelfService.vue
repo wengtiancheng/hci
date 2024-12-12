@@ -53,16 +53,16 @@ const hardwareConfig = ref([
   { key: 'chassis', name: '机箱', defaultIcon:'src/assets/icons/chassis.svg', details: null},
   { key: 'display', name: '显示器', defaultIcon:'src/assets/icons/display.svg', details: null},
   { key: 'cooling', name: '散热器', defaultIcon:'src/assets/icons/cooling.svg', details: null}
-  ]);
+]);
 
-  // 计算总价的
+// 计算总价的
 const calculateTotalPrice = () => {
   totalPrice.value = hardwareConfig.value.reduce((sum, item) => {
     return sum + (item.details?.price || 0);
   }, 0);
 };
 
-  // 获取硬件详情的方法
+// 获取硬件详情的方法
 const fetchHardwareDetails = async () => {
   try {
     for (const item of hardwareConfig.value) {
@@ -94,7 +94,7 @@ const getHardwareDetailsById = async (type, id) => {
   }
 };
 
-  // 跳转到选择页面
+// 跳转到选择页面
 const gotoSelectPage = (key) => {
   saveScrollPosition();
   router.push({path: `/select/${key}`});
@@ -120,8 +120,8 @@ const resetConfig = () => {
 
 const confirmReset = async () => {
   const confirmed = await confirmDialogRef.value.show(
-    '确认重置',
-    '确定要重置所有配置吗？这将清空所有已选择的配件。'
+      '确认重置',
+      '确定要重置所有配置吗？这将清空所有已选择的配件。'
   );
   if (confirmed) {
     resetConfig();
@@ -134,7 +134,7 @@ const checkCompatibility = () => {
   // 检查 CPU 和主板的类型
   const cpu = hardwareConfig.value.find(item => item.key === 'cpu').details;
   const motherboard = hardwareConfig.value.find(item => item.key === 'motherboard').details;
-  
+
 
   if (cpu && motherboard) {
     if (cpu.type !== motherboard.type) {
@@ -214,22 +214,21 @@ onMounted(async () => {
 
     solutionName.value = sessionStorage.getItem('solutionName') || '';
     solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
-    
-    
+
+
   }
 
   // 先获取配件详情
   await fetchHardwareDetails();
 
-  
 
   // 检查是否需要显示提示
   const messageInfo = sessionStorage.getItem('showSuccessMessage');
   if (messageInfo && toastRef.value) {  // 添加 toastRef.value 检查
-    const { type, name, action } = JSON.parse(messageInfo);
-    const message = action === 'select' 
-      ? `已选择${type}:${name}`
-      : `已更换${type}:${name}`;
+    const {type, name, action} = JSON.parse(messageInfo);
+    const message = action === 'select'
+        ? `已选择${type}:${name}`
+        : `已更换${type}:${name}`;
     toastRef.value.show(message);
     sessionStorage.removeItem('showSuccessMessage');
   }
@@ -245,9 +244,8 @@ onBeforeUnmount(() => {
 </script>
 
 
-
 <template>
-  <!-- 加载动画 --> 
+  <!-- 加载动画 -->
   <div v-if="isLoading" class="loading-overlay">
     <div class="spinner">
       <div></div>
@@ -265,12 +263,12 @@ onBeforeUnmount(() => {
   </div>
   <div v-else class="self-service">
 
-    
+
     <!-- 左侧配置列表 -->
-    
+
     <div class="left-panel" ref="leftPanelRef">
       <div class="hardware-list">
-        <Toast ref="toastRef" />
+        <Toast ref="toastRef"/>
         <div v-for="item in hardwareConfig" :key="item.key" class="hardware-item">
           <div class="hardware-info">
             <h3 class="hardware-title">
@@ -278,15 +276,16 @@ onBeforeUnmount(() => {
             </h3>
             <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="image-link">
               <img
-                :src="item.details?.imageUrl || item.defaultIcon"
-                alt="Hardware Image"
-                class="hardware-image"
+                  :src="item.details?.imageUrl || item.defaultIcon"
+                  alt="Hardware Image"
+                  class="hardware-image"
               />
             </a>
             <div class="details-container">
               <div class="product-info">
                 <span class="product-name">
-                  <a v-if="item.details" :href="item.details.linkUrl" target="_blank" class="purchase-link">{{ item.details ? item.details.name : '未选择' }}</a>
+                  <a v-if="item.details" :href="item.details.linkUrl" target="_blank"
+                     class="purchase-link">{{ item.details ? item.details.name : '未选择' }}</a>
                 </span>
                 <span v-if="item.details" class="price">￥{{ item.details.price }}</span>
               </div>
@@ -295,15 +294,15 @@ onBeforeUnmount(() => {
           <div class="button-container">
             <div class="button-group" :class="{ 'has-clear': item.details }">
               <button
-                v-if="item.details"
-                class="clear-button"
-                @click="clearSelection(item)"
+                  v-if="item.details"
+                  class="clear-button"
+                  @click="clearSelection(item)"
               >
                 清空
               </button>
               <button
-                class="action-button"
-                @click="gotoSelectPage(item.key)"
+                  class="action-button"
+                  @click="gotoSelectPage(item.key)"
               >
                 {{ item.details ? '更换' : '选择' }}
               </button>
@@ -323,15 +322,15 @@ onBeforeUnmount(() => {
         </template>
         <template v-else>
           <div class="solution-input">
-            <input 
-              v-model="solutionName" 
-              placeholder="请输入配置方案名称"
-              class="solution-name-input"
+            <input
+                v-model="solutionName"
+                placeholder="请输入配置方案名称"
+                class="solution-name-input"
             />
             <textarea
-              v-model="solutionDescription" 
-              placeholder="请输入配置方案描述"
-              class="solution-description-input"
+                v-model="solutionDescription"
+                placeholder="请输入配置方案描述"
+                class="solution-description-input"
             ></textarea>
           </div>
         </template>
@@ -342,9 +341,10 @@ onBeforeUnmount(() => {
           <p v-if="compatibilityIssues.length === 0">暂无兼容性问题</p>
           <div v-else>
             <p v-for="(issue, index) in compatibilityIssues" :key="index" class="compatibility-issue">
-              <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon" />
+              <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon"/>
               <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span> 和
-              <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span> 不匹配
+              <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span>
+              不匹配
             </p>
           </div>
         </div>
@@ -364,7 +364,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <ConfirmDialog ref="confirmDialogRef" />
+    <ConfirmDialog ref="confirmDialogRef"/>
   </div>
 </template>
 
@@ -482,7 +482,7 @@ onBeforeUnmount(() => {
 
 .left-panel {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   margin-top: 2%;
   max-width: 65%;
@@ -490,44 +490,6 @@ onBeforeUnmount(() => {
   background-color: rgb(243, 245, 248);
   margin-left: 200px;
   padding-right: 10px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  position: relative; /* 添加相对定位 */
-  display: flex;
-  justify-content: center;
-  
-}
-
-/* 隐藏 Webkit 浏览器的滚动条 */
-.left-panel::-webkit-scrollbar {
-  display: none;
-}
-
-
-
-/* 鼠标悬停时显示滚动条 */
-.left-panel:hover {
-  scrollbar-width: thin; /* Firefox */
-  -ms-overflow-style: auto; /* IE and Edge */
-}
-
-.left-panel:hover::-webkit-scrollbar {
-  display: block;
-  width: 8px;
-}
-
-.left-panel:hover::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.left-panel:hover::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.left-panel:hover::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 .right-panel {
@@ -544,6 +506,7 @@ onBeforeUnmount(() => {
   height: 100%;
   padding-right: 75px; /* 左侧间距 */
 }
+
 :host {
   display: flex;
   justify-content: flex-start;
@@ -551,16 +514,14 @@ onBeforeUnmount(() => {
 }
 
 .hardware-list {
- 
+
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 800px; /* 减去滚动条宽度 */
+  width: 90%;
   margin: 0 auto;
-  padding-right: 8px;
-  flex-shrink: 0;
-  
 }
+
 .hardware-item {
   width: 98%;
   margin: 0 auto;
@@ -580,11 +541,13 @@ onBeforeUnmount(() => {
   background-color: #f0f0f0; /* Change background color on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
 }
+
 .hardware-info {
   display: flex;
   gap: 30px;
   align-items: center;
 }
+
 .hardware-image {
   width: 80px;
   height: 80px;
@@ -592,20 +555,24 @@ onBeforeUnmount(() => {
   border-radius: 5px;
   background-color: #f8f8f8;
 }
+
 .button-container {
   width: 180px;
   display: flex;
   justify-content: flex-end;
 }
+
 .button-group {
   display: flex;
   gap: 10px;
   align-items: center;
   width: 80px;
 }
+
 .button-group.has-clear {
   width: 170px;
 }
+
 .clear-button {
   background-color: #d3d3d3;
   color: #000;
@@ -615,6 +582,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   min-width: 80px;
 }
+
 .action-button {
   background-color: #007bff;
   color: #fff;
@@ -624,9 +592,11 @@ onBeforeUnmount(() => {
   cursor: pointer;
   min-width: 80px;
 }
+
 .action-button:hover {
   background-color: #0056b3;
 }
+
 .hardware-title {
   min-width: 80px;
   text-align: left;
@@ -667,7 +637,7 @@ onBeforeUnmount(() => {
 }
 
 .total-price {
-  
+
   font-weight: bold;
   margin-bottom: 20px;
   padding: 15px;
@@ -882,10 +852,10 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  
+
 }
 
-.solution-name-input{
+.solution-name-input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -894,7 +864,7 @@ onBeforeUnmount(() => {
   margin: 0 auto;
 }
 
-.solution-description-input{
+.solution-description-input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
