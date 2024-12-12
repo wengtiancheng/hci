@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     TokenUtil tokenUtil;
 
     @Autowired
     SecurityUtil securityUtil;
-    
+
     @Autowired
     SolutionRepository solutionRepository;
 
@@ -94,13 +94,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVO getInformation() {
-        User user=securityUtil.getCurrentUser();
+        User user = securityUtil.getCurrentUser();
         return user.toVO();
     }
 
     @Override
     public List<SolutionVO> getMySolutions() {
-        User user=securityUtil.getCurrentUser();
+        User user = securityUtil.getCurrentUser();
         List<Integer> solutions = user.getMySolutions();
         if (solutions == null) throw DemoException.mySolutionNotExists();
 
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
         List<SolutionVO> solutionVOs = solutionList.stream()
                 .filter(Objects::nonNull) // 过滤掉 null 值
-                .map(Solution :: toVO) // 转换为 SolutionVO
+                .map(Solution::toVO) // 转换为 SolutionVO
                 .toList();
 
         for (SolutionVO solution : solutionVOs) {
@@ -126,4 +126,17 @@ public class UserServiceImpl implements UserService {
             String harddiskName = harddiskService.getHarddisk(solution.getHarddiskId()).getName();
             String powersupplyImage = powersupplyService.getPowersupply(solution.getPowersupplyId()).getImageUrl();
             String powersupplyName = powersupplyService.getPowersupply(solution.getPowersupplyId()).getName();
-            String coolingImage = coolingService.getCooling(solution.getCoolingId()).getIma
+            String coolingImage = coolingService.getCooling(solution.getCoolingId()).getImageUrl();
+            String coolingName = coolingService.getCooling(solution.getCoolingId()).getName();
+            String displayName = displayService.getDisplay(solution.getDisplayId()).getName();
+            String displayImage = displayService.getDisplay(solution.getDisplayId()).getImageUrl();
+            String motherboardImage = motherboardService.getMotherboard(solution.getMotherboardId()).getImageUrl();
+            String motherboardName = motherboardService.getMotherboard(solution.getMotherboardId()).getName();
+            solution.setImages(List.of(cpuImage, gpuImage, chassisImage, memoryImage, harddiskImage,
+                    powersupplyImage, coolingImage, displayImage, motherboardImage));
+            solution.setComponentNames(List.of(cpuName, gpuName, chassisName, memoryName,
+                    harddiskName, powersupplyName, coolingName, displayName, motherboardName));
+        }
+        return solutionVOs;
+    }
+}
