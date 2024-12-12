@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, onBeforeUnmount, computed} from 'vue';
+import {onMounted, ref, onBeforeUnmount, watch} from 'vue';
 import {getCPUById} from "../api/CPU.ts";
 import {getMotherboardById} from "../api/Motherboard.ts";
 import {getMemoryById} from "../api/Memory.ts";
@@ -71,6 +71,8 @@ const fetchHardwareDetails = async () => {
         item.details = await getHardwareDetailsById(item.key, id);
       }
     }
+    solutionName.value = sessionStorage.getItem('solutionName') || '';
+    solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
     calculateTotalPrice();
     checkCompatibility();
   } finally {
@@ -112,6 +114,11 @@ const clearSelection = (item) => {
 const resetConfig = () => {
   hardwareConfig.value.forEach(item => {
     sessionStorage.removeItem(item.key);
+    sessionStorage.removeItem('solutionName');
+    sessionStorage.removeItem('solutionDescription');
+    solutionDescription.value = '';
+    solutionName.value = '';
+    compatibilityIssues.value = [];
     item.details = null;
   });
   calculateTotalPrice();
@@ -128,11 +135,7 @@ const confirmReset = async () => {
   }
 };
 
-// 保存 name 和 dess
-const saveNameDesc = () => {
-  sessionStorage.setItem('solutionName', solution.value);
-  sessionStorage.setItem('solutionDescription', solution.value);
-};
+
 
 const checkCompatibility = () => {
   compatibilityIssues.value = [];
@@ -152,7 +155,7 @@ const checkCompatibility = () => {
   const memory = hardwareConfig.value.find(item => item.key === 'memory').details;
 
   if (motherboard && memory) {
-    console.log(motherboard.memoryType, memory.type);
+
     if (motherboard.memoryType != memory.type) {
       compatibilityIssues.value.push({ cpuName: '主板', cpuKey: 'motherboard', motherboardName: '内存', motherboardKey: 'memory' });
     }
@@ -180,29 +183,36 @@ const saveSolution = async () => {
     displayId: parseInt(sessionStorage.getItem('display') || '0')
   };
 
-  console.log("Get Solution:" + solution);
+
   const result = await uploadSolution(solution);
-  if (result) {
+  console.log(result);
+  if (result.data.code === '000') {
     toastRef.value.show('保存成功');
+    //等待1秒后跳转
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    // 跳转到 MySolutions 页面
+    router.push('/mysolutions');
   } else {
-    toastRef.value.show('保存失败');
+    toastRef.value.show('保存失败!' + result.data.msg, 'error');
   }
-  // 跳转到 MySolutions 页面
-  router.push('/mysolutions');
+
 };
 
-// 使用 ref 来存储 sessionStorage 中的值
-const solutionName = ref('');
-const solutionDescription = ref('');
+const solutionName = ref(sessionStorage.getItem('solutionName') || '');
+const solutionDescription = ref(sessionStorage.getItem('solutionDescription') || '');
 
-// 使用 watchEffect 监听 sessionStorage 的变化
-
-
-// 添加一个计算属性来判断是否有现成方案
-const hasSavedSolution = computed(() => {
-  // return !!sessionStorage.getItem('solutionName');
-  return !!sessionStorage.getItem('id');
+// 监听 solutionName 和 solutionDescription 的变化
+watch(solutionName, (newValue) => {
+  sessionStorage.setItem('solutionName', newValue);
 });
+
+watch(solutionDescription, (newValue) => {
+  sessionStorage.setItem('solutionDescription', newValue);
+
+});
+
+
+
 
 onMounted(async () => {
   // 处理来自 SolutionDetail 的参数
@@ -226,8 +236,8 @@ onMounted(async () => {
 
     // solutionName.value = sessionStorage.getItem('solutionName') || '';
     // solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
-    solutionName.value = solution.name;
-    solutionDescription.value = solution.description;
+    // solutionName.value = solution.name;
+    // solutionDescription.value = solution.description;
   }
 
   // 先获取配件详情
@@ -349,30 +359,42 @@ onBeforeUnmount(() => {
 <!--      </div>-->
       <div class="solution-info-panel">
         <div class="solution-input">
-          <textarea
+          <v-text-field
+              label="装机方案名称"
               v-model="solutionName"
-              placeholder="请输入装机方案名字"
-              class="solution-name-input"
-              @change="checkCompatibility"
-          ></textarea>
-          <textarea
+              variant="outlined"
+          ></v-text-field>
+          <v-textarea
+              label="装机方案描述"
               v-model="solutionDescription"
-              placeholder="请输入装机方案描述"
-              class="solution-description-input"
-          ></textarea>
+              row-height="25"
+              rows="5"
+              variant="outlined"
+              auto-grow
+              shaped
+          ></v-textarea>
+
         </div>
       </div>
       <div class="compatibility-panel">
         <h3>硬件兼容性检查</h3>
         <div class="compatibility-content">
-          <p v-if="compatibilityIssues.length === 0">暂无兼容性问题</p>
+          <p v-if="compatibilityIssues.length === 0">
+            <v-chip color="green">
+              暂无兼容性问题
+            </v-chip>
+          </p>
           <div v-else>
             <p v-for="(issue, index) in compatibilityIssues" :key="index" class="compatibility-issue">
-              <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon"/>
-              <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span> 和
-              <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span>
-              不匹配
+              <v-chip color="red">
+                <img src="../assets/icons/warning.svg" alt="警告" class="warning-icon"/>&nbsp
+                <span @click="gotoSelectPage(issue.cpuKey)" class="clickable">{{ issue.cpuName }}</span>&nbsp和&nbsp
+                <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span>
+                不匹配
+              </v-chip>
+
             </p>
+
           </div>
         </div>
       </div>
@@ -520,9 +542,9 @@ onBeforeUnmount(() => {
 }
 
 .right-panel {
-  width: 15%;
+  width: 17%;
   min-width: 250px;
-  max-width: 270px;
+
   background-color: rgb(243, 245, 248);
   display: flex;
   flex-direction: column;
@@ -561,12 +583,13 @@ onBeforeUnmount(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   background-color: #fff;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Add transition for smooth effect */
 }
 
 .hardware-item:hover {
   background-color: #f0f0f0; /* Change background color on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
+  transform: translateY(-5px);
 }
 
 .hardware-info {
@@ -678,7 +701,7 @@ onBeforeUnmount(() => {
 }
 
 .compatibility-panel {
-  height: 150px;
+  min-height: 150px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;

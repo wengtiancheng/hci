@@ -38,8 +38,8 @@ const handleLogin = async () => {
     sessionStorage.setItem('token', response.result);
     console.log('token:', response.result);
     if (response.code == "000") {
-      
-      
+
+
       toastRef.value.show('登录成功');
       setTimeout(() => {
         router.push('/solution');
@@ -50,7 +50,7 @@ const handleLogin = async () => {
   } catch (error) {
     console.error('登录失败:', error);
     toastRef.value.show('登录失败', 'error');
-    
+
   }
 };
 
@@ -77,7 +77,7 @@ const goToRegister = () => {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  width: 350px;
+  width: 400px;
   text-align: center;
 }
 

@@ -177,7 +177,7 @@ const redirectToRegister = () => {
   border-radius: 8px;
   text-align: center;
   width: 400px; /* Increased width */
-  height: 200px; /* Increased height */
+  height: 300px; /* Increased height */
 }
 
 .close-button {
