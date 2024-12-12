@@ -105,7 +105,7 @@ const goToLogin = () => {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  width: 400px;
+  width: 450px;
   text-align: center;
 }
 
