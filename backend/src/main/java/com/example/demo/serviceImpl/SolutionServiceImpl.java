@@ -89,7 +89,7 @@ public class SolutionServiceImpl implements SolutionService{
 
         List<Integer> solutions = user.getMySolutions();
 
-        if (solutionVO.getId() == null) // 新建方案
+        if (solutionVO.getId() == null || solutionVO.getId() == 0) // 新建方案
         {
             solutionRepository.save(solution);
 

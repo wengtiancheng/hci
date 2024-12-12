@@ -128,6 +128,12 @@ const confirmReset = async () => {
   }
 };
 
+// 保存 name 和 dess
+const saveNameDesc = () => {
+  sessionStorage.setItem('solutionName', solution.value);
+  sessionStorage.setItem('solutionDescription', solution.value);
+};
+
 const checkCompatibility = () => {
   compatibilityIssues.value = [];
 
@@ -156,12 +162,12 @@ const checkCompatibility = () => {
 // 保存配置
 const saveSolution = async () => {
   const solution = {
-    id: '',
+    id: parseInt(sessionStorage.getItem('id') || '0'),
     name: solutionName.value,
     imageUrl: '',
     totalPrice: totalPrice.value,
     description: solutionDescription.value,
-    saveNum: 0,
+    saveNum: -1,
     createTime: new Date(),
     cpuId: parseInt(sessionStorage.getItem('cpu') || '0'),
     motherboardId: parseInt(sessionStorage.getItem('motherboard') || '0'),
@@ -174,12 +180,15 @@ const saveSolution = async () => {
     displayId: parseInt(sessionStorage.getItem('display') || '0')
   };
 
+  console.log("Get Solution:" + solution);
   const result = await uploadSolution(solution);
   if (result) {
     toastRef.value.show('保存成功');
   } else {
     toastRef.value.show('保存失败');
   }
+  // 跳转到 MySolutions 页面
+  router.push('/mysolutions');
 };
 
 // 使用 ref 来存储 sessionStorage 中的值
@@ -191,7 +200,8 @@ const solutionDescription = ref('');
 
 // 添加一个计算属性来判断是否有现成方案
 const hasSavedSolution = computed(() => {
-  return !!sessionStorage.getItem('solutionName');
+  // return !!sessionStorage.getItem('solutionName');
+  return !!sessionStorage.getItem('id');
 });
 
 onMounted(async () => {
@@ -199,7 +209,9 @@ onMounted(async () => {
   const query = router.currentRoute.value.query;
   if (query.solution) {
     const solution = JSON.parse(query.solution);
+    console.log("Get Solution:" , solution);
     // 将解决方案的配件ID存储到 sessionStorage
+    sessionStorage.setItem('id', solution.id);
     sessionStorage.setItem('cpu', solution.cpuId);
     sessionStorage.setItem('motherboard', solution.motherboardId);
     sessionStorage.setItem('gpu', solution.gpuId);
@@ -212,10 +224,10 @@ onMounted(async () => {
     sessionStorage.setItem('solutionName', solution.name);
     sessionStorage.setItem('solutionDescription', solution.description);
 
-    solutionName.value = sessionStorage.getItem('solutionName') || '';
-    solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
-
-
+    // solutionName.value = sessionStorage.getItem('solutionName') || '';
+    // solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
+    solutionName.value = solution.name;
+    solutionDescription.value = solution.description;
   }
 
   // 先获取配件详情
@@ -315,25 +327,40 @@ onBeforeUnmount(() => {
     <!-- 右侧配置详情 -->
     <div class="right-panel">
       <!-- 当有现成方案时显示信息，否则显示输入框 -->
+<!--      <div class="solution-info-panel">-->
+<!--        <template v-if="hasSavedSolution">-->
+<!--          <h3 class="solution-name">{{ solutionName }}</h3>-->
+<!--          <p class="solution-description">{{ solutionDescription }}</p>-->
+<!--        </template>-->
+<!--        <template v-else>-->
+<!--          <div class="solution-input">-->
+<!--            <input-->
+<!--                v-model="solutionName"-->
+<!--                placeholder="请输入配置方案名称"-->
+<!--                class="solution-name-input"-->
+<!--            />-->
+<!--            <textarea-->
+<!--                v-model="solutionDescription"-->
+<!--                placeholder="请输入配置方案描述"-->
+<!--                class="solution-description-input"-->
+<!--            ></textarea>-->
+<!--          </div>-->
+<!--        </template>-->
+<!--      </div>-->
       <div class="solution-info-panel">
-        <template v-if="hasSavedSolution">
-          <h3 class="solution-name">{{ solutionName }}</h3>
-          <p class="solution-description">{{ solutionDescription }}</p>
-        </template>
-        <template v-else>
-          <div class="solution-input">
-            <input
-                v-model="solutionName"
-                placeholder="请输入配置方案名称"
-                class="solution-name-input"
-            />
-            <textarea
-                v-model="solutionDescription"
-                placeholder="请输入配置方案描述"
-                class="solution-description-input"
-            ></textarea>
-          </div>
-        </template>
+        <div class="solution-input">
+          <textarea
+              v-model="solutionName"
+              placeholder="请输入装机方案名字"
+              class="solution-name-input"
+              @change="checkCompatibility"
+          ></textarea>
+          <textarea
+              v-model="solutionDescription"
+              placeholder="请输入装机方案描述"
+              class="solution-description-input"
+          ></textarea>
+        </div>
       </div>
       <div class="compatibility-panel">
         <h3>硬件兼容性检查</h3>
