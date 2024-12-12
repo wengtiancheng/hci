@@ -146,26 +146,36 @@ const openai = new OpenAI({
 
 
 const systemPrompt: string = `
-The user will provide their preferred budget range for building a PC.
-The user will provide the intended use of the PC, such as gaming, video editing, or general office work.
-The user will provide their preferred brand for certain components (e.g., Intel, AMD, NVIDIA).
-Please analyze user needs 
-and parse the "lowPrice","highPrice","cpuName","gpuName","motherboardName","memoryName" 
-and output them in JSON format. 
+The user may provide their preferred budget range for building a PC.
+The user may specify the intended use of the PC, such as gaming, video editing, or general office work.
+The user may indicate preferred brands for certain components (e.g., Intel, AMD, NVIDIA).
+Please analyze the user's needs and extract the following information:
+- "lowPrice" and "highPrice" can be chosen between 3732 and 40421.
+- "cpuName" should be selected from the following list:
+  ['i9 14900K', 'i7 14700KF', 'i7 14700K', 'i5 14600K', 'i9 13900K', 'i5 13600KF', 'i5 13600K', 'i5 13490F', 'i5 13400F', 'i5 13400', 'i5 12600KF', 'i5 12400F', 'AMD Ryzen5 9600X', 'AMD Ryzen7 7800X3D', 'AMD Ryzen5 7500F', 'AMD Ryzen7 5700X3D', 'AMD Ryzen7 5700X', 'AMD Ryzen5 5600G', 'AMD Ryzen5 5600'].
+- "gpuName" should be selected from the following list:
+  ['RTX4090', 'RTX4070SUPER', 'RTX4070', 'RTX4060Ti', 'RTX4060', 'RTX3060', 'RX7800XT', 'RX6750GRE', 'RX6750', 'RX6500XT'].
+- "motherboardName" should be selected from the following list:
+  ['B760M-PLUS', 'B760M', 'B660M', 'B650M-B', 'B650M', 'B550M-P', 'H610M', 'H510M', 'A520M-A', 'Z790'].
+- "memoryName" should be selected from the following list:
+  ['DDR4', 'DDR5'].
+
+Please output the information in JSON format, including the components based on the user's input.
 
 EXAMPLE INPUT: 
-"我想装一台性能好一点的电脑，来玩3A游戏，预算在15000以内."
+"我想要玩 3A 游戏，预算 15000 以内."
 
 EXAMPLE JSON OUTPUT:
 {
     "lowPrice": 10000,
     "highPrice": 15000,
-    "cpuName": ["i7 13700K", "AMD Ryzen7 7800X3D"], 
-    "gpuName": ["RTX4060Ti", "RX7800XT"],
-    "motherboardName": "B560",
-    "memoryName": "DDR4"
+    "cpuName": ["i7 13600K", "AMD Ryzen7 5700X"], 
+    "gpuName": ["RTX4060", "RX6750"],
+    "motherboardName": ["B650M", "B550M-P"],
+    "memoryName": ["DDR4","DDR5"]
 }
 `;
+
 
 // 定义一个新的 API 函数，接收 content 参数并返回 filters
 export const parseUserNeed = async (content: string): Promise<Filters | null> => {

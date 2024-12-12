@@ -7,7 +7,7 @@
       <!-- Price range filter -->
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue" :min="0" :max="99999"
+        <vue-slider v-model="sliderValue" :min=minPrice :max=maxPrice
                     :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
                     @change="sliderChange"></vue-slider>
       </div>
@@ -28,9 +28,25 @@
         <label for="cpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">CPU 类型</label>
         <el-checkbox v-model="selectAllCPUs" @change="toggleSelectAllCPUs">全选</el-checkbox>
         <el-checkbox-group v-model="filters.cpuName" @change="handleCPUChange">
-          <el-checkbox label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
+          <el-checkbox label="i9 14900K">i9 14900K</el-checkbox>
+          <el-checkbox label="i7 14700KF">i7 14700KF</el-checkbox>
+          <el-checkbox label="i7 14700K">i7 14700K</el-checkbox>
+          <el-checkbox label="i5 14600KF">i5 14600KF</el-checkbox>
+          <el-checkbox label="i9 13900K">i9 13900K</el-checkbox>
+          <el-checkbox label="i5 13600KF">i5 13600KF</el-checkbox>
+          <el-checkbox label="i5 13600K">i5 13600K</el-checkbox>
+          <el-checkbox label="i5 13490F">i5 13490F</el-checkbox>
+          <el-checkbox label="i5 13400F">i5 13400F</el-checkbox>
+          <el-checkbox label="i5 13400">i5 13400</el-checkbox>
           <el-checkbox label="i5 12600KF">i5 12600KF</el-checkbox>
-          <el-checkbox label="i7 13700K">i7 13700K</el-checkbox>
+          <el-checkbox label="i5 12400F">i5 12400F</el-checkbox>
+          <el-checkbox label="AMD Ryzen5 9600X">AMD Ryzen5 9600X</el-checkbox>
+          <el-checkbox label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
+          <el-checkbox label="AMD Ryzen5 7500F">AMD Ryzen5 7500F</el-checkbox>
+          <el-checkbox label="AMD Ryzen7 5700X3D">AMD Ryzen7 5700X3D</el-checkbox>
+          <el-checkbox label="AMD Ryzen7 5700X">AMD Ryzen7 5700X</el-checkbox>
+          <el-checkbox label="AMD Ryzen5 5600G">AMD Ryzen5 5600G</el-checkbox>
+          <el-checkbox label="AMD Ryzen5 5600">AMD Ryzen5 5600</el-checkbox>
           <!-- More options -->
         </el-checkbox-group>
       </div>
@@ -40,10 +56,17 @@
         <label for="gpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">GPU 类型</label>
         <el-checkbox v-model="selectAllGPUs" @change="toggleSelectAllGPUs">全选</el-checkbox>
         <el-checkbox-group v-model="filters.gpuName" @change="handleGPUChange">
-          <el-checkbox label="RTX3080">RTX3080</el-checkbox>
-          <el-checkbox label="RX6750">RX6750</el-checkbox>
+          <el-checkbox label="RTX4090">RTX4090</el-checkbox>
+          <el-checkbox label="RTX4070SUPER">RTX4070SUPER</el-checkbox>
+          <el-checkbox label="RTX4070">RTX4070</el-checkbox>
           <el-checkbox label="RTX4060Ti">RTX4060Ti</el-checkbox>
+          <el-checkbox label="RTX4060">RTX4060</el-checkbox>
+          <el-checkbox label="RTX3060Ti">RTX3060Ti</el-checkbox>
+          <el-checkbox label="RTX3060">RTX3060</el-checkbox>
           <el-checkbox label="RX7800XT">RX7800XT</el-checkbox>
+          <el-checkbox label="RX6750GRE">RX6750GRE</el-checkbox>
+          <el-checkbox label="RX6750">RX6750</el-checkbox>
+          <el-checkbox label="RX6500XT">RX6500XT</el-checkbox>
         </el-checkbox-group>
       </div>
 
@@ -52,8 +75,16 @@
         <label for="motherboard" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">主板类型</label>
         <el-checkbox v-model="selectAllMotherboards" @change="toggleSelectAllMotherboards">全选</el-checkbox>
         <el-checkbox-group v-model="filters.motherboardName" @change="handleMotherboardChange">
-          <el-checkbox label="B550">B550</el-checkbox>
-          <el-checkbox label="B560">B560</el-checkbox>
+          <el-checkbox label="B760M-PLUS">B760M-PLUS</el-checkbox>
+          <el-checkbox label="B760M">B760M</el-checkbox>
+          <el-checkbox label="B660M">B660M</el-checkbox>
+          <el-checkbox label="B650M-B">B650M-B</el-checkbox>
+          <el-checkbox label="B650M">B650M</el-checkbox>
+          <el-checkbox label="B550M-P">B550M-P</el-checkbox>
+          <el-checkbox label="H610M">H610M</el-checkbox>
+          <el-checkbox label="H510M">H510M</el-checkbox>
+          <el-checkbox label="A520M-A">A520M-A</el-checkbox>
+          <el-checkbox label="Z790">Z790</el-checkbox>
         </el-checkbox-group>
       </div>
 
@@ -98,15 +129,62 @@ import { useRoute } from 'vue-router';
 // Define filter state
 const filters = ref<Filters>(initFilters);
 
-const sliderValue = ref([0, 99999]);
+const maxPrice = 40423;
+const minPrice = 3730;
+const sliderValue = ref([minPrice , maxPrice]);
 
 // List of solutions
 const solutions = ref<SolutionVO[]>([]);
 
 // CPU options
-const cpuOptions = ['AMD Ryzen7 7800X3D', 'i5 12600KF', 'i7 13700K'];
-const gpuOptions = ['RTX3080', 'RX6750', 'RTX4060Ti', 'RX7800XT'];
-const motherboardOptions = ['B550', 'B560'];
+const cpuOptions = [
+  'i9 14900K',
+  'i7 14700KF',
+  'i7 14700K',
+  'i5 14600K',
+  'i9 13900K',
+  'i5 13600KF',
+  'i5 13600K',
+  'i5 13490F',
+  'i5 13400F',
+  'i5 13400',
+  'i5 12600KF',
+  'i5 12400F',
+  'AMD Ryzen5 9600X',
+  'AMD Ryzen7 7800X3D',
+  'AMD Ryzen5 7500F',
+  'AMD Ryzen7 5700X3D',
+  'AMD Ryzen7 5700X',
+  'AMD Ryzen5 5600G',
+  'AMD Ryzen5 5600',
+];
+
+const gpuOptions = [
+  'RTX4090',
+  'RTX4070SUPER',
+  'RTX4070',
+  'RTX4060Ti',
+  'RTX4060',
+  'RTX3060',
+  'RX7800XT',
+  'RX6750GRE',
+  'RX6750',
+  'RX6500XT',
+];
+
+const motherboardOptions = [
+  'B760M-PLUS',
+  'B760M',
+  'B660M',
+  'B650M-B',
+  'B650M',
+  'B550M-P',
+  'H610M',
+  'H510M',
+  'A520M-A',
+  'Z790',
+];
+
 const memoryOptions = ['DDR4', 'DDR5'];
 
 // Select all states

@@ -29,24 +29,18 @@ const handleClick = async () => {
 
 <template>
   <Header />
-  <!--  <div class="input_container">-->
-  <!--    &lt;!&ndash; 输入框 &ndash;&gt;-->
-  <!--    <input v-model="userInput" type="text" placeholder="例：我想要配置一台10000以内的电脑，用来玩 3A 游戏" class="input-box" style="width: 500px;" />-->
-  <!--    &lt;!&ndash; 按钮 &ndash;&gt;-->
-  <!--    <button @click="handleClick" class="submit-btn">获取文本</button>-->
-  <!--  </div>-->
   <section class="input_container">
     <div class="slogan">
-      得机，让一切触手可及
+      得机——智能推荐，轻松装机
     </div>
     <div class="group">
-      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
-      <input placeholder="例：我想要配置一台10000以内的电脑，用来玩 3A 游戏"
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g>
+      </svg>
+      <input placeholder="输入您的预算、需求等。例：我想要玩3A游戏，预算10000以内。"
              type="search" class="input"
              @keydown.enter="handleClick"
       >
     </div>
-
   </section>
   <section class="intro-section-1">
     <div class="container">
@@ -159,10 +153,10 @@ const handleClick = async () => {
 
 .group {
   display: flex;
-  line-height: 40px;
+  line-height: 45px;
   align-items: center;
   position: relative;
-  width: 700px;
+  width: 900px;
 }
 
 .input {
@@ -194,7 +188,7 @@ const handleClick = async () => {
 .icon {
   position: absolute;
   left: 1rem;
-  fill: #9e9ea7;
+  fill: #505054;
   width: 1.4rem;
   height: 1.4rem;
 }
