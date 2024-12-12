@@ -127,7 +127,7 @@ onMounted(() => {
 .my-solutions {
   padding: 20px;
   background-color: rgb(243, 245, 248);
-  height: 100vh; /* Fill the entire viewport height */
+  height: 100%; /* Fill the entire viewport height */
   width: 100%; /* Fill the entire width */
   box-sizing: border-box;
 }
