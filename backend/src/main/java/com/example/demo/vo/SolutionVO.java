@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author simba@onlying.cn
@@ -34,6 +35,9 @@ public class SolutionVO {
     private Integer coolingId;
     private Integer chassisId;
     private Integer displayId;
+
+    private List<String> images; // 方案图片
+    private List<String> componentNames; // 组件名称
 
     public Solution toPO(){
         Solution solution=new Solution();

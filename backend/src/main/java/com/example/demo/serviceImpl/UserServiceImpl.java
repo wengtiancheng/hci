@@ -108,32 +108,22 @@ public class UserServiceImpl implements UserService {
                 .map(solutionId -> solutionRepository.findById(solutionId).orElse(null))
                 .toList();
 
-        return solutionList.stream()
+        List<SolutionVO> solutionVOs = solutionList.stream()
                 .filter(Objects::nonNull) // 过滤掉 null 值
                 .map(Solution :: toVO) // 转换为 SolutionVO
                 .toList();
-    }
 
-    @Override
-    public List<String> getSolutionImages(Integer solutionId) {
-        Solution solution = solutionRepository.findById(solutionId).orElse(null);
-        if (solution == null) throw DemoException.solutionNotExists();
-
-        int cpuId = solution.getCpuId();
-
-        String cpuImage = CPUService.getCPU(cpuId).getImageUrl();
-        String gpuImage = GPUService.getGPU(solution.getGpuId()).getImageUrl();
-        String chassisImage = chassisService.getChassis(solution.getChassisId()).getImageUrl();
-        String memoryImage = memoryService.getMemory(solution.getMemoryId()).getImageUrl();
-        String harddiskImage = harddiskService.getHarddisk(solution.getHarddiskId()).getImageUrl();
-        String powersupplyImage = powersupplyService.getPowersupply(solution.getPowersupplyId()).getImageUrl();
-        String coolingImage = coolingService.getCooling(solution.getCoolingId()).getImageUrl();
-        String displayImage = displayService.getDisplay(solution.getDisplayId()).getImageUrl();
-        String motherboardImage = motherboardService.getMotherboard(solution.getMotherboardId()).getImageUrl();
-
-        return List.of(cpuImage, gpuImage, chassisImage, memoryImage, harddiskImage, powersupplyImage, coolingImage, displayImage, motherboardImage);
-    }
-
-
-
-}
+        for (SolutionVO solution : solutionVOs) {
+            String cpuImage = CPUService.getCPU(solution.getCpuId()).getImageUrl();
+            String cpuName = CPUService.getCPU(solution.getCpuId()).getName();
+            String gpuImage = GPUService.getGPU(solution.getGpuId()).getImageUrl();
+            String gpuName = GPUService.getGPU(solution.getGpuId()).getName();
+            String chassisImage = chassisService.getChassis(solution.getChassisId()).getImageUrl();
+            String chassisName = chassisService.getChassis(solution.getChassisId()).getName();
+            String memoryImage = memoryService.getMemory(solution.getMemoryId()).getImageUrl();
+            String memoryName = memoryService.getMemory(solution.getMemoryId()).getName();
+            String harddiskImage = harddiskService.getHarddisk(solution.getHarddiskId()).getImageUrl();
+            String harddiskName = harddiskService.getHarddisk(solution.getHarddiskId()).getName();
+            String powersupplyImage = powersupplyService.getPowersupply(solution.getPowersupplyId()).getImageUrl();
+            String powersupplyName = powersupplyService.getPowersupply(solution.getPowersupplyId()).getName();
+            String coolingImage = coolingService.getCooling(solution.getCoolingId()).getIma

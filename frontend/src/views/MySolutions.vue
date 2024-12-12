@@ -8,7 +8,7 @@ import {SolutionVO} from "../api/Solution.ts";
 import {deleteSolution} from "../api/Solution.ts";
 
 
-const solutions = ref([]);
+const solutions = ref<SolutionVO[]>([]);
 const isLoggedIn = ref(false);
 const router = useRouter();
 let cpu = ref<CPUVO>(newCPUVO());
@@ -35,11 +35,7 @@ const fetchSolutions = async () => {
     const response = await getUserSolutions();
     console.log('Fetched solutions:', response.data.result);
     solutions.value = response.data.result;
-    for (let i = 0; i < solutions.value.length; i++) {
-      const response = await getSolutionImages(solutions.value[i].id);
-      console.log('Fetched images:', response);
-      solutions.value[i].items = response;
-    }
+    console.log('Solutions:', solutions.value);
   } catch (error) {
     console.error('Error fetching solutions:', error);
   }
@@ -88,10 +84,10 @@ onMounted(() => {
             />
           </div>
           <div class="solution-items">
-            <div v-for="item in solution.items" :key="item.id" class="solution-item">
+            <div v-for="image in solution.images" :key="solution.id" class="solution-item">
               <img
-                  :src="item"
-                  :alt="item.name"
+                  :src="image"
+                  :alt="image"
                   class="solution-item-image"
               />
               <p class="solution-item-name">名字</p>
