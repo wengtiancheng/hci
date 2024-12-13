@@ -71,15 +71,33 @@ public class SolutionServiceImpl implements SolutionService{
     private Solution SetTotalPrice(Solution solution){
         // 计算总价
         Integer totalPrice = 0;
-        totalPrice += Objects.requireNonNull(cpuRepository.findById(solution.getCpuId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(gpuRepository.findById(solution.getGpuId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(memoryRepository.findById(solution.getMemoryId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(harddiskRepository.findById(solution.getHarddiskId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(powersupplyRepository.findById(solution.getPowersupplyId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(chassisRepository.findById(solution.getChassisId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(coolingRepository.findById(solution.getCoolingId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(displayRepository.findById(solution.getDisplayId()).orElse(null)).getPrice();
-        totalPrice += Objects.requireNonNull(motherboardRepository.findById(solution.getMotherboardId()).orElse(null)).getPrice();
+        if (cpuRepository.findById(solution.getCpuId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(cpuRepository.findById(solution.getCpuId()).orElse(null)).getPrice();
+        }
+        if (gpuRepository.findById(solution.getGpuId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(gpuRepository.findById(solution.getGpuId()).orElse(null)).getPrice();
+        }
+        if (memoryRepository.findById(solution.getMemoryId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(memoryRepository.findById(solution.getMemoryId()).orElse(null)).getPrice();
+        }
+        if (harddiskRepository.findById(solution.getHarddiskId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(harddiskRepository.findById(solution.getHarddiskId()).orElse(null)).getPrice();
+        }
+        if (powersupplyRepository.findById(solution.getPowersupplyId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(powersupplyRepository.findById(solution.getPowersupplyId()).orElse(null)).getPrice();
+        }
+        if (coolingRepository.findById(solution.getCoolingId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(coolingRepository.findById(solution.getCoolingId()).orElse(null)).getPrice();
+        }
+        if (chassisRepository.findById(solution.getChassisId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(chassisRepository.findById(solution.getChassisId()).orElse(null)).getPrice();
+        }
+        if (displayRepository.findById(solution.getDisplayId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(displayRepository.findById(solution.getDisplayId()).orElse(null)).getPrice();
+        }
+        if (motherboardRepository.findById(solution.getMotherboardId()).orElse(null) != null) {
+            totalPrice += Objects.requireNonNull(motherboardRepository.findById(solution.getMotherboardId()).orElse(null)).getPrice();
+        }
         solution.setTotalPrice(totalPrice);
         return solution;
     }
@@ -97,7 +115,9 @@ public class SolutionServiceImpl implements SolutionService{
 
         if (solutionVO.getId() == null || solutionVO.getId() == 0) // 新建方案
         {
+            solution.setId(null);
             solutionRepository.save(solution);
+            System.out.println(solution.getId());
 
             solutions.add(solution.getId());
             user.setMySolutions(solutions);
