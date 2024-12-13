@@ -70,7 +70,6 @@ onMounted(() => {
 <template>
   <div class="my-solutions">
     <div v-if="isLoggedIn">
-      <h1 class="title">我的装机方案</h1>
       <div class="solutions-list">
         <div
             v-for="solution in solutions"
@@ -137,11 +136,26 @@ onMounted(() => {
 }
 
 .my-solutions {
-  padding: 20px;
-  background-color: rgb(243, 245, 248);
+  position: relative;
+  margin-top: 60px;
   height: 100%; /* Fill the entire viewport height */
   width: 100%; /* Fill the entire width */
   box-sizing: border-box;
+  z-index: -1; /* Send the background image behind other content */
+}
+
+.my-solutions::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/src/assets/images/bg_light.png') no-repeat center center;
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-attachment: fixed; /* Fix the background image */
+  opacity: 0.5; /* Set the opacity to 50% */
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
 }
 
 .title {
@@ -152,6 +166,7 @@ onMounted(() => {
 }
 
 .solutions-list {
+  background: rgba(255, 255, 255, 0.0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -163,6 +178,7 @@ onMounted(() => {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
   padding: 20px;
   transition: transform 0.3s, box-shadow 0.3s;
 }

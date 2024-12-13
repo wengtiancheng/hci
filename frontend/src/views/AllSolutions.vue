@@ -26,27 +26,27 @@
       <!-- CPU type filter -->
       <div class="filter-item">
         <label for="cpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">CPU 类型</label>
-        <el-checkbox v-model="selectAllCPUs" @change="toggleSelectAllCPUs">全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllCPUs" @change="toggleSelectAllCPUs">全选</el-checkbox>
         <el-checkbox-group v-model="filters.cpuName" @change="handleCPUChange">
-          <el-checkbox label="i9 14900K">i9 14900K</el-checkbox>
-          <el-checkbox label="i7 14700KF">i7 14700KF</el-checkbox>
-          <el-checkbox label="i7 14700K">i7 14700K</el-checkbox>
-          <el-checkbox label="i5 14600KF">i5 14600KF</el-checkbox>
-          <el-checkbox label="i9 13900K">i9 13900K</el-checkbox>
-          <el-checkbox label="i5 13600KF">i5 13600KF</el-checkbox>
-          <el-checkbox label="i5 13600K">i5 13600K</el-checkbox>
-          <el-checkbox label="i5 13490F">i5 13490F</el-checkbox>
-          <el-checkbox label="i5 13400F">i5 13400F</el-checkbox>
-          <el-checkbox label="i5 13400">i5 13400</el-checkbox>
-          <el-checkbox label="i5 12600KF">i5 12600KF</el-checkbox>
-          <el-checkbox label="i5 12400F">i5 12400F</el-checkbox>
-          <el-checkbox label="AMD Ryzen5 9600X">AMD Ryzen5 9600X</el-checkbox>
-          <el-checkbox label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
-          <el-checkbox label="AMD Ryzen5 7500F">AMD Ryzen5 7500F</el-checkbox>
-          <el-checkbox label="AMD Ryzen7 5700X3D">AMD Ryzen7 5700X3D</el-checkbox>
-          <el-checkbox label="AMD Ryzen7 5700X">AMD Ryzen7 5700X</el-checkbox>
-          <el-checkbox label="AMD Ryzen5 5600G">AMD Ryzen5 5600G</el-checkbox>
-          <el-checkbox label="AMD Ryzen5 5600">AMD Ryzen5 5600</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i9 14900K">i9 14900K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i7 14700KF">i7 14700KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i7 14700K">i7 14700K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 14600KF">i5 14600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i9 13900K">i9 13900K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13600KF">i5 13600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13600K">i5 13600K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13490F">i5 13490F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13400F">i5 13400F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13400">i5 13400</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 12600KF">i5 12600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 12400F">i5 12400F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 9600X">AMD Ryzen5 9600X</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen7 7800X3D">AMD Ryzen7 7800X3D</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 7500F">AMD Ryzen5 7500F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X3D">AMD Ryzen7 5700X3D</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X">AMD Ryzen7 5700X</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600G">AMD Ryzen5 5600G</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600">AMD Ryzen5 5600</el-checkbox>
           <!-- More options -->
         </el-checkbox-group>
       </div>
@@ -54,47 +54,47 @@
       <!-- GPU type filter -->
       <div class="filter-item">
         <label for="gpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">GPU 类型</label>
-        <el-checkbox v-model="selectAllGPUs" @change="toggleSelectAllGPUs">全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllGPUs" @change="toggleSelectAllGPUs">全选</el-checkbox>
         <el-checkbox-group v-model="filters.gpuName" @change="handleGPUChange">
-          <el-checkbox label="RTX4090">RTX4090</el-checkbox>
-          <el-checkbox label="RTX4070SUPER">RTX4070SUPER</el-checkbox>
-          <el-checkbox label="RTX4070">RTX4070</el-checkbox>
-          <el-checkbox label="RTX4060Ti">RTX4060Ti</el-checkbox>
-          <el-checkbox label="RTX4060">RTX4060</el-checkbox>
-          <el-checkbox label="RTX3060Ti">RTX3060Ti</el-checkbox>
-          <el-checkbox label="RTX3060">RTX3060</el-checkbox>
-          <el-checkbox label="RX7800XT">RX7800XT</el-checkbox>
-          <el-checkbox label="RX6750GRE">RX6750GRE</el-checkbox>
-          <el-checkbox label="RX6750">RX6750</el-checkbox>
-          <el-checkbox label="RX6500XT">RX6500XT</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4090">RTX4090</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4070SUPER">RTX4070SUPER</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4070">RTX4070</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4060Ti">RTX4060Ti</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4060">RTX4060</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX3060Ti">RTX3060Ti</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX3060">RTX3060</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX7800XT">RX7800XT</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX6750GRE">RX6750GRE</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX6750">RX6750</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX6500XT">RX6500XT</el-checkbox>
         </el-checkbox-group>
       </div>
 
       <!-- Motherboard type filter -->
       <div class="filter-item">
         <label for="motherboard" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">主板类型</label>
-        <el-checkbox v-model="selectAllMotherboards" @change="toggleSelectAllMotherboards">全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMotherboards" @change="toggleSelectAllMotherboards">全选</el-checkbox>
         <el-checkbox-group v-model="filters.motherboardName" @change="handleMotherboardChange">
-          <el-checkbox label="B760M-PLUS">B760M-PLUS</el-checkbox>
-          <el-checkbox label="B760M">B760M</el-checkbox>
-          <el-checkbox label="B660M">B660M</el-checkbox>
-          <el-checkbox label="B650M-B">B650M-B</el-checkbox>
-          <el-checkbox label="B650M">B650M</el-checkbox>
-          <el-checkbox label="B550M-P">B550M-P</el-checkbox>
-          <el-checkbox label="H610M">H610M</el-checkbox>
-          <el-checkbox label="H510M">H510M</el-checkbox>
-          <el-checkbox label="A520M-A">A520M-A</el-checkbox>
-          <el-checkbox label="Z790">Z790</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B760M-PLUS">B760M-PLUS</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B760M">B760M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B660M">B660M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B650M-B">B650M-B</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B650M">B650M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B550M-P">B550M-P</el-checkbox>
+          <el-checkbox class="checkbox_style" label="H610M">H610M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="H510M">H510M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="A520M-A">A520M-A</el-checkbox>
+          <el-checkbox class="checkbox_style" label="Z790">Z790</el-checkbox>
         </el-checkbox-group>
       </div>
 
       <!-- Memory type filter -->
       <div class="filter-item">
         <label for="memory" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">内存类型</label>
-        <el-checkbox v-model="selectAllMemory" @change="toggleSelectAllMemory">全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMemory" @change="toggleSelectAllMemory">全选</el-checkbox>
         <el-checkbox-group v-model="filters.memoryName" @change="handleMemoryChange">
-          <el-checkbox label="DDR4">DDR4</el-checkbox>
-          <el-checkbox label="DDR5">DDR5</el-checkbox>
+          <el-checkbox class="checkbox_style" label="DDR4">DDR4</el-checkbox>
+          <el-checkbox class="checkbox_style" label="DDR5">DDR5</el-checkbox>
         </el-checkbox-group>
       </div>
     </div>
@@ -166,10 +166,12 @@ const gpuOptions = [
   'RTX4060Ti',
   'RTX4060',
   'RTX3060',
+  'RTX3060Ti',
   'RX7800XT',
   'RX6750GRE',
   'RX6750',
   'RX6500XT',
+
 ];
 
 const motherboardOptions = [
@@ -351,6 +353,7 @@ onMounted(() => {
 .all-solutions {
   display: flex;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
   position: absolute;
   top: 61px;
@@ -438,17 +441,13 @@ onMounted(() => {
   gap: 10px;
 }
 
-.el-checkbox {
-  font-size: 1rem;
-}
-
 .solutions {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   padding: 30px;
-  overflow-y: auto;
+  overflow-y: hidden;
   height: auto;
   z-index: 1;
 }
@@ -456,6 +455,13 @@ onMounted(() => {
 .filters h3 {
   font-size: 1.5em;
   margin-bottom: 20px;
+  color: #333;
+}
+
+.checkbox_style{
+  font-size: 12px;
+  margin-top: 3px;
+  font-weight: normal;
   color: #333;
 }
 
@@ -471,7 +477,6 @@ onMounted(() => {
 
 .filter-item label {
   display: block;
-  margin-bottom: 8px;
   font-weight: bold;
   color: #555;
 }
