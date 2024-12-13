@@ -2,7 +2,11 @@
   <div class="all-solutions">
     <!-- Left filters -->
     <div class="filters">
-      <h3>过滤器</h3>
+      <div style="display: flex; align-items: center;">
+        <img src="../assets/icons/filter.svg" style="width: 20px; margin-bottom: 20px; margin-right: 10px;" />
+        <h3>筛选</h3>
+      </div>
+
 
       <!-- Price range filter -->
       <div class="filter-item">

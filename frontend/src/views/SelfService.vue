@@ -560,7 +560,7 @@ onBeforeUnmount(() => {
 }
 
 .right-panel {
-  width: 17%;
+  width: 25%;
   min-width: 250px;
   display: flex;
   flex-direction: column;
