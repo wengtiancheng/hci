@@ -140,21 +140,7 @@ onMounted(() => {
   height: 100%; /* Fill the entire viewport height */
   width: 100%; /* Fill the entire width */
   box-sizing: border-box;
-  z-index: -1; /* Send the background image behind other content */
-}
-
-.my-solutions::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('/src/assets/images/bg_light.png') no-repeat center center;
-  background-size: cover; /* Ensure the background image covers the entire container */
-  background-attachment: fixed; /* Fix the background image */
-  opacity: 0.5; /* Set the opacity to 50% */
-  z-index: -1; /* Ensure the pseudo-element is behind the content */
+  background: rgb(247, 248, 249);
 }
 
 .title {
