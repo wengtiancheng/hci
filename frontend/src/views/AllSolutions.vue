@@ -2,7 +2,11 @@
   <div class="all-solutions">
     <!-- Left filters -->
     <div class="filters">
-      <h3>过滤器</h3>
+      <div style="display: flex; align-items: center;">
+        <img src="../assets/icons/filter.svg" style="width: 20px; margin-bottom: 20px; margin-right: 10px;" />
+        <h3>筛选</h3>
+      </div>
+
 
       <!-- Price range filter -->
       <div class="filter-item">
@@ -31,7 +35,7 @@
           <el-checkbox class="checkbox_style" label="i9 14900K">  i9 14900K</el-checkbox>
           <el-checkbox class="checkbox_style" label="i7 14700KF">  i7 14700KF</el-checkbox>
           <el-checkbox class="checkbox_style" label="i7 14700K">  i7 14700K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 14600KF">  i5 14600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 14600K">  i5 14600K</el-checkbox>
           <el-checkbox class="checkbox_style" label="i9 13900K">  i9 13900K</el-checkbox>
           <el-checkbox class="checkbox_style" label="i5 13600KF">  i5 13600KF</el-checkbox>
           <el-checkbox class="checkbox_style" label="i5 13600K">  i5 13600K</el-checkbox>
