@@ -8,7 +8,6 @@ import Header from '../components/Header.vue';
 // 定义用户输入的响应式变量
 const userInput = ref("");
 const router = useRouter(); // 获取路由实例
-const documentation = ref("../assets/images/documentation.png"); // 替换为实际路径
 
 // 定义按钮点击事件的处理函数
 const handleClick = async () => {
@@ -76,7 +75,7 @@ const isLoading = ref(false);
 
         <!-- 右侧图片区域 -->
         <div class="image-content">
-          <img src="../assets/images/documentation.png" alt="Complex Documentation Example" class="example-image" />
+          <img src="../assets/images/SelfService.png" alt="Complex Documentation Example" class="example-image" />
         </div>
       </div>
     </section>
@@ -84,7 +83,7 @@ const isLoading = ref(false);
       <div class="container">
         <!-- 左侧图片区域 -->
         <div class="image-content">
-          <img src="../assets/images/landing.jpg" alt="Complex Documentation Example" class="example-image" />
+          <img src="../assets/images/documentation.png" alt="Complex Documentation Example" class="example-image" />
         </div>
         <!-- 右侧文字区域 -->
         <div class="text-content">

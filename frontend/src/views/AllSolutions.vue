@@ -22,7 +22,6 @@
         <select id="sort-order" v-model="filters.sortBy" @change="fetchSolutions">
           <option :value="SortType.NONE">默认排序</option>
           <option :value="SortType.PRICE_DESC">按价格降序</option>
-          <option :value="SortType.SAVE_DESC">按收藏数降序</option>
           <option :value="SortType.CREATE_TIME_DESC">按创建时间降序</option>
         </select>
       </div>
@@ -214,8 +213,11 @@ const fetchSolutions = async () => {
 // Get route parameters
 const route = useRoute();
 if (route.query.filters) {
-  const filtersFromStorage  = JSON.parse(route.query.filters as string); // Parse filters
-  sessionStorage.setItem('filters', JSON.stringify(filtersFromStorage));
+  let filtersFromStorage = ref<Filters>(initFilters);
+  filtersFromStorage.value = JSON.parse(route.query.filters as string); // Parse filters
+  filtersFromStorage.value.sortBy = SortType.NONE;
+  console.log('Filters from storage:', filtersFromStorage);
+  sessionStorage.setItem('filters', JSON.stringify(filtersFromStorage.value));
   sliderValue.value = [filtersFromStorage.value.lowPrice, filtersFromStorage.value.highPrice];
   // 清空路由
   route.query.filters = null;
@@ -348,8 +350,9 @@ const handleMemoryChange = () => {
 
 // Fetch solutions when component is mounted
 onMounted(() => {
-  const filtersFromStorage = sessionStorage.getItem('filters');
-  filters.value = filtersFromStorage ? JSON.parse(filtersFromStorage) : initFilters;// 解析为 JavaScript 对象
+  const filtersString = sessionStorage.getItem('filters');
+  console.log('Filters from storage:', filtersString);
+  filters.value = filtersString ? JSON.parse(filtersString) : initFilters;// 解析为 JavaScript 对象
   sliderValue.value = [filters.value.lowPrice, filters.value.highPrice];
   console.log('Filters from storage:', filters.value);
   fetchSolutions();
