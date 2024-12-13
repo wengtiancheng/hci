@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Toast from '../components/Toast.vue';
 
 const toastRef = ref();
 const token = sessionStorage.getItem('token');
 const isModalVisible = ref(false);
 const router = useRouter();
+const route = useRoute();
 
 const logout = () => {
   sessionStorage.removeItem('token');
@@ -31,6 +32,8 @@ const redirectToLogin = () => {
 const redirectToRegister = () => {
   router.push('/register');
 };
+
+const isMySolutionsSelected = computed(() => route.path === '/mySolutions');
 </script>
 
 <template>

@@ -362,20 +362,25 @@ onMounted(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=PingFang+SC:wght@400;500;700&display=swap');
 
+/* Hide the scrollbar for all elements */
+* {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
 .all-solutions {
   display: flex;
   width: 100%;
-  height: 100%;
   margin: 0 auto;
-  position: absolute;
-  top: 61px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
   font-family: 'PingFang SC', sans-serif;
-  background-size: cover;
-  z-index: -1;
   background-color: rgb(243, 245, 248); /* Add background color */
+  height: 100vh; /* Make the container take the full viewport height */
+  overflow: hidden; /* Hide the main scrollbar */
 }
 
 .filters {
@@ -388,11 +393,23 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto;
+  overflow-y: auto; /* Enable vertical scrolling */
   background-color: rgba(249, 249, 249, 0.8);
   border-radius: 8px;
   z-index: 1;
   overflow-x: hidden;
+  height: 100%; /* Make it take the full height of the container */
+}
+
+.solutions {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 30px;
+  height: 100%; /* Make it take the full height of the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  z-index: 1;
 }
 
 .price {
@@ -451,17 +468,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.solutions {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 30px;
-  overflow-y: hidden;
-  height: auto;
-  z-index: 1;
 }
 
 .filters h3 {
