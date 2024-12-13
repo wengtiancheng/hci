@@ -67,7 +67,7 @@ const goToRegister = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('../assets/images/Loginbg.jpg') no-repeat center center;
+  background: url('../assets/images/bg_light.png') no-repeat center center;
   background-size: cover;
   font-family: 'Orbitron', sans-serif;
 }

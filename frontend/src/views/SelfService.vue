@@ -528,20 +528,33 @@ onBeforeUnmount(() => {
   right: 0;
   bottom: 0;
   display: flex;
-  margin: 0 auto; /* 居中对齐 */
+  margin: 0 auto; /* Center align */
   font-size: 0.875em;
-  justify-content: space-between; /* 左右面板之间平均分配空间 */
-  background-color: rgb(243, 245, 248);
+  justify-content: space-between; /* Distribute space between left and right panels */
+  position: relative; /* Ensure the container is positioned relative to its content */
+}
+
+.self-service::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/src/assets/images/bg_light.png') no-repeat center center;
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-attachment: fixed; /* Fix the background image */
+  opacity: 0.5; /* Set the opacity to 50% */
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
 }
 
 .left-panel {
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
   margin-top: 2%;
   max-width: 65%;
   min-width: 800px;
-  background-color: rgb(243, 245, 248);
   margin-left: 200px;
   padding-right: 10px;
 }
@@ -549,8 +562,6 @@ onBeforeUnmount(() => {
 .right-panel {
   width: 17%;
   min-width: 250px;
-
-  background-color: rgb(243, 245, 248);
   display: flex;
   flex-direction: column;
   margin-right: 200px;
@@ -900,7 +911,11 @@ onBeforeUnmount(() => {
 }
 
 .hardware-image {
-  cursor: pointer;
+  transition: transform 0.3s ease; /* Smooth transition for the transform property */
+}
+
+.hardware-image:hover {
+  transform: scale(1.1); /* Scale the image to 110% on hover */
 }
 
 .solution-input {
