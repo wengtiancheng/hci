@@ -66,7 +66,6 @@ const redirectToRegister = () => {
 <style scoped>
 /* 整体导航栏样式 */
 .navbar {
-  position: fixed; /* 固定位置 */
   top: 0; /* 贴近顶部 */
   left: 0; /* 贴近左边 */
   right: 0; /* 贴近右边 */

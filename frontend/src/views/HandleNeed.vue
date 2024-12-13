@@ -129,7 +129,6 @@ const isLoading = ref(false);
   height: 80vh;
   flex-direction: column;
   text-align: center; /* 文字居中 */
-  margin-top: 2rem; /* 顶部留白 */
   position: relative; /* 使子元素的绝对定位相对于父元素 */
 
   /* 添加背景图片 */

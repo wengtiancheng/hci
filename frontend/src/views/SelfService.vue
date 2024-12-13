@@ -523,15 +523,13 @@ onBeforeUnmount(() => {
 
 .self-service {
   position: fixed;
-  top: 50px;
   left: 0;
   right: 0;
   bottom: 0;
   display: flex;
-  height: 100%;
-  min-height: 1000px;
   margin: 0 auto; /* Center align */
   font-size: 0.875em;
+  min-height: 1000px;
   justify-content: space-between; /* Distribute space between left and right panels */
   position: relative; /* Ensure the container is positioned relative to its content */
 }
@@ -738,7 +736,6 @@ onBeforeUnmount(() => {
 .compatibility-content {
   height: calc(100% - 40px);
   overflow-y: auto;
-  overflow-x: hidden;
   font-size: 1em;
   display: flex;
   flex-direction: column;

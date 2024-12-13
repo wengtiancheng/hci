@@ -66,8 +66,8 @@ export interface Filters {
 };
 // 初始化过滤器的状态
 export const initFilters: Filters = {
-    lowPrice: 0,
-    highPrice: 99999,
+    lowPrice: 3730,
+    highPrice: 43000,
     sortBy: SortType.NONE,
     cpuName: [],
     gpuName: [],

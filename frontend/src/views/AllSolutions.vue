@@ -31,7 +31,7 @@
           <el-checkbox class="checkbox_style" label="i9 14900K">  i9 14900K</el-checkbox>
           <el-checkbox class="checkbox_style" label="i7 14700KF">  i7 14700KF</el-checkbox>
           <el-checkbox class="checkbox_style" label="i7 14700K">  i7 14700K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 14600KF">  i5 14600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 14600K">  i5 14600K</el-checkbox>
           <el-checkbox class="checkbox_style" label="i9 13900K">  i9 13900K</el-checkbox>
           <el-checkbox class="checkbox_style" label="i5 13600KF">  i5 13600KF</el-checkbox>
           <el-checkbox class="checkbox_style" label="i5 13600K">  i5 13600K</el-checkbox>
@@ -129,7 +129,7 @@ import { useRoute } from 'vue-router';
 // Define filter state
 const filters = ref<Filters>(initFilters);
 
-const maxPrice = 20000;
+const maxPrice = 43000;
 const minPrice = 3730;
 const sliderValue = ref([minPrice , maxPrice]);
 
@@ -197,6 +197,7 @@ const selectAllMemory = ref(true);
 
 // Fetch all solutions
 const fetchSolutions = async () => {
+  sessionStorage.setItem('filters', JSON.stringify(filters.value));
   console.log('Fetching solutions with filters:', filters.value);
   solutions.value = await getAllSolution(filters.value);
   console.log('Fetched solutions:', solutions.value);
@@ -209,8 +210,9 @@ const fetchSolutions = async () => {
 // Get route parameters
 const route = useRoute();
 if (route.query.filters) {
-  filters.value = JSON.parse(route.query.filters as string); // Parse filters
-  sliderValue.value = [filters.value.lowPrice, filters.value.highPrice];
+  const filtersFromStorage  = JSON.parse(route.query.filters as string); // Parse filters
+  sessionStorage.setItem('filters', JSON.stringify(filtersFromStorage));
+  sliderValue.value = [filtersFromStorage.value.lowPrice, filtersFromStorage.value.highPrice];
   // 清空路由
   route.query.filters = null;
   console.log('Route filters:', filters.value);
@@ -342,7 +344,10 @@ const handleMemoryChange = () => {
 
 // Fetch solutions when component is mounted
 onMounted(() => {
-  console.log('AllSolutions mounted.');
+  const filtersFromStorage = sessionStorage.getItem('filters');
+  filters.value = filtersFromStorage ? JSON.parse(filtersFromStorage) : initFilters;// 解析为 JavaScript 对象
+  sliderValue.value = [filters.value.lowPrice, filters.value.highPrice];
+  console.log('Filters from storage:', filters.value);
   fetchSolutions();
 });
 </script>

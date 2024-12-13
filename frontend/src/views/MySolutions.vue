@@ -137,7 +137,6 @@ onMounted(() => {
 
 .my-solutions {
   position: relative;
-  margin-top: 60px;
   height: 100%; /* Fill the entire viewport height */
   width: 100%; /* Fill the entire width */
   box-sizing: border-box;
