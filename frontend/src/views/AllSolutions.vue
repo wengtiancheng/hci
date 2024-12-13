@@ -129,7 +129,7 @@ import { useRoute } from 'vue-router';
 // Define filter state
 const filters = ref<Filters>(initFilters);
 
-const maxPrice = 40423;
+const maxPrice = 20000;
 const minPrice = 3730;
 const sliderValue = ref([minPrice , maxPrice]);
 
@@ -193,19 +193,15 @@ const selectAllGPUs = ref(true);
 const selectAllMotherboards = ref(true);
 const selectAllMemory = ref(true);
 
-// Fetch CPU and GPU names
-const fetchNames = async (solutions: SolutionVO[]) => {
-  for (const solution of solutions) {
-    solution.cpuName = (await getCPUById(solution.cpuId)).name;
-    solution.gpuName = (await getGPUById(solution.gpuId)).name;
-  }
-};
-
 // Fetch all solutions
 const fetchSolutions = async () => {
   console.log('Fetching solutions with filters:', filters.value);
   solutions.value = await getAllSolution(filters.value);
-  await fetchNames(solutions.value);
+  console.log('Fetched solutions:', solutions.value);
+  for (const solution of solutions.value) {
+    solution.cpuName = solution.componentNames[0];
+    solution.gpuName = solution.componentNames[1];
+  }
 };
 
 // Get route parameters
