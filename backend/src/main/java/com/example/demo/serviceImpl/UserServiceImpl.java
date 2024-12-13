@@ -24,6 +24,7 @@ import com.example.demo.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -108,10 +109,14 @@ public class UserServiceImpl implements UserService {
                 .map(solutionId -> solutionRepository.findById(solutionId).orElse(null))
                 .toList();
 
-        List<SolutionVO> solutionVOs = solutionList.stream()
+        List<SolutionVO> solutionVOs = new java.util.ArrayList<>(solutionList.stream()
                 .filter(Objects::nonNull) // 过滤掉 null 值
                 .map(Solution::toVO) // 转换为 SolutionVO
-                .toList();
+                .toList());
+
+        // 按创建时间降序
+        solutionVOs.sort(Comparator.comparing(SolutionVO::getCreateTime).reversed());
+
 
         for (SolutionVO solution : solutionVOs) {
             String cpuImage = CPUService.getCPU(solution.getCpuId()).getImageUrl();
