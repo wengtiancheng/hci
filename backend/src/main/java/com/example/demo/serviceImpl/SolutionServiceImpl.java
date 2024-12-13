@@ -59,7 +59,13 @@ public class SolutionServiceImpl implements SolutionService{
 
     @Override
     public List<SolutionVO> getAllSolutions() {
-        return solutionRepository.findAll().stream().map(Solution::toVO).toList();
+        List<SolutionVO> solutionVOs = solutionRepository.findAll().stream().map(Solution::toVO).toList();
+        for (SolutionVO solution : solutionVOs) {
+            String cpuName = cpuRepository.findById(solution.getCpuId()).orElse(null).getName();
+            String gpuName = gpuRepository.findById(solution.getGpuId()).orElse(null).getName();
+            solution.setComponentNames(List.of(cpuName, gpuName));
+        }
+        return solutionVOs;
     }
 
     private Solution SetTotalPrice(Solution solution){
@@ -231,7 +237,13 @@ public class SolutionServiceImpl implements SolutionService{
                 .toList();
         }
         System.out.println(solutions.size());
-        return solutions.stream().map(Solution::toVO).toList();
+        List<SolutionVO>  solutionVOs = solutions.stream().map(Solution::toVO).toList();
+        for (SolutionVO solution : solutionVOs) {
+            String cpuName = cpuRepository.findById(solution.getCpuId()).orElse(null).getName();
+            String gpuName = gpuRepository.findById(solution.getGpuId()).orElse(null).getName();
+            solution.setComponentNames(List.of(cpuName, gpuName));
+        }
+        return solutionVOs;
     }
 
 }
