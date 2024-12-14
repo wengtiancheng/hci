@@ -639,6 +639,7 @@ onMounted(() => {
 }
 
 .styled-checkbox-group .el-checkbox {
+  font-family: 'Canvas', sans-serif;
   display: flex;
   align-items: center;
   padding: 10px;
