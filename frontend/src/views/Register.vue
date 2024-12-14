@@ -4,19 +4,19 @@
       <form @submit.prevent="handleSubmit">
         <h2>注册新账号</h2>
         <div>
-          <label for="phone">手机号:</label>
+          <label for="phone">手机号</label>
           <input style="width: 360px" id="phone" v-model="phoneNumber" type="text" placeholder="手机号" required />
         </div>
         <div>
-          <label for="username">用户名:</label>
+          <label for="username">用户名</label>
           <input style="width: 360px" id="username" v-model="username" type="text" placeholder="用户名" required />
         </div>
         <div>
-          <label for="password">密码:</label>
+          <label for="password">密码</label>
           <input style="width: 360px" id="password" v-model="password" type="password" placeholder="密码" required />
         </div>
         <div>
-          <label for="confirmPassword">确认密码:</label>
+          <label for="confirmPassword">确认密码</label>
           <input style="width: 360px" id="confirmPassword" v-model="confirmPassword" type="password" placeholder="确认密码" required />
         </div>
         <button class="registerButton" type="submit">注册</button>
@@ -88,7 +88,7 @@ const goToLogin = () => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 .register-container {
   display: flex;
@@ -97,7 +97,7 @@ const goToLogin = () => {
   height: 100vh;
   background: url('../assets/images/bg_light.png') no-repeat center center;
   background-size: cover;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'JetBrains Mono', sans-serif;
 }
 
 .register-form {

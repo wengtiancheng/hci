@@ -212,8 +212,6 @@ watch(solutionDescription, (newValue) => {
 });
 
 
-
-
 onMounted(async () => {
   // 处理来自 SolutionDetail 的参数
   const query = router.currentRoute.value.query;

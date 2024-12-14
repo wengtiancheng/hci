@@ -62,6 +62,10 @@ const redirectToLogin = () => {
   router.push({ path: '/login' });
 };
 
+const goToCustomBuild = () => {
+  router.push({ path: '/custom-build' });
+};
+
 onMounted(() => {
   checkLoginStatus();
 });
@@ -73,6 +77,7 @@ onMounted(() => {
       <div v-if="solutions.length === 0" class="no-solutions">
         <img src="../assets/images/no_solution.svg" alt="No Solutions" class="no-solutions-icon" />
         暂时还没有方案哦
+        <button class="start-journey-button" @click="goToCustomBuild">创建我的方案</button>
       </div>
       <div v-else class="solutions-list">
         <div
@@ -83,7 +88,7 @@ onMounted(() => {
           <div class="solution-header">
             <h2 class="solution-name">{{ solution.name }}</h2>
             <img
-                src="../assets/images/delete.png"
+                src="../assets/images/delete.svg"
                 alt="Delete"
                 class="delete-icon"
                 @click="showDeleteDialog(solution.id)"
@@ -144,9 +149,26 @@ onMounted(() => {
   margin-bottom: 20px;
 }
 
+.start-journey-button {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-journey-button:hover {
+  background-color: #0056b3;
+}
+
 .my-solutions {
   position: relative;
   height: 100%; /* Fill the entire viewport height */
+  min-height: 93vh;
   width: 100%; /* Fill the entire width */
   box-sizing: border-box;
   background: rgb(247, 248, 249);
@@ -189,9 +211,10 @@ onMounted(() => {
 }
 
 .delete-icon {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .solution-items {
@@ -255,9 +278,11 @@ onMounted(() => {
 }
 
 .login-button {
-  display: block;
-  margin-top: 100px;
-  background-color: #007bff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
   color: #fff;
   border: none;
   border-radius: 4px;
