@@ -187,7 +187,6 @@ onMounted(() => {
 }
 
 .solution-image {
-
   object-fit: cover;
 }
 

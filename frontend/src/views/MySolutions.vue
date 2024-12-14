@@ -70,7 +70,11 @@ onMounted(() => {
 <template>
   <div class="my-solutions">
     <div v-if="isLoggedIn">
-      <div class="solutions-list">
+      <div v-if="solutions.length === 0" class="no-solutions">
+        <img src="../assets/images/no_solution.svg" alt="No Solutions" class="no-solutions-icon" />
+        暂时还没有方案哦
+      </div>
+      <div v-else class="solutions-list">
         <div
             v-for="solution in solutions"
             :key="solution.id"
@@ -119,20 +123,25 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <style scoped>
-.text-solution-name {
-  margin-top: 5px;
-  font-size: 14px;
-  color: #333;
-  white-space: nowrap; /* Prevent text from wrapping */
-  overflow: hidden; /* Hide overflow text */
-  text-overflow: ellipsis; /* Add ellipsis for overflow text */
-  max-width: 90px; /* Set a maximum width for the text */
-  text-align: center; /* Center align the text */
+
+.no-solutions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 93.5vh;
+  font-size: 1.5em;
+  color: #666;
+}
+
+.no-solutions-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
 }
 
 .my-solutions {
@@ -141,13 +150,6 @@ onMounted(() => {
   width: 100%; /* Fill the entire width */
   box-sizing: border-box;
   background: rgb(247, 248, 249);
-}
-
-.title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
 }
 
 .solutions-list {
