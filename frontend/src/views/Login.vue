@@ -60,7 +60,7 @@ const goToRegister = () => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 .login-container {
   display: flex;
@@ -69,7 +69,7 @@ const goToRegister = () => {
   height: 100vh;
   background: url('../assets/images/bg_light.png') no-repeat center center;
   background-size: cover;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'JetBrains Mono', sans-serif;
 }
 
 .login-form {
