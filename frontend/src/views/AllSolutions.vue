@@ -11,9 +11,8 @@
       <!-- Price range filter -->
       <div class="filter-item">
         <label>价格范围</label>
-        <vue-slider v-model="sliderValue" :min=minPrice :max=maxPrice
-                    :tooltip="'active'" :tooltip-placement="['bottom', 'bottom']"
-                    @change="sliderChange"></vue-slider>
+        <vue-slider v-model="sliderValue" :min=minPrice :max=maxPrice :tooltip="'active'"
+          :tooltip-placement="['bottom', 'bottom']" @change="sliderChange"></vue-slider>
       </div>
 
       <!-- Sort order filter -->
@@ -29,27 +28,28 @@
       <!-- CPU type filter -->
       <div class="filter-item">
         <label for="cpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">CPU 类型</label>
-        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllCPUs" @change="toggleSelectAllCPUs">  全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllCPUs" @change="toggleSelectAllCPUs">
+          全选</el-checkbox>
         <el-checkbox-group v-model="filters.cpuName" @change="handleCPUChange">
-          <el-checkbox class="checkbox_style" label="i9 14900K">  i9 14900K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i7 14700KF">  i7 14700KF</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i7 14700K">  i7 14700K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 14600K">  i5 14600K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i9 13900K">  i9 13900K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13600KF">  i5 13600KF</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13600K">  i5 13600K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13490F">  i5 13490F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13400F">  i5 13400F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13400">  i5 13400</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 12600KF">  i5 12600KF</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 12400F">  i5 12400F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 9600X">  AMD Ryzen5 9600X</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen7 7800X3D">  AMD Ryzen7 7800X3D</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 7500F">  AMD Ryzen5 7500F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X3D">   Ryzen7 5700X3D</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X">  AMD Ryzen7 5700X</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600G">  AMD Ryzen5 5600G</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600">  AMD Ryzen5 5600</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i9 14900K"> i9 14900K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i7 14700KF"> i7 14700KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i7 14700K"> i7 14700K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 14600K"> i5 14600K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i9 13900K"> i9 13900K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13600KF"> i5 13600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13600K"> i5 13600K</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13490F"> i5 13490F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13400F"> i5 13400F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 13400"> i5 13400</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 12600KF"> i5 12600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" label="i5 12400F"> i5 12400F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 9600X"> AMD Ryzen5 9600X</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen7 7800X3D"> AMD Ryzen7 7800X3D</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 7500F"> AMD Ryzen5 7500F</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X3D"> Ryzen7 5700X3D</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X"> AMD Ryzen7 5700X</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600G"> AMD Ryzen5 5600G</el-checkbox>
+          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600"> AMD Ryzen5 5600</el-checkbox>
           <!-- More options -->
         </el-checkbox-group>
       </div>
@@ -57,59 +57,58 @@
       <!-- GPU type filter -->
       <div class="filter-item">
         <label for="gpu" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">GPU 类型</label>
-        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllGPUs" @change="toggleSelectAllGPUs">  全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllGPUs" @change="toggleSelectAllGPUs">
+          全选</el-checkbox>
         <el-checkbox-group v-model="filters.gpuName" @change="handleGPUChange">
-          <el-checkbox class="checkbox_style" label="RTX4090">  RTX4090</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4070SUPER">  RTX4070SUPER</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4070">  RTX4070</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4060Ti">  RTX4060Ti</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4060">  RTX4060</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX3060Ti">  RTX3060Ti</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX3060">  RTX3060</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX7800XT">  RX7800XT</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX6750GRE">  RX6750GRE</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX6750">  RX6750</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX6500XT">  RX6500XT</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4090"> RTX4090</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4070SUPER"> RTX4070SUPER</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4070"> RTX4070</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4060Ti"> RTX4060Ti</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX4060"> RTX4060</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX3060Ti"> RTX3060Ti</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RTX3060"> RTX3060</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX7800XT"> RX7800XT</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX6750GRE"> RX6750GRE</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX6750"> RX6750</el-checkbox>
+          <el-checkbox class="checkbox_style" label="RX6500XT"> RX6500XT</el-checkbox>
         </el-checkbox-group>
       </div>
 
       <!-- Motherboard type filter -->
       <div class="filter-item">
         <label for="motherboard" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">主板类型</label>
-        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMotherboards" @change="toggleSelectAllMotherboards">  全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMotherboards"
+          @change="toggleSelectAllMotherboards"> 全选</el-checkbox>
         <el-checkbox-group v-model="filters.motherboardName" @change="handleMotherboardChange">
-          <el-checkbox class="checkbox_style" label="B760M-PLUS">  B760M-PLUS</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B760M">  B760M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B660M">  B660M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B650M-B">  B650M-B</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B650M">  B650M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B550M-P">  B550M-P</el-checkbox>
-          <el-checkbox class="checkbox_style" label="H610M">  H610M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="H510M">  H510M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="A520M-A">  A520M-A</el-checkbox>
-          <el-checkbox class="checkbox_style" label="Z790">  Z790</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B760M-PLUS"> B760M-PLUS</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B760M"> B760M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B660M"> B660M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B650M-B"> B650M-B</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B650M"> B650M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="B550M-P"> B550M-P</el-checkbox>
+          <el-checkbox class="checkbox_style" label="H610M"> H610M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="H510M"> H510M</el-checkbox>
+          <el-checkbox class="checkbox_style" label="A520M-A"> A520M-A</el-checkbox>
+          <el-checkbox class="checkbox_style" label="Z790"> Z790</el-checkbox>
         </el-checkbox-group>
       </div>
 
       <!-- Memory type filter -->
       <div class="filter-item">
         <label for="memory" style="font-size: 20px; font-family: 'Microsoft YaHei UI',serif">内存类型</label>
-        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMemory" @change="toggleSelectAllMemory">  全选</el-checkbox>
+        <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMemory"
+          @change="toggleSelectAllMemory"> 全选</el-checkbox>
         <el-checkbox-group v-model="filters.memoryName" @change="handleMemoryChange">
-          <el-checkbox class="checkbox_style" label="DDR4">  DDR4</el-checkbox>
-          <el-checkbox class="checkbox_style" label="DDR5">  DDR5</el-checkbox>
+          <el-checkbox class="checkbox_style" label="DDR4"> DDR4</el-checkbox>
+          <el-checkbox class="checkbox_style" label="DDR5"> DDR5</el-checkbox>
         </el-checkbox-group>
       </div>
     </div>
 
     <!-- Right solution cards -->
     <div class="solutions">
-      <router-link
-          v-for="solution in solutions"
-          :key="solution.id"
-          :to="{ path: '/custom-build', query: { solution: JSON.stringify(solution) } }"
-          class="solution-card"
-      >
+      <router-link v-for="solution in currentPageData" :key="solution.id"
+        :to="{ path: '/custom-build', query: { solution: JSON.stringify(solution) } }" class="solution-card">
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
         <div class="solution-info">
           <h4>{{ solution.name }}</h4>
@@ -118,12 +117,28 @@
           <p class="price">价格：￥{{ solution.totalPrice }}</p>
         </div>
       </router-link>
+      <div class="pagination">
+        <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)" class="page-button">
+          上一页
+        </button>
+
+        <span class="page-info">
+          {{ currentPage }} / {{ totalPages }}
+        </span>
+
+        <button :disabled="currentPage === totalPages" @click="handlePageChange(currentPage + 1)" class="page-button">
+          下一页
+        </button>
+      </div>
+      
     </div>
+    
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getAllSolution, SolutionVO, SortType, Filters, initFilters } from '../api/Solution';
 import { getCPUById } from '../api/CPU';
 import { getGPUById } from '../api/GPU';
@@ -134,7 +149,7 @@ const filters = ref<Filters>(initFilters);
 
 const maxPrice = 43000;
 const minPrice = 3730;
-const sliderValue = ref([minPrice , maxPrice]);
+const sliderValue = ref([minPrice, maxPrice]);
 
 // List of solutions
 const solutions = ref<SolutionVO[]>([]);
@@ -197,7 +212,26 @@ const selectAllCPUs = ref(true);
 const selectAllGPUs = ref(true);
 const selectAllMotherboards = ref(true);
 const selectAllMemory = ref(true);
+// 添加分页相关的状态
+const currentPage = ref(1);
+const pageSize = ref(20);  // 每页显示20条
 
+// 计算总页数
+const totalPages = computed(() => {
+  return Math.ceil(solutions.value.length / pageSize.value);
+});
+
+// 计算当前页的数据
+const currentPageData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return solutions.value.slice(start, end);
+});
+
+// 页码改变的处理函数
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+};
 // Fetch all solutions
 const fetchSolutions = async () => {
   sessionStorage.setItem('filters', JSON.stringify(filters.value));
@@ -364,12 +398,15 @@ onMounted(() => {
 
 /* Hide the scrollbar for all elements */
 * {
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  scrollbar-width: none;
+  /* For Firefox */
+  -ms-overflow-style: none;
+  /* For Internet Explorer and Edge */
 }
 
 *::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Opera */
+  display: none;
+  /* For Chrome, Safari, and Opera */
 }
 
 .all-solutions {
@@ -378,13 +415,18 @@ onMounted(() => {
   margin: 0 auto;
   position: relative;
   font-family: 'PingFang SC', sans-serif;
-  background-color: rgb(243, 245, 248); /* Add background color */
-  height: 100vh; /* Make the container take the full viewport height */
-  overflow: hidden; /* Hide the main scrollbar */
+  background-color: rgb(243, 245, 248);
+  /* Add background color */
+  height: 100vh;
+  /* Make the container take the full viewport height */
+  overflow: hidden;
+  /* Hide the main scrollbar */
+  
 }
 
 .filters {
-  flex: 0 0 15%; /* Adjusted width to make it narrower */
+  flex: 0 0 15%;
+  /* Adjusted width to make it narrower */
   padding: 20px;
   padding-right: 20px;
   border-right: 1px solid #ddd;
@@ -393,12 +435,14 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
   background-color: rgba(249, 249, 249, 0.8);
   border-radius: 8px;
   z-index: 1;
   overflow-x: hidden;
-  height: 100%; /* Make it take the full height of the container */
+  height: 100%;
+  /* Make it take the full height of the container */
 }
 
 .solutions {
@@ -407,15 +451,23 @@ onMounted(() => {
   flex-wrap: wrap;
   gap: 20px;
   padding: 30px;
-  height: 100%; /* Make it take the full height of the container */
-  overflow-y: auto; /* Enable vertical scrolling */
+  height: clac(100% - 60px);
+  /* Make it take the full height of the container */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
   z-index: 1;
+  padding-bottom: 60px;
+  position: relative;
+   /* 添加以下属性 */
+   align-content: flex-start; /* 确保内容从顶部开始排列 */
 }
+
 
 .price {
   font-size: 1.0em;
   font-weight: bold;
-  color: #000000; /* A red color to highlight the price */
+  color: #000000;
+  /* A red color to highlight the price */
   padding-top: 15px;
 }
 
@@ -423,9 +475,12 @@ onMounted(() => {
   font-size: 0.8em;
   color: #888;
   margin-bottom: 10px;
-  white-space: nowrap; /* Prevent text from wrapping */
-  overflow: hidden; /* Hide overflow text */
-  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  white-space: nowrap;
+  /* Prevent text from wrapping */
+  overflow: hidden;
+  /* Hide overflow text */
+  text-overflow: ellipsis;
+  /* Add ellipsis for overflow text */
 }
 
 .styled-checkbox-group {
@@ -449,8 +504,9 @@ onMounted(() => {
   border-color: #ccc;
 }
 
-.styled-checkbox-group .el-checkbox__input.is-checked + .el-checkbox__label {
-  background-color: #e0f7fa; /* Change the background color when checked */
+.styled-checkbox-group .el-checkbox__input.is-checked+.el-checkbox__label {
+  background-color: #e0f7fa;
+  /* Change the background color when checked */
   border-color: #00acc1;
 }
 
@@ -461,7 +517,8 @@ onMounted(() => {
 }
 
 .styled-checkbox-group .el-checkbox__input {
-  transform: scale(1.5); /* Increase the size of the checkbox */
+  transform: scale(1.5);
+  /* Increase the size of the checkbox */
 }
 
 .el-checkbox-group {
@@ -476,7 +533,7 @@ onMounted(() => {
   color: #333;
 }
 
-.checkbox_style{
+.checkbox_style {
   font-size: 12px;
   margin-top: 3px;
   font-weight: normal;
@@ -571,6 +628,38 @@ onMounted(() => {
   margin: 5px 0;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top:auto;
+  
+  
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.page-button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.page-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 1em;
+  margin: 0 10px;
+}
+
 @media (max-width: 768px) {
   .all-solutions {
     flex-direction: column;
@@ -595,5 +684,4 @@ onMounted(() => {
   .solution-card {
     width: 100%;
   }
-}
-</style>
+}</style>
