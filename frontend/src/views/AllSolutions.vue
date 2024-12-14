@@ -254,6 +254,14 @@ const currentPageData = computed(() => {
 // 页码改变的处理函数
 const handlePageChange = (page: number) => {
   currentPage.value = page;
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+  const solutionsContainer = document.querySelector('.solutions');
+  if (solutionsContainer) {
+    solutionsContainer.scrollTop = 0;
+  }
 };
 // Fetch all solutions
 const fetchSolutions = async () => {
