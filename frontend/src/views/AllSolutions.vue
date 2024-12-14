@@ -130,9 +130,14 @@
           <h4>{{ solution.name }}</h4>
           <p class="secondary-text">CPU：{{ solution.cpuName }}</p>
           <p class="secondary-text">GPU：{{ solution.gpuName }}</p>
-          <p class="price">价格：￥{{ solution.totalPrice }}</p>
+          <div class="solution-details">
+            <p class="price">价格：￥{{ solution.totalPrice }}</p>
+            <p class="secondary-text">收藏次数：{{ solution.saveNum }}</p>
+          </div>
         </div>
       </router-link>
+
+
       <div class="pagination">
         <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)" class="page-button">
           上一页
@@ -419,7 +424,16 @@ onMounted(() => {
 
 @import url('https://fonts.googleapis.com/css2?family=PingFang+SC:wght@400;500;700&display=swap');
 
+.solution-info{
+  margin-top: 10px;
+}
 
+.solution-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
 
 /* Hide the scrollbar for all elements */
 * {
@@ -596,8 +610,6 @@ onMounted(() => {
   font-size: 1.0em;
   font-weight: bold;
   color: #000000;
-  /* A red color to highlight the price */
-  padding-top: 15px;
 }
 
 .secondary-text {
@@ -743,7 +755,7 @@ onMounted(() => {
 
 .solution-card img {
   width: 100%;
-  height: 68%;
+  height: 65%;
   border-radius: 8px;
   object-fit: cover;
 }
