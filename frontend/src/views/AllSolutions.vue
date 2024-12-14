@@ -128,8 +128,9 @@
         <img :src="solution.imageUrl" alt="方案图片" class="solution-image" />
         <div class="solution-info">
           <h4>{{ solution.name }}</h4>
-          <p class="secondary-text">CPU：{{ solution.cpuName }}</p>
-          <p class="secondary-text">GPU：{{ solution.gpuName }}</p>
+          <p class="secondary-text">{{ solution.cpuName }}</p>
+          <p class="secondary-text">{{ solution.gpuName }}</p>
+          <hr class="separator-line" />
           <div class="solution-details">
             <p class="price">价格：￥{{ solution.totalPrice }}</p>
             <p class="secondary-text">收藏次数：{{ solution.saveNum }}</p>
@@ -428,11 +429,18 @@ onMounted(() => {
   margin-top: 10px;
 }
 
+.separator-line {
+  border: none;
+  border-top: 1px solid #e8e8e8;
+  margin-top: 15px;
+
+}
+
 .solution-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 /* Hide the scrollbar for all elements */
@@ -592,7 +600,7 @@ onMounted(() => {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 40px;
   padding: 30px;
   height: clac(100% - 60px);
   /* Make it take the full height of the container */
@@ -736,10 +744,10 @@ onMounted(() => {
 .solution-card {
   background: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 8px;;
+  padding: 0px;
   height: 400px;
-  width: calc(20% - 20px);
+  width: calc(20% - 40px);
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
@@ -756,17 +764,21 @@ onMounted(() => {
 .solution-card img {
   width: 100%;
   height: 60%;
-  border-radius: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   object-fit: cover;
 }
 
 .solution-info h4 {
   font-size: 1.2em;
   margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 .solution-info p {
   margin: 5px 0;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .pagination {
