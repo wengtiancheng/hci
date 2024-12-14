@@ -738,7 +738,7 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 10px;
-  height: 450px;
+  height: 400px;
   width: calc(20% - 20px);
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -755,7 +755,7 @@ onMounted(() => {
 
 .solution-card img {
   width: 100%;
-  height: 65%;
+  height: 60%;
   border-radius: 8px;
   object-fit: cover;
 }
