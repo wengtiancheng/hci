@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import Toast from '../components/Toast.vue';
+import loginIcon from '../assets/icons/login.svg';
+import exitIcon from '../assets/icons/exit.svg';
 
 const toastRef = ref();
 const token = sessionStorage.getItem('token');
@@ -50,8 +52,9 @@ const isMySolutionsSelected = computed(() => route.path === '/mySolutions');
       <li><a @click.prevent="checkLoginStatus('/mySolutions')">我的装机</a></li>
     </nav>
     <nav class="login">
-      <li><a v-if="token" @click="logout">登出</a>
-        <a v-else href="/login">登录</a>
+      <li>
+        <img v-if="token" src="../assets/icons/exit.svg" alt="Logout" @click="logout" class="icon" />
+        <img v-else src="../assets/icons/login.svg" alt="Login" @click="redirectToLogin" class="icon" />
       </li>
     </nav>
   </header>
@@ -143,18 +146,16 @@ const isMySolutionsSelected = computed(() => route.path === '/mySolutions');
   transition: background-color 0.3s ease;
 }
 
-.login a {
-  text-decoration: none;
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+.login .icon {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: transform 0.3s ease;
 }
 
-.login a:hover {
-  background-color: #34495e;
+.login .icon:hover {
+  transform: scale(1.1);
 }
 
 /* Modal 样式 */
