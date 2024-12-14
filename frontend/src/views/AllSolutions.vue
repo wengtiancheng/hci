@@ -1,5 +1,21 @@
 <template>
-  <div class="all-solutions">
+  <!-- 加载动画 -->
+  <div v-if="isLoading" class="loading-overlay">
+    <div class="spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <p class="spinner-text">Loading...^_^</p>
+  </div>
+  <div v-else class="all-solutions">
     <!-- Left filters -->
     <div class="filters">
       <div style="display: flex; align-items: center;">
@@ -143,6 +159,7 @@ import { getAllSolution, SolutionVO, SortType, Filters, initFilters } from '../a
 import { getCPUById } from '../api/CPU';
 import { getGPUById } from '../api/GPU';
 import { useRoute } from 'vue-router';
+const isLoading = ref(true);
 
 // Define filter state
 const filters = ref<Filters>(initFilters);
@@ -234,13 +251,17 @@ const handlePageChange = (page: number) => {
 };
 // Fetch all solutions
 const fetchSolutions = async () => {
-  sessionStorage.setItem('filters', JSON.stringify(filters.value));
-  console.log('Fetching solutions with filters:', filters.value);
-  solutions.value = await getAllSolution(filters.value);
-  console.log('Fetched solutions:', solutions.value);
-  for (const solution of solutions.value) {
-    solution.cpuName = solution.componentNames[0];
-    solution.gpuName = solution.componentNames[1];
+  try {
+    sessionStorage.setItem('filters', JSON.stringify(filters.value));
+    console.log('Fetching solutions with filters:', filters.value);
+    solutions.value = await getAllSolution(filters.value);
+    console.log('Fetched solutions:', solutions.value);
+    for (const solution of solutions.value) {
+      solution.cpuName = solution.componentNames[0];
+      solution.gpuName = solution.componentNames[1];
+    }
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -394,7 +415,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
 @import url('https://fonts.googleapis.com/css2?family=PingFang+SC:wght@400;500;700&display=swap');
+
+
 
 /* Hide the scrollbar for all elements */
 * {
@@ -407,6 +432,110 @@ onMounted(() => {
 *::-webkit-scrollbar {
   display: none;
   /* For Chrome, Safari, and Opera */
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+}
+
+.spinner-text {
+  margin-top: 100px;  /* 控制文字与旋转器之间的距离 */
+  font-size: 16px;
+  color: #333;
+}
+
+.spinner div {
+  position: absolute;
+  width: 50%;
+  height: 150%;
+  background: #001657;
+  transform: rotate(calc(var(--rotation) * 1deg)) translate(0, calc(var(--translation) * 1%));
+  animation: spinner-fzua35 1s calc(var(--delay) * 1s) infinite ease;
+}
+
+.spinner div:nth-child(1) {
+  --delay: 0.1;
+  --rotation: 36;
+  --translation: 150;
+}
+
+.spinner div:nth-child(2) {
+  --delay: 0.2;
+  --rotation: 72;
+  --translation: 150;
+}
+
+.spinner div:nth-child(3) {
+  --delay: 0.3;
+  --rotation: 108;
+  --translation: 150;
+}
+
+.spinner div:nth-child(4) {
+  --delay: 0.4;
+  --rotation: 144;
+  --translation: 150;
+}
+
+.spinner div:nth-child(5) {
+  --delay: 0.5;
+  --rotation: 180;
+  --translation: 150;
+}
+
+.spinner div:nth-child(6) {
+  --delay: 0.6;
+  --rotation: 216;
+  --translation: 150;
+}
+
+.spinner div:nth-child(7) {
+  --delay: 0.7;
+  --rotation: 252;
+  --translation: 150;
+}
+
+.spinner div:nth-child(8) {
+  --delay: 0.8;
+  --rotation: 288;
+  --translation: 150;
+}
+
+.spinner div:nth-child(9) {
+  --delay: 0.9;
+  --rotation: 324;
+  --translation: 150;
+}
+
+.spinner div:nth-child(10) {
+  --delay: 1;
+  --rotation: 360;
+  --translation: 150;
+}
+
+@keyframes spinner-fzua35 {
+  0%, 10%, 20%, 30%, 50%, 60%, 70%, 80%, 90%, 100% {
+    transform: rotate(calc(var(--rotation) * 1deg)) translate(0, calc(var(--translation) * 1%));
+  }
+
+  50% {
+    transform: rotate(calc(var(--rotation) * 1deg)) translate(0, calc(var(--translation) * 1.5%));
+  }
 }
 
 .all-solutions {
