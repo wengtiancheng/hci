@@ -36,8 +36,8 @@
         <label for="sort-order">排序方式</label>
         <select id="sort-order" v-model="filters.sortBy" @change="fetchSolutions">
           <option :value="SortType.NONE">默认排序</option>
-          <option :value="SortType.PRICE_DESC">按价格降序</option>
-          <option :value="SortType.CREATE_TIME_DESC">按创建时间降序</option>
+          <option :value="SortType.PRICE_DESC">按价格排序</option>
+          <option :value="SortType.SAVE_DESC">按收藏次数排序</option>
         </select>
       </div>
 
@@ -133,7 +133,7 @@
           <hr class="separator-line" />
           <div class="solution-details">
             <p class="price">价格：￥{{ solution.totalPrice }}</p>
-            <p class="secondary-text">收藏次数：{{ solution.saveNum }}</p>
+            <p class="secondary-text">{{ solution.saveNum }}次收藏</p>
           </div>
         </div>
       </router-link>
@@ -432,6 +432,16 @@ onMounted(() => {
 
 
 @import url('https://fonts.googleapis.com/css2?family=PingFang+SC:wght@400;500;700&display=swap');
+
+.views {
+  display: flex;
+  align-items: center;
+}
+
+.views .icon {
+  height: 16px;
+  width: 16px;
+}
 
 .solution-info{
   margin-top: 10px;
