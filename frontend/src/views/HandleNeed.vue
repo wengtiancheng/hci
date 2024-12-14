@@ -83,7 +83,7 @@ const isLoading = ref(false);
       <div class="container">
         <!-- 左侧图片区域 -->
         <div class="image-content">
-          <img src="../assets/images/documentation.png" alt="Complex Documentation Example" class="example-image" />
+          <img src="../assets/images/AllSolutions.png" alt="Complex Documentation Example" class="example-image" />
         </div>
         <!-- 右侧文字区域 -->
         <div class="text-content">
@@ -102,7 +102,7 @@ const isLoading = ref(false);
     <!-- 联系方式部分 -->
     <footer class="footer-section">
       <div class="footer-container">
-        <p class="footer-text">You've reached the bottom of the page.</p>
+        <p class="footer-text">您已经滑到底部了~~~</p>
         <p class="footer-contact">
           For inquiries, reach us at:
           <a href="mailto:contact@yourdomain.com" class="contact-link">https://github.com/1193600423</a>
