@@ -213,8 +213,26 @@ const fetchMotherboards = async () => {
     return true;
   });
 
-  // 排序
-  filteredList.sort((a, b) => {
+ // 按兼容性排序
+ filteredList.sort((a, b) => {
+    // 计算兼容性得分
+    const getCompatibilityScore = (mb: Motherboard) => {
+      let score = 0;
+      // CPU兼容性检查
+      if (cpuType.value && mb.type === cpuType.value) score += 2;
+      // 内存条兼容性检查
+      if (memoryType.value && mb.memoryType === memoryType.value) score += 1;
+      return score;
+    }
+
+    const scoreA = getCompatibilityScore(a);
+    const scoreB = getCompatibilityScore(b);
+
+    if (scoreA !== scoreB) {
+      return scoreB - scoreA; // 分数高的排在前面
+    }
+    
+    // 兼容性相同时,按价格排序
     const factor = filters.value.sortOrder === 'asc' ? 1 : -1;
     return (a.price - b.price) * factor;
   });

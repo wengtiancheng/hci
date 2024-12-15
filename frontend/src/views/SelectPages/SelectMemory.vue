@@ -84,11 +84,30 @@ const fetchMemories = async () => {
     return true;
   });
 
-  // 排序
-  filteredList.sort((a, b) => {
+ // 按兼容性排序
+ filteredList.sort((a, b) => {
+    // 计算兼容性得分
+    const getCompatibilityScore = (memory: Memory) => {
+      let score = 0;
+      // 与主板的内存类型匹配检查
+      if (motherboardMemoryType.value && memory.type === motherboardMemoryType.value) {
+        score += 1;
+      }
+      return score;
+    }
+
+    const scoreA = getCompatibilityScore(a);
+    const scoreB = getCompatibilityScore(b);
+
+    if (scoreA !== scoreB) {
+      return scoreB - scoreA; // 分数高的排在前面
+    }
+    
+    // 兼容性相同时,按价格排序
     const factor = filters.value.sortOrder === 'asc' ? 1 : -1;
     return (a.price - b.price) * factor;
   });
+
 
   memoryList.value = filteredList;
 }
