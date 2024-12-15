@@ -108,6 +108,8 @@ public class SolutionServiceImpl implements SolutionService{
         if (user == null) throw DemoException.notLogin();
         if (solutionVO == null) throw DemoException.paramError();
 
+        System.out.println(solutionVO);
+
         Solution solution = solutionVO.toPO();
         solution = SetTotalPrice(solution);
 

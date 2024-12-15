@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
     public String login(String phone, String password) {
         User user = userRepository.findByPhone(phone);
         if (user == null) throw DemoException.phoneOrPasswordError();
+        
         return tokenUtil.getToken(user);
     }
 

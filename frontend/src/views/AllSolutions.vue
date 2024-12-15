@@ -47,25 +47,25 @@
         <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllCPUs" @change="toggleSelectAllCPUs">
           全选</el-checkbox>
         <el-checkbox-group v-model="filters.cpuName" @change="handleCPUChange">
-          <el-checkbox class="checkbox_style" label="i9 14900K"> i9 14900K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i7 14700KF"> i7 14700KF</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i7 14700K"> i7 14700K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 14600K"> i5 14600K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i9 13900K"> i9 13900K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13600KF"> i5 13600KF</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13600K"> i5 13600K</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13490F"> i5 13490F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13400F"> i5 13400F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 13400"> i5 13400</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 12600KF"> i5 12600KF</el-checkbox>
-          <el-checkbox class="checkbox_style" label="i5 12400F"> i5 12400F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 9600X"> AMD Ryzen5 9600X</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen7 7800X3D"> AMD Ryzen7 7800X3D</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 7500F"> AMD Ryzen5 7500F</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X3D"> Ryzen7 5700X3D</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen7 5700X"> AMD Ryzen7 5700X</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600G"> AMD Ryzen5 5600G</el-checkbox>
-          <el-checkbox class="checkbox_style" label="AMD Ryzen5 5600"> AMD Ryzen5 5600</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i9 14900K"> i9 14900K</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i7 14700KF"> i7 14700KF</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i7 14700K"> i7 14700K</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 14600K"> i5 14600K</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i9 13900K"> i9 13900K</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 13600KF"> i5 13600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 13600K"> i5 13600K</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 13490F"> i5 13490F</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 13400F"> i5 13400F</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 13400"> i5 13400</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 12600KF"> i5 12600KF</el-checkbox>
+          <el-checkbox class="checkbox_style" value="i5 12400F"> i5 12400F</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen5 9600X"> AMD Ryzen5 9600X</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen7 7800X3D"> AMD Ryzen7 7800X3D</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen5 7500F"> AMD Ryzen5 7500F</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen7 5700X3D"> Ryzen7 5700X3D</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen7 5700X"> AMD Ryzen7 5700X</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen5 5600G"> AMD Ryzen5 5600G</el-checkbox>
+          <el-checkbox class="checkbox_style" value="AMD Ryzen5 5600"> AMD Ryzen5 5600</el-checkbox>
           <!-- More options -->
         </el-checkbox-group>
       </div>
@@ -76,17 +76,17 @@
         <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllGPUs" @change="toggleSelectAllGPUs">
           全选</el-checkbox>
         <el-checkbox-group v-model="filters.gpuName" @change="handleGPUChange">
-          <el-checkbox class="checkbox_style" label="RTX4090"> RTX4090</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4070SUPER"> RTX4070SUPER</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4070"> RTX4070</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4060Ti"> RTX4060Ti</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX4060"> RTX4060</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX3060Ti"> RTX3060Ti</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RTX3060"> RTX3060</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX7800XT"> RX7800XT</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX6750GRE"> RX6750GRE</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX6750"> RX6750</el-checkbox>
-          <el-checkbox class="checkbox_style" label="RX6500XT"> RX6500XT</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX4090"> RTX4090</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX4070SUPER"> RTX4070SUPER</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX4070"> RTX4070</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX4060Ti"> RTX4060Ti</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX4060"> RTX4060</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX3060Ti"> RTX3060Ti</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RTX3060"> RTX3060</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RX7800XT"> RX7800XT</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RX6750GRE"> RX6750GRE</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RX6750"> RX6750</el-checkbox>
+          <el-checkbox class="checkbox_style" value="RX6500XT"> RX6500XT</el-checkbox>
         </el-checkbox-group>
       </div>
 
@@ -96,16 +96,16 @@
         <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMotherboards"
           @change="toggleSelectAllMotherboards"> 全选</el-checkbox>
         <el-checkbox-group v-model="filters.motherboardName" @change="handleMotherboardChange">
-          <el-checkbox class="checkbox_style" label="B760M-PLUS"> B760M-PLUS</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B760M"> B760M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B660M"> B660M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B650M-B"> B650M-B</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B650M"> B650M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="B550M-P"> B550M-P</el-checkbox>
-          <el-checkbox class="checkbox_style" label="H610M"> H610M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="H510M"> H510M</el-checkbox>
-          <el-checkbox class="checkbox_style" label="A520M-A"> A520M-A</el-checkbox>
-          <el-checkbox class="checkbox_style" label="Z790"> Z790</el-checkbox>
+          <el-checkbox class="checkbox_style" value="B760M-PLUS"> B760M-PLUS</el-checkbox>
+          <el-checkbox class="checkbox_style" value="B760M"> B760M</el-checkbox>
+          <el-checkbox class="checkbox_style" value="B660M"> B660M</el-checkbox>
+          <el-checkbox class="checkbox_style" value="B650M-B"> B650M-B</el-checkbox>
+          <el-checkbox class="checkbox_style" value="B650M"> B650M</el-checkbox>
+          <el-checkbox class="checkbox_style" value="B550M-P"> B550M-P</el-checkbox>
+          <el-checkbox class="checkbox_style" value="H610M"> H610M</el-checkbox>
+          <el-checkbox class="checkbox_style" value="H510M"> H510M</el-checkbox>
+          <el-checkbox class="checkbox_style" value="A520M-A"> A520M-A</el-checkbox>
+          <el-checkbox class="checkbox_style" value="Z790"> Z790</el-checkbox>
         </el-checkbox-group>
       </div>
 
@@ -115,8 +115,8 @@
         <el-checkbox style="margin-top: 5px; margin-bottom: 5px;" v-model="selectAllMemory"
           @change="toggleSelectAllMemory"> 全选</el-checkbox>
         <el-checkbox-group v-model="filters.memoryName" @change="handleMemoryChange">
-          <el-checkbox class="checkbox_style" label="DDR4"> DDR4</el-checkbox>
-          <el-checkbox class="checkbox_style" label="DDR5"> DDR5</el-checkbox>
+          <el-checkbox class="checkbox_style" value="DDR4"> DDR4</el-checkbox>
+          <el-checkbox class="checkbox_style" value="DDR5"> DDR5</el-checkbox>
         </el-checkbox-group>
       </div>
     </div>
@@ -152,9 +152,9 @@
           下一页
         </button>
       </div>
-      
+
     </div>
-    
+
 
   </div>
 </template>
@@ -417,8 +417,21 @@ const handleMemoryChange = () => {
   fetchSolutions();
 };
 
+
 // Fetch solutions when component is mounted
 onMounted(() => {
+  console.log('Component mounted.', localStorage.getItem('hasRefreshed'));
+  // 检查 localStorage 中是否有刷新标记
+  if (!localStorage.getItem('hasRefreshed')) {
+    // 设置刷新标记
+    localStorage.setItem('hasRefreshed', 'true');
+    // 刷新页面
+    window.location.reload();
+  } else {
+    // 页面刷新后，移除标记，确保下次进入页面时可以再次刷新
+    localStorage.removeItem('hasRefreshed');
+  }
+
   const filtersString = sessionStorage.getItem('filters');
   console.log('Filters from storage:', filtersString);
   filters.value = filtersString ? JSON.parse(filtersString) : initFilters;// 解析为 JavaScript 对象
@@ -590,7 +603,7 @@ onMounted(() => {
   /* Make the container take the full viewport height */
   overflow: hidden;
   /* Hide the main scrollbar */
-  
+
 }
 
 .filters {
@@ -657,7 +670,7 @@ onMounted(() => {
 }
 
 .styled-checkbox-group .el-checkbox {
-  //font-family: 'Canvas', sans-serif;
+  font-family: 'Canvas', sans-serif;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -673,9 +686,9 @@ onMounted(() => {
 }
 
 .styled-checkbox-group .el-checkbox__input.is-checked+.el-checkbox__label {
-  background-color: #e0f7fa;
+  background-color: #e0f7fa !important;
   /* Change the background color when checked */
-  border-color: #00acc1;
+  border-color: #00acc1 !important;
 }
 
 .styled-checkbox-group .el-checkbox__label {
@@ -805,8 +818,8 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   padding-top:auto;
-  
-  
+
+
   left: 0;
   right: 0;
   width: 100%;
