@@ -41,6 +41,15 @@ const fetchCPUs = async () => {
 
   // 排序
   filteredList.sort((a, b) => {
+    // 首先按兼容性排序
+    const aCompatible = a.type === motherboardType.value || motherboardType.value === '';
+    const bCompatible = b.type === motherboardType.value || motherboardType.value === '';
+    
+    if (aCompatible !== bCompatible) {
+      return aCompatible ? -1 : 1; // 兼容的排在前面
+    }
+    
+    // 兼容性相同时,按价格排序
     const factor = filters.value.sortOrder === 'asc' ? 1 : -1;
     return (a.price - b.price) * factor;
   });
