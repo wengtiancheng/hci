@@ -80,7 +80,7 @@ const isMySolutionsSelected = computed(() => route.path === '/mySolutions');
   justify-content: space-between;
   align-items: center;
   padding: 6px 0; /* 移除左右的padding */
-  background-color: black;
+  background-color: black; /* 背景颜色 */
   color: white;
   z-index: 1000; /* 确保导航栏在最上层 */
 }

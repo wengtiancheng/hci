@@ -42,7 +42,7 @@ const handleLogin = async () => {
 
       toastRef.value.show('登录成功');
       setTimeout(() => {
-        router.push('/solution');
+        router.push('/custom-build');
       }, 1000);
     } else {
       toastRef.value.show('手机号或密码错误', 'error');

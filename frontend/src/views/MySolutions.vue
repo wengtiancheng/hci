@@ -151,7 +151,7 @@ onMounted(() => {
 
 .start-journey-button {
   margin-top: 20px;
-  background-color: #007bff;
+  background: linear-gradient(135deg, #878787, #000000);
   color: #fff;
   border: none;
   border-radius: 4px;

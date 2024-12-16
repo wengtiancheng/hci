@@ -164,6 +164,13 @@ const checkCompatibility = () => {
 
 // 保存配置
 const saveSolution = async () => {
+  if (!token) {
+    toastRef.value.show('请先登录', 'error');
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    router.push('/login');
+    return;
+  }
+
   const solution = {
     id: parseInt(sessionStorage.getItem('id') || '0'),
     name: solutionName.value,
@@ -183,19 +190,15 @@ const saveSolution = async () => {
     displayId: parseInt(sessionStorage.getItem('display') || '0')
   };
 
-
   const result = await uploadSolution(solution);
   console.log(result);
   if (result.data.code === '000') {
     toastRef.value.show('保存成功');
-    //等待1秒后跳转
     await new Promise(resolve => setTimeout(resolve, 1000));
-    // 跳转到 MySolutions 页面
     router.push('/mysolutions');
   } else {
     toastRef.value.show('保存失败!' + result.data.msg, 'error');
   }
-
 };
 
 const solutionName = ref(sessionStorage.getItem('solutionName') || '');
@@ -389,9 +392,7 @@ onBeforeUnmount(() => {
                 <span @click="gotoSelectPage(issue.motherboardKey)" class="clickable">{{ issue.motherboardName }}</span>
                 不匹配
               </v-chip>
-
             </p>
-
           </div>
         </div>
       </div>
