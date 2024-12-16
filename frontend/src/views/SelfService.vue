@@ -190,6 +190,13 @@ const saveSolution = async () => {
     chassisId: parseInt(sessionStorage.getItem('chassis') || '0'),
     displayId: parseInt(sessionStorage.getItem('display') || '0')
   };
+  if (solution.name === '' && solution.description === '' && solution.cpuId === 0 &&
+      solution.motherboardId === 0 && solution.gpuId === 0 && solution.memoryId === 0 &&
+      solution.harddiskId === 0 && solution.powersupplyId === 0 && solution.coolingId === 0 &&
+      solution.chassisId === 0 && solution.displayId === 0) {
+    toastRef.value.show('请选择配件', 'error');
+    return;
+  }
 
   const result = await uploadSolution(solution);
   console.log(result);
@@ -197,6 +204,7 @@ const saveSolution = async () => {
     toastRef.value.show('保存成功');
     await new Promise(resolve => setTimeout(resolve, 1000));
     resetConfig();
+    sessionStorage.removeItem('id');
     router.push('/mysolutions');
   } else {
     toastRef.value.show('保存失败!' + result.data.msg, 'error');
