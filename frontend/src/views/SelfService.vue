@@ -67,7 +67,8 @@ const fetchHardwareDetails = async () => {
   try {
     for (const item of hardwareConfig.value) {
       const id = sessionStorage.getItem(item.key);
-      if (id) {
+      console.log('Fetching details for', item.key, id);
+      if (id !== '0' && id !== null) {
         item.details = await getHardwareDetailsById(item.key, id);
       }
     }
@@ -195,6 +196,7 @@ const saveSolution = async () => {
   if (result.data.code === '000') {
     toastRef.value.show('保存成功');
     await new Promise(resolve => setTimeout(resolve, 1000));
+    resetConfig();
     router.push('/mysolutions');
   } else {
     toastRef.value.show('保存失败!' + result.data.msg, 'error');
@@ -239,6 +241,8 @@ onMounted(async () => {
     // solutionDescription.value = sessionStorage.getItem('solutionDescription') || '';
     // solutionName.value = solution.name;
     // solutionDescription.value = solution.description;
+    // 设置route 为空
+    router.currentRoute.value.query = {};
   }
 
   // 先获取配件详情
