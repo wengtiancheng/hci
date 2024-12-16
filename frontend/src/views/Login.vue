@@ -2,7 +2,7 @@
   <div class="login-container">
     <Toast ref="toastRef" />
     <div class="login-form">
-      <h2>登录</h2>
+      <h2>得机</h2>
       <form @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="phone">手机号</label>

@@ -145,33 +145,47 @@ const openai = new OpenAI({
 
 
 
-const systemPrompt: string = `
+const systemPrompt: string =
+    `
 The user may provide their preferred budget range for building a PC.
 The user may specify the intended use of the PC, such as gaming, video editing, or general office work.
 The user may indicate preferred brands for certain components (e.g., Intel, AMD, NVIDIA).
-Please analyze the user's needs and extract the following information:
-- "lowPrice" and "highPrice" can be chosen between 3732 and 40421.
+Please first analyze the user's needs and budgets, and usage scenario, then extract the following information:
+- "lowPrice" and "highPrice" are determined by budgets.
 - "cpuName" should be selected from the following list:
-  ['i9 14900K', 'i7 14700KF', 'i7 14700K', 'i5 14600K', 'i9 13900K', 'i5 13600KF', 'i5 13600K', 'i5 13490F', 'i5 13400F', 'i5 13400', 'i5 12600KF', 'i5 12400F', 'AMD Ryzen5 9600X', 'AMD Ryzen7 7800X3D', 'AMD Ryzen5 7500F', 'AMD Ryzen7 5700X3D', 'AMD Ryzen7 5700X', 'AMD Ryzen5 5600G', 'AMD Ryzen5 5600'].
+  ['i9 14900K','i9 13900K','i7 14700KF','i7 14700K','i5 14600K','i5 13600KF','i5 13600K','i5 13490F','i5 13400F','i5 13400','i5 12600KF','i5 12400F','AMD Ryzen5 9600X','AMD Ryzen7 7800X3D','AMD Ryzen5 7500F','AMD Ryzen7 5700X3D','AMD Ryzen7 5700X','AMD Ryzen5 5600G','AMD Ryzen5 5600']
 - "gpuName" should be selected from the following list:
-  ['RTX4090', 'RTX4070SUPER', 'RTX4070', 'RTX4060Ti', 'RTX4060', 'RTX3060', 'RX7800XT', 'RX6750GRE', 'RX6750', 'RX6500XT'].
+  ['RTX4090','RTX4070SUPER','RTX4070','RTX4060Ti','RTX4060','RTX3060','RTX3060Ti','RX7800XT','RX6750GRE','RX6750','RX6500XT']
 - "motherboardName" should be selected from the following list:
-  ['B760M-PLUS', 'B760M', 'B660M', 'B650M-B', 'B650M', 'B550M-P', 'H610M', 'H510M', 'A520M-A', 'Z790'].
+  ['B760M-PLUS','B760M','B660M','B650M-B','B650M','B550M-P','H610M','H510M','A520M-A','Z790'];
 - "memoryName" should be selected from the following list:
   ['DDR4', 'DDR5'].
 
 Please output the information in JSON format, including the components based on the user's input.
 
-EXAMPLE INPUT: 
-"我想要玩 3A 游戏，预算 15000 以内."
+EXAMPLE INPUT 1: 
+"我想要配置一台电脑，用途是办公，预计的费用是 10000."
 
-EXAMPLE JSON OUTPUT:
+EXAMPLE JSON OUTPUT 1:
 {
-    "lowPrice": 10000,
-    "highPrice": 15000,
-    "cpuName": ["i7 13600K", "AMD Ryzen7 5700X"], 
-    "gpuName": ["RTX4060", "RX6750"],
-    "motherboardName": ["B650M", "B550M-P"],
+    "lowPrice": 5000,
+    "highPrice": 10000,
+    "cpuName": ["i5 14600K","i5 13600KF","i5 13600K","i5 13490F","i5 13400F","i5 13400","i5 12600KF","i5 12400F","AMD Ryzen5 7500F","AMD Ryzen5 5600G","AMD Ryzen5 5600"], 
+    "gpuName": ["RTX3060","RTX3060Ti","RX6750GRE","RX6750","RX6500XT"],
+    "motherboardName": ["B660M","B650M-B","B650M","B550M-P","H610M","H510M"],
+    "memoryName": ["DDR4","DDR5"]
+}
+
+EXAMPLE INPUT 2: 
+"我想要配置一台电脑，用途是玩3A游戏，预计的费用是 15000."
+
+EXAMPLE JSON OUTPUT 2:
+{
+    "lowPrice": 15000,
+    "highPrice": 20000,
+    "cpuName": ["i9 14900K","i9 13900K","i7 14700KF","i7 14700K", "AMD Ryzen7 7800X3", "AMD Ryzen5 9600X","AMD Ryzen7 7800X3D","AMD Ryzen5 7500F",], 
+    "gpuName": ["RTX4090","RTX4070SUPER","RTX4070","RX7800XT","RX6750GRE"],
+    "motherboardName": ["B760M-PLUS","B760M","Z790"],
     "memoryName": ["DDR4","DDR5"]
 }
 `;
