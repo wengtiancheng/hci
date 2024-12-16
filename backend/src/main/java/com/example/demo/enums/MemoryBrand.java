@@ -8,5 +8,5 @@ public enum MemoryBrand {
     KINGBANK, // 金百达
     KINGSTON, // 金士顿
     PREDATOR, // 宏基
-    Colorful, // 七彩虹
+    COLORFUL, // 七彩虹
 }

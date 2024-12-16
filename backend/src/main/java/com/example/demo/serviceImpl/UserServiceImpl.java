@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     public String login(String phone, String password) {
         User user = userRepository.findByPhone(phone);
         if (user == null) throw DemoException.phoneOrPasswordError();
-        
+        if (!user.getPassword().equals(password)) throw DemoException.phoneOrPasswordError();
         return tokenUtil.getToken(user);
     }
 
@@ -120,28 +120,64 @@ public class UserServiceImpl implements UserService {
 
 
         for (SolutionVO solution : solutionVOs) {
-            String cpuImage = CPUService.getCPU(solution.getCpuId()).getImageUrl();
-            String cpuName = CPUService.getCPU(solution.getCpuId()).getName();
-            String gpuImage = GPUService.getGPU(solution.getGpuId()).getImageUrl();
-            String gpuName = GPUService.getGPU(solution.getGpuId()).getName();
-            String chassisImage = chassisService.getChassis(solution.getChassisId()).getImageUrl();
-            String chassisName = chassisService.getChassis(solution.getChassisId()).getName();
-            String memoryImage = memoryService.getMemory(solution.getMemoryId()).getImageUrl();
-            String memoryName = memoryService.getMemory(solution.getMemoryId()).getName();
-            String harddiskImage = harddiskService.getHarddisk(solution.getHarddiskId()).getImageUrl();
-            String harddiskName = harddiskService.getHarddisk(solution.getHarddiskId()).getName();
-            String powersupplyImage = powersupplyService.getPowersupply(solution.getPowersupplyId()).getImageUrl();
-            String powersupplyName = powersupplyService.getPowersupply(solution.getPowersupplyId()).getName();
-            String coolingImage = coolingService.getCooling(solution.getCoolingId()).getImageUrl();
-            String coolingName = coolingService.getCooling(solution.getCoolingId()).getName();
-            String displayName = displayService.getDisplay(solution.getDisplayId()).getName();
-            String displayImage = displayService.getDisplay(solution.getDisplayId()).getImageUrl();
-            String motherboardImage = motherboardService.getMotherboard(solution.getMotherboardId()).getImageUrl();
-            String motherboardName = motherboardService.getMotherboard(solution.getMotherboardId()).getName();
-            solution.setImages(List.of(cpuImage, gpuImage, chassisImage, memoryImage, harddiskImage,
-                    powersupplyImage, coolingImage, displayImage, motherboardImage));
-            solution.setComponentNames(List.of(cpuName, gpuName, chassisName, memoryName,
-                    harddiskName, powersupplyName, coolingName, displayName, motherboardName));
+            List<String> images = new java.util.ArrayList<>();
+            List<String> componentNames = new java.util.ArrayList<>();
+            if (solution.getCpuId() != null && solution.getCpuId() != 0) {
+                String cpuImage = CPUService.getCPU(solution.getCpuId()).getImageUrl();
+                String cpuName = CPUService.getCPU(solution.getCpuId()).getName();
+                images.add(cpuImage);
+                componentNames.add(cpuName);
+            }
+            if (solution.getGpuId() != null && solution.getGpuId() != 0) {
+                String gpuImage = GPUService.getGPU(solution.getGpuId()).getImageUrl();
+                String gpuName = GPUService.getGPU(solution.getGpuId()).getName();
+                images.add(gpuImage);
+                componentNames.add(gpuName);
+            }
+            if (solution.getChassisId() != null && solution.getChassisId() != 0) {
+                String chassisImage = chassisService.getChassis(solution.getChassisId()).getImageUrl();
+                String chassisName = chassisService.getChassis(solution.getChassisId()).getName();
+                images.add(chassisImage);
+                componentNames.add(chassisName);
+            }
+            if (solution.getMemoryId() != null && solution.getMemoryId() != 0) {
+                String memoryImage = memoryService.getMemory(solution.getMemoryId()).getImageUrl();
+                String memoryName = memoryService.getMemory(solution.getMemoryId()).getName();
+                images.add(memoryImage);
+                componentNames.add(memoryName);
+            }
+            if (solution.getHarddiskId() != null && solution.getHarddiskId() != 0) {
+                String harddiskImage = harddiskService.getHarddisk(solution.getHarddiskId()).getImageUrl();
+                String harddiskName = harddiskService.getHarddisk(solution.getHarddiskId()).getName();
+                images.add(harddiskImage);
+                componentNames.add(harddiskName);
+            }
+            if (solution.getPowersupplyId() != null && solution.getPowersupplyId() != 0) {
+                String powersupplyImage = powersupplyService.getPowersupply(solution.getPowersupplyId()).getImageUrl();
+                String powersupplyName = powersupplyService.getPowersupply(solution.getPowersupplyId()).getName();
+                images.add(powersupplyImage);
+                componentNames.add(powersupplyName);
+            }
+            if (solution.getCoolingId() != null && solution.getCoolingId() != 0) {
+                String coolingImage = coolingService.getCooling(solution.getCoolingId()).getImageUrl();
+                String coolingName = coolingService.getCooling(solution.getCoolingId()).getName();
+                images.add(coolingImage);
+                componentNames.add(coolingName);
+            }
+            if (solution.getDisplayId() != null && solution.getDisplayId() != 0) {
+                String displayImage = displayService.getDisplay(solution.getDisplayId()).getImageUrl();
+                String displayName = displayService.getDisplay(solution.getDisplayId()).getName();
+                images.add(displayImage);
+                componentNames.add(displayName);
+            }
+            if (solution.getMotherboardId() != null && solution.getMotherboardId() != 0) {
+                String motherboardImage = motherboardService.getMotherboard(solution.getMotherboardId()).getImageUrl();
+                String motherboardName = motherboardService.getMotherboard(solution.getMotherboardId()).getName();
+                images.add(motherboardImage);
+                componentNames.add(motherboardName);
+            }
+            solution.setImages(images);
+            solution.setComponentNames(componentNames);
         }
         return solutionVOs;
     }
