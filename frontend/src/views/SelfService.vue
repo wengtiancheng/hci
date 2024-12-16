@@ -319,7 +319,7 @@ onBeforeUnmount(() => {
               <div class="product-info">
                 <span class="product-name">
                   <a v-if="item.details" :href="item.details.linkUrl" target="_blank"
-                     class="purchase-link">{{ item.details ? item.details.name : '未选择' }}</a>
+                     class="purchase-link ellipsis">{{ item.details ? item.details.name : '未选择' }}</a>
                 </span>
                 <span v-if="item.details" class="price">￥{{ item.details.price }}</span>
               </div>
@@ -879,6 +879,14 @@ onBeforeUnmount(() => {
 
 .purchase-link:hover {
   color: gray;
+}
+
+.ellipsis {
+  display: inline-block;
+  max-width: 200px; /* Set your desired max width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .solution-info-panel {
