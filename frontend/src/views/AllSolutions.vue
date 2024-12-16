@@ -274,6 +274,15 @@ const fetchSolutions = async () => {
       solution.cpuName = solution.componentNames[0];
       solution.gpuName = solution.componentNames[1];
     }
+    currentPage.value = 1;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    const solutionsContainer = document.querySelector('.solutions');
+    if (solutionsContainer) {
+      solutionsContainer.scrollTop = 0;
+    }
   } finally {
     isLoading.value = false;
   }
